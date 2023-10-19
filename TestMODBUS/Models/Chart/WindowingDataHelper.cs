@@ -1,0 +1,94 @@
+﻿using LiveCharts.Wpf;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using TestMODBUS.Models.Data;
+using TestMODBUS.Models.Chart;
+using TestMODBUS.ViewModels;
+using LiveCharts.Defaults;
+using System.Collections.ObjectModel;
+using System.Runtime.Remoting.Channels;
+
+namespace TestMODBUS.Models.Chart
+{
+    public static class WindowingDataHelper
+    {
+        private static int BinFind(double time, Collection<Point> channelData)
+        {
+            int left = 0, right = channelData.Count - 1;
+
+            while (left <= right)
+            {
+                int middle = (right + left) / 2;
+
+                if (time > channelData[middle].X)
+                    left = middle + 1;
+                else
+                    right = middle - 1;
+            }
+
+            return left;
+        }
+
+        private static int GetStartOfSubarray(double time, Collection<Point> channelData)
+        {
+            if (time < 0)
+                return 0;
+
+            int index = BinFind(time, channelData);
+
+            return index > 0 ? index - 1 : 0;
+        }
+
+        private static int GetEndOfSubarray(double time, Collection<Point> channelData)
+        {
+            int index = BinFind(time, channelData);
+
+            return index == channelData.Count - 1 ? index : index + 1;
+        }
+
+        public static (int, int) GetDataWindowIndex(double EndTime, Collection<Point> channelData)
+        {
+            return GetDataWindowIndex(EndTime - ChartModel.MaxTimeWidth, EndTime, channelData);
+        }
+
+        public static (int, int) GetDataWindowIndex(double StartTime, double EndTime, Collection<Point> channelData)
+        {
+            int startIndex = GetStartOfSubarray(StartTime, channelData);
+            int endIndex = GetEndOfSubarray(EndTime, channelData);
+            return (startIndex, endIndex);
+        }
+
+        public static ObservablePoint[] GetWindowData(double EndTime, Collection<Point> channelData)
+        {
+            var Edges = GetDataWindowIndex(EndTime, channelData);
+            int leftEdge = Edges.Item1, rightEdge = Edges.Item2;
+            return GetWindowData(leftEdge, rightEdge, channelData);
+        }
+
+        public static ObservablePoint[] GetWindowData(int leftEdge, int rightEdge, Collection<Point> channelData) 
+        {
+            if (leftEdge < 0 || leftEdge > rightEdge)
+                throw new ArgumentOutOfRangeException(nameof(leftEdge));
+            if (rightEdge >= channelData.Count)
+                throw new ArgumentOutOfRangeException(nameof(rightEdge));
+
+            int size = rightEdge - leftEdge + 1;
+            var NewPoints = new ObservablePoint[size];
+            int index = 0;
+            for (int pointIndex = leftEdge; pointIndex <= rightEdge; pointIndex++)
+            {
+                var Point = channelData[pointIndex];
+                NewPoints[index] = new ObservablePoint(Point.X, Point.Y);
+                index++;
+            }
+
+            return NewPoints;
+        }
+    }
+}

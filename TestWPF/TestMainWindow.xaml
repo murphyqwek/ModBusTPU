@@ -1,0 +1,30 @@
+﻿<Window x:Class="TestWPF.TestMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:TestWPF"
+        xmlns:vm="clr-namespace:TestWPF"
+        mc:Ignorable="d"
+        Title="TestMainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <lvc:CartesianChart Series="{Binding SeriesCollection}" DisableAnimations="True" Hoverable="False" DataTooltip="{x:Null}">
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Title="Время, мс"/>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="Напряжение, В" />
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
+        <Button Grid.Row="1" Content="Add new point" Command="{Binding addPointCommand}"/>
+    </Grid>
+</Window>

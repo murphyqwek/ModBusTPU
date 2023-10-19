@@ -1,0 +1,167 @@
+﻿<Window x:Class="TestMODBUS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:vm="clr-namespace:TestMODBUS.ViewModels"
+        xmlns:conv="clr-namespace:TestMODBUS.Converter"
+        xmlns:local="clr-namespace:TestMODBUS" xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="700">
+
+    <Window.Resources>
+        <conv:SliderEnabledConverter x:Key="SliderEnabledConverter" />
+        <conv:ZoomBoolConverter x:Key="ZoomBoolConverter" />
+        <conv:ScrollChartVisibilityConverter x:Key="SliderVisibility" />
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="120" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <lvc:CartesianChart Grid.Row="0" DisableAnimations="True" Hoverable="False" DataTooltip="{x:Null}" Series="{Binding Series}" Zoom="{Binding IsDrawing, Converter={StaticResource SliderEnabledConverter}}" LegendLocation="Top">
+                <lvc:CartesianChart.CacheMode>
+                    <BitmapCache EnableClearType="False" 
+                       RenderAtScale="1"
+                       SnapsToDevicePixels="False" />
+                </lvc:CartesianChart.CacheMode>
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis Title="Время, мс" FontSize="15" Unit="1" MinValue="{Binding XMin, Mode=OneWay}" MaxValue="{Binding XMax, Mode=OneWay}"/>
+                </lvc:CartesianChart.AxisX>
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Title="Напряжение, В" MaxValue="14" MinValue="-14" FontSize="15" Unit="1"/>
+                </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart>
+            <Slider Grid.Row="1" Visibility="{Binding IsScrollVisible, Converter={StaticResource SliderVisibility}}" Minimum="0" Maximum="{Binding MaxStartTime}" Value="{Binding StartPoint, Mode=OneWayToSource}" Margin="15 0">
+                <Slider.Style>
+                    <Style TargetType="Slider">
+                        <Style.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Minimum" Value="0" />
+                                    <Condition Property="Maximum" Value="0" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Slider.Style>
+            </Slider>
+        </Grid>
+        <Border Grid.Row="1" BorderBrush="LightGray" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*"/>
+                    <ColumnDefinition Width="60*"/>
+                </Grid.ColumnDefinitions>
+
+
+                <GroupBox Grid.Column="0" Header="Порт" Margin="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*"/>
+                            <RowDefinition Height="60*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <DockPanel Grid.Column="0">
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Порт: " Margin="5 0 5 0" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="0" Style="{StaticResource ModifiedComboBox}" Grid.Column="1" Name="PortComboBox" Margin="5" ItemsSource="{Binding Ports}" IsReadOnly="{Binding IsPortOpen}" SelectedItem="{Binding PortName}" PreviewMouseLeftButtonDown="PortComboBox_PreviewMouseLeftButtonDown">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontSize="9" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
+
+                            <DockPanel Grid.Column="1">
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Скорость: " Margin="0 0 5 0" Background="White" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="1" Style="{DynamicResource ModifiedComboBox}" Grid.Column="1" Name="SpeedComboBox" Margin="5" Background="White" ItemsSource="{Binding Speeds}" IsReadOnly="{Binding IsPortOpen}" SelectedItem="{Binding PortSpeed}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontSize="9" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
+                        </Grid>
+
+                        <StackPanel Grid.Row="1" Orientation="Vertical">
+                            <TextBlock Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat='Промежуток между измерениями: {0} мс.'}" Margin="5"/>
+                            <Slider Name="DelaySlider" Margin="5 0" Value="{Binding MeasureDelay}" Minimum="300" Maximum="1500" IsSnapToTickEnabled="True" TickFrequency="100" IsEnabled="{Binding IsPortOpen, Converter={StaticResource SliderEnabledConverter}}"/>
+                        </StackPanel>
+                        
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1" Header="Данные с датчика" Margin="5">
+                    <Grid Margin="0 20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="35*"/>
+                            <ColumnDefinition Width="70*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="5 5" Width="100" IsCancel="{Binding IsPortOpen}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsCancel" Value="True">
+                                            <Setter Property="Background" Value="#eb1535"/>
+                                            <Setter Property="BorderBrush" Value="#a8021b"/>
+                                            <Setter Property="Content" Value="Стоп"/>
+                                            <Setter Property="Command" Value="{Binding StopCommand}" />
+                                        </Trigger>
+                                        <Trigger Property="IsCancel" Value="False">
+                                            <Setter Property="Background" Value="YellowGreen"/>
+                                            <Setter Property="BorderBrush" Value="Green"/>
+                                            <Setter Property="Content" Value="Старт"/>
+                                            <Setter Property="Command" Value="{Binding StartCommand}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 5 5 5">
+                            <Button Grid.Row="0" Grid.Column="0" Content="Очистить график" IsEnabled="{Binding IsPortOpen, Converter={StaticResource SliderEnabledConverter}}" Command="{Binding ClearCommand}">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button Grid.Row="0" Grid.Column="0" Content="Сохранить график" HorizontalAlignment="Right" IsEnabled="{Binding IsPortOpen, Converter={StaticResource SliderEnabledConverter}}" Command="{Binding ExportDataCommand}">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </DockPanel>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
