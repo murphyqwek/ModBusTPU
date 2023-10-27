@@ -1,4 +1,6 @@
-﻿using TestMODBUS.Models;
+﻿using System.Security.Cryptography;
+using System.Text;
+using TestMODBUS.Models;
 using TestMODBUS.Models.ModbusCommands;
 
 namespace TestConsole
@@ -7,18 +9,18 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            while (true)
+            int m = 4400000;
+            for (int i = m / 2; i < m; i++)
             {
-                Console.WriteLine("Enter HEX Value:");
-                string value = Console.ReadLine();
-                short Value = Convert.ToInt16("0x" + value, 16);
-
-
-                double ConvertedValue = Value * (10.0 / 32768.0);
-                double Rounded = Math.Round(ConvertedValue, 3);
-                //double Ranged = Floored / 1000;
-                Console.WriteLine(Rounded);
-                Console.WriteLine("\n");
+                for(int j = m / 2; j < m; j++)
+                {
+                    if ((i + j) % m == ((i * (j - 1)) % m) &&
+                        (i + j - 1) % m == ((i * j) % m))
+                    {
+                        Console.WriteLine(i);
+                        Console.WriteLine(j);
+                    } 
+                }
             }
         }
     }

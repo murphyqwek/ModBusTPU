@@ -20,13 +20,17 @@ namespace TestMODBUS.Models.Data
             _data = Data;
         }
 
-        private double ParseData(string data)
+        private double ParseData(byte[] data)
         {
             try
             {
-                var channelData = data.Substring(3, 4);
+                byte[] channelData = new byte[2];
+                channelData[0] = data[3];
+                channelData[1] = data[4];
 
-                return ModBusValueConverter.ConvertFromHexToDoubleFromChannelData(channelData);
+                string ChannelDataString = BitConverter.ToString(channelData).Replace("-", "");
+
+                return ModBusValueConverter.ConvertHexToAmperValue(ChannelDataString);
             }
             catch
             {
@@ -35,7 +39,7 @@ namespace TestMODBUS.Models.Data
 
         }
 
-        public void SaveData(string[] ChannelsData, int Time)
+        public void SaveData(byte[][] ChannelsData, int Time)
         {
             for (int Channel = 0; Channel < _data.ChannelsData.Count; Channel++) {
                 double x = Convert.ToDouble(Time);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TestMODBUS.Models.INotifyPropertyBased;
 using TestMODBUS.Models.MessageBoxes;
@@ -113,15 +114,34 @@ namespace TestMODBUS.Models.Port
             _port.Write(data);
         }
 
-        public string ReadAll()
+        public byte[] ReadAll()
         {
             if (!_port.IsOpen)
                 return null;
 
-            var recieved = _port.ReadExisting();
+            int whileBreakerCount = 0;
+            int bytes = _port.BytesToRead;
+            while (bytes != 7 && _isPortOpen && whileBreakerCount < 100)
+            {
+                try
+                {
+                    bytes = _port.BytesToRead;
+                    whileBreakerCount++;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+
+            if (!_port.IsOpen)
+                return null;
+
+            byte[] buffer = new byte[bytes];
+            _port.Read(buffer, 0, bytes);
 
             _port.DiscardInBuffer();
-            return recieved;
+            return buffer;
         }
     }
 }

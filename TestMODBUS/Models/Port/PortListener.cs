@@ -58,13 +58,17 @@ namespace TestMODBUS.Models.Port
                 try
                 {
                     int time = Convert.ToInt32(timer.ElapsedMilliseconds);
-                    string[] ChannelData = new string[8];
+                    byte[][] ChannelData = new byte[8][];
                     for (int channel = 0; channel < 8; channel++)
                     {
                         byte[] sendCommand = ModBusCommandsList.GetReadChannelCommand(channel);
                         Port.Send(sendCommand);
 
                         var recieved = Port.ReadAll();
+
+                        if (recieved == null)
+                            return;
+
                         //var recieved = random.Next(0, 50).ToString();
                         ChannelData[channel] = recieved;
                     }

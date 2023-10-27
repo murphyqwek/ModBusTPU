@@ -9,7 +9,8 @@ namespace TestMODBUS.Models.ModbusCommands
 {
     public static class ModBusValueConverter
     {
-        const double koeffValueChanne = 10 / 32768;
+        const double koeffValueChanne = 10.0 / 32768.0;
+        const double AmperKoeff = 188; 
 
         public static double ConvertFromHexToDoubleFromChannelData(string ChannelData)
         {
@@ -24,6 +25,10 @@ namespace TestMODBUS.Models.ModbusCommands
             return RoundedValue;
         }
 
+        public static double ConvertHexToAmperValue(string ChannelData)
+        {
+            return ConvertFromHexToDoubleFromChannelData(ChannelData) * AmperKoeff;
+        }
 
     }
 }
