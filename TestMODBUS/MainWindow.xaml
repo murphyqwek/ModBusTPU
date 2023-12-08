@@ -104,7 +104,7 @@
 
                         <StackPanel Grid.Row="1" Orientation="Vertical">
                             <TextBlock Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat='Промежуток между измерениями: {0} мс.'}" Margin="5"/>
-                            <Slider Name="DelaySlider" Margin="5 0" Value="{Binding MeasureDelay}" Minimum="300" Maximum="1500" IsSnapToTickEnabled="True" TickFrequency="100" IsEnabled="{Binding IsPortOpen, Converter={StaticResource SliderEnabledConverter}}"/>
+                            <Slider Name="DelaySlider" Margin="5 0" Value="{Binding MeasureDelay}" Minimum="200" Maximum="1500" IsSnapToTickEnabled="True" TickFrequency="100" IsEnabled="{Binding IsPortOpen, Converter={StaticResource SliderEnabledConverter}}"/>
                         </StackPanel>
                         
                     </Grid>

@@ -5,16 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TestMODBUS.Exceptions;
 using TestMODBUS.Models.INotifyPropertyBased;
 using TestMODBUS.Models.MessageBoxes;
 
 namespace TestMODBUS.Models.Port
 {
+
+    //Обёртка стандартного класса SerialPort
     public class ObservablePort : INotifyBase
     {
-        private SerialPort _port = new SerialPort();
-
-        private string _portName;
+        #region Public Attributes
         public string PortName
         {
             get => _portName;
@@ -26,7 +27,6 @@ namespace TestMODBUS.Models.Port
             }
         }
 
-        private int _portSpeed;
         public int PortSpeed
         {
             get => _portSpeed;
@@ -38,7 +38,6 @@ namespace TestMODBUS.Models.Port
             }
         }
 
-        private bool _isPortOpen = false;
         public bool IsPortOpen
         {
             get => _isPortOpen;
@@ -48,6 +47,13 @@ namespace TestMODBUS.Models.Port
                 OnPropertyChanged();
             }
         }
+        #endregion
+
+        private SerialPort _port = new SerialPort();
+        private string _portName;
+        private int _portSpeed;
+        private bool _isPortOpen = false;
+
 
         public ObservablePort()
         {
@@ -71,10 +77,7 @@ namespace TestMODBUS.Models.Port
         public bool Open()
         {
             if (!ListAvailablePorts.IsAnyPortAvailable)
-            {
-                ErrorMessageBox.Show("Порт не выбран");
-                return false;
-            }
+                throw new NoPortAvailableException();
 
             try
             {
@@ -82,10 +85,8 @@ namespace TestMODBUS.Models.Port
             }
             catch (System.IO.IOException)
             {
-                ErrorMessageBox.Show(string.Format("Порт {0} не существтует. Выберите другой", _port.PortName));
-                ListAvailablePorts.UpdateAvailablePortList();
                 SetPortName(null);
-                return false;
+                throw new ChosenPortUnavailableException(_portName);
             }
 
             IsPortOpen = true;
@@ -114,17 +115,15 @@ namespace TestMODBUS.Models.Port
             _port.Write(data);
         }
 
-        public byte[] ReadAll()
+        public byte[] ReadCommand()
         {
-            if (!_port.IsOpen)
-                return null;
-
-            int whileBreakerCount = 0;
-            int bytes = _port.BytesToRead;
-            while (bytes != 7 && _isPortOpen && whileBreakerCount < 100)
+            int whileBreakerCount = 0; //Специальный счётчик, чтобы избежать бесконечного цикла
+            int bytes;
+            do
             {
                 try
                 {
+                    Thread.Sleep(5);
                     bytes = _port.BytesToRead;
                     whileBreakerCount++;
                 }
@@ -133,14 +132,14 @@ namespace TestMODBUS.Models.Port
                     return null;
                 }
             }
+            while (bytes != 7 && _isPortOpen && whileBreakerCount < 100);
 
-            if (!_port.IsOpen)
-                return null;
+            //Количество байтов задано вручную. На будущее: для универсального считывания нужно считывать байты, пока последний байт не будет равен контрольной сумме всей команды
 
             byte[] buffer = new byte[bytes];
             _port.Read(buffer, 0, bytes);
 
-            _port.DiscardInBuffer();
+            _port.DiscardInBuffer(); //Очищаем буффер
             return buffer;
         }
     }

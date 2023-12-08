@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace TestMODBUS.Models.Data
 {
+    //Дата-класс, который хранит данные со всех каналов
     public class Data
     {
         public List<ObservableCollection<Point>> ChannelsData;

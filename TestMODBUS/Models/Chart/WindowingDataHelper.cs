@@ -16,8 +16,15 @@ using System.Runtime.Remoting.Channels;
 
 namespace TestMODBUS.Models.Chart
 {
+    //Класс для работы с "окном"
+
+    /* Так как бесплатная версия библиотеки LiveCharts очень плохо оптимизирована для часто обнавляющихся данных
+     * программа отрисовывает только часть массива данных. Это и называется "окном"
+    */
     public static class WindowingDataHelper
     {
+        //Находит первый индекс в массиве данных, чья абсцисса(в данном случае время),
+        //практически совпдает с заданной
         private static int BinFind(double time, Collection<Point> channelData)
         {
             int left = 0, right = channelData.Count - 1;
@@ -35,6 +42,7 @@ namespace TestMODBUS.Models.Chart
             return left;
         }
 
+        //Находит начальный индекс "окна"
         private static int GetStartOfSubarray(double time, Collection<Point> channelData)
         {
             if (time < 0)
@@ -42,14 +50,17 @@ namespace TestMODBUS.Models.Chart
 
             int index = BinFind(time, channelData);
 
+            //"Окно" должно немного выходить за границы отображаемого "окна", чтобы график не обрывался в начале и в конце 
             return index > 0 ? index - 1 : 0;
         }
 
+        //Находит конечный индекс "окна"
         private static int GetEndOfSubarray(double time, Collection<Point> channelData)
         {
             int index = BinFind(time, channelData);
 
-            return index == channelData.Count - 1 ? index : index + 1;
+            //"Окно" должно немного выходить за границы отображаемого "окна", чтобы график не обрывался в начале и в конце 
+            return index == channelData.Count - 1 ? index : index + 1; 
         }
 
         public static (int, int) GetDataWindowIndex(double EndTime, Collection<Point> channelData)
@@ -71,6 +82,7 @@ namespace TestMODBUS.Models.Chart
             return GetWindowData(leftEdge, rightEdge, channelData);
         }
 
+        //Получаем подмассив исходных данных - "окно"
         public static ObservablePoint[] GetWindowData(int leftEdge, int rightEdge, Collection<Point> channelData) 
         {
             if (leftEdge < 0 || leftEdge > rightEdge)

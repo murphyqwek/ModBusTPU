@@ -16,9 +16,11 @@ namespace TestMODBUS.Models.Excel
 {
     public static class ExportExcel
     {
+        //Размеры чартов в Excel
         private const int ChartHeight = 450;
         private const int ChartWidth = 900;
-
+        
+        //Проверка, открыт ли файл в другой программе
         private static bool isFileOpen(string FilePath)
         {
             if (!File.Exists(FilePath))
@@ -37,6 +39,8 @@ namespace TestMODBUS.Models.Excel
             }
         }
 
+        //Библиотека EPPlus платная для коммерческого использования и бесплатная для некомерческого использования
+        //Перед тем, как её использовать в программе нужно указать тип LicenseContext
         public static void SetUp()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -53,10 +57,10 @@ namespace TestMODBUS.Models.Excel
 
             using (ExcelPackage excelPackage = new ExcelPackage())
             {
-                //Set some properties of the Excel document
+                //Указываем метаданные Excel файла
                 excelPackage.Workbook.Properties.Created = DateTime.Now;
 
-                //Create the WorkSheet
+                //Создаём лист с графиками и лист с данными с каналов
                 ExcelWorksheet graphicSheet = excelPackage.Workbook.Worksheets.Add("Графики");
                 ExcelWorksheet dataSheet = excelPackage.Workbook.Worksheets.Add("Данные с каналов");
                 
@@ -66,11 +70,9 @@ namespace TestMODBUS.Models.Excel
                     CreateChart(graphicSheet, dataSheet, i, DataStorage.GetChannelLastPointIndex());
                 }
 
-
-                //Save your file
+                //Сохраняем файл
                 FileInfo fi = new FileInfo(FilePath);
                 excelPackage.SaveAs(fi);
-                
             }
         }
 
@@ -79,6 +81,7 @@ namespace TestMODBUS.Models.Excel
             return "CH_" + ChannelIndex.ToString();
         }
 
+        //Создаёт график данных с канала
         private static void CreateChart(ExcelWorksheet graphicSheet, ExcelWorksheet dataSheet, int ChannelIndex, int DataLength)
         {
             int DataColumn = ChannelIndex * 3 + 1;
@@ -89,8 +92,8 @@ namespace TestMODBUS.Models.Excel
             var graphic = graphicSheet.Drawings.AddLineChart(ChartTitle, eLineChartType.Line);
             graphic.SetSize(ChartWidth, ChartHeight);
             graphic.SetPosition(ChartColumn / 3 * ChartHeight, 0);
+            graphic.StyleManager.SetChartStyle(ePresetChartStyle.LineChartStyle1, ePresetChartColors.ColorfulPalette1); //ePresetChartStyle.LineChartStyle1 - стиль графика
             graphic.XAxis.DisplayUnit = 1000;
-            graphic.StyleManager.SetChartStyle(ePresetChartStyle.LineChartStyle1, ePresetChartColors.ColorfulPalette1);
 
             ExcelRange timeRange = dataSheet.Cells[3, DataColumn, DataLastRow, DataColumn];
             ExcelRange dataRange = dataSheet.Cells[3, DataColumn + 1, DataLastRow, DataColumn + 1];
@@ -110,6 +113,7 @@ namespace TestMODBUS.Models.Excel
             graphic.YAxis.Crosses = 0;
         }
 
+        //Создаёт колонку с данными с канала
         private static void AddChannelDataColumn(ExcelWorksheet dataSheet, ObservableCollection<Point> points, int ChannelIndex)
         {
             int column = ChannelIndex * 3 + 1;

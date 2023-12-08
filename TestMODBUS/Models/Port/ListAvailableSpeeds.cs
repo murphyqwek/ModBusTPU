@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestMODBUS.Models.Port
 {
+    //Дата-класс для хранения списка доступных скоростей порта
     class ListAvailableSpeeds
     {
         public static List<int> ListPortSpeeds = new List<int>()

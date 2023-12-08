@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace TestMODBUS.Models.ModbusCommands
 {
+    //Класс для подсчёта контрольной суммы
+
+    //Чтобы датчик смог выполнить команду, нужно в конце этой команды указать её контрольную сумму
     public static class ModBusCRC
     {
+        //Массивы данных для посчёта контрольный суммы
         private static readonly byte[] CRC16Hi = new byte[]
         {
             0,
@@ -268,7 +272,6 @@ namespace TestMODBUS.Models.ModbusCommands
             129,
             64
         };
-
         private static readonly byte[] CRC16Lo = new byte[]
         {
             0,

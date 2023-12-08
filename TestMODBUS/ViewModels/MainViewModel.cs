@@ -1,6 +1,5 @@
 ﻿using LiveCharts;
 using LiveCharts.Defaults;
-using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +13,6 @@ using System.Windows.Input;
 using TestMODBUS.Commands;
 using TestMODBUS.Exceptions;
 using TestMODBUS.Models;
-using TestMODBUS.Models.Chart;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.Excel;
 using TestMODBUS.Models.MessageBoxes;
@@ -25,6 +23,7 @@ namespace TestMODBUS.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        #region Public Attributes
         public ObservableCollection<string> Ports => ListAvailablePorts.AvailablePorts;
         public List<int> Speeds => ListAvailableSpeeds.ListPortSpeeds;
         public SeriesCollection Series => chart.Series;
@@ -70,31 +69,55 @@ namespace TestMODBUS.ViewModels
         }
         public bool IsPortOpen => port.IsPortOpen;
         public int MeasureDelay { get; set; } = 300;
-
-        #region Private Fields
+        #endregion
 
         private PortListener portListener;
         private ObservablePort port;
         private Data data;
         private ChartModel chart;
-        private bool isScrollVisible = false;
-
-        #endregion
+        private bool isScrollVisible = false; //Определяет видимость ScrollBar, который сдвигает график данных
 
         #region Commands
 
         #region Start Command
+
+        //Запуск считывания с датчика
         public ICommand StartCommand { get; }
 
         private void StartCommandHandler()
         {
-            IsScrollVisible = false;
+            IsScrollVisible = false; //Во время считывания данных пользователь не должен скроллить график
             chart.StartDrawing();
-            portListener.StartListen(MeasureDelay);
+
+            bool isStarted = true; //Если не удалось открыть порт, мы должны отменить предыдущие действия
+
+            try
+            {
+                portListener.StartListen(MeasureDelay);
+            }
+            catch (NoPortAvailableException ex)
+            {
+                ErrorMessageBox.Show(ex.Message);
+                isStarted = false;
+            }
+            catch (ChosenPortUnavailableException ex)
+            {
+                ListAvailablePorts.UpdateAvailablePortList();
+                ErrorMessageBox.Show(ex.Message);
+                isStarted = false;
+            }
+
+            if(!isStarted)
+            {
+                isScrollVisible = false;
+                chart.StopDrawing();
+            }
         }
         #endregion
 
         #region Stop Command
+
+        //Команда для отсановки считывания данных
         public ICommand StopCommand { get; }
 
         private void StopCommandHandler()
@@ -107,6 +130,7 @@ namespace TestMODBUS.ViewModels
 
         #region Clear Data Command
 
+        //Очистка графика
         public ICommand ClearCommand { get; }
 
         private void ClearCommandHandler()
@@ -122,6 +146,7 @@ namespace TestMODBUS.ViewModels
 
         #region Export Data Command
 
+        //Экспорт данных в Excel
         public ICommand ExportDataCommand { get; }
 
         private void ExportDataCommandHandler()
@@ -152,22 +177,24 @@ namespace TestMODBUS.ViewModels
 
         public MainViewModel()
         {
+            //Инициализируем объекты
             port = new ObservablePort();
             data = new Data();
 
             var dataConnector = new DataConnector(data);
             portListener = new PortListener(port, dataConnector);
             chart = new ChartModel(data);
-
+            
+            //Иницилизируем команды
             StartCommand = new RemoteCommand(StartCommandHandler);
             StopCommand = new RemoteCommand(StopCommandHandler);
             ClearCommand = new RemoteCommand(ClearCommandHandler);
             ExportDataCommand = new RemoteCommand(ExportDataCommandHandler);
 
+            //Подписиыаем объекты на OnPropertyChanged других объектов
             ListAvailablePorts.AvailablePorts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Ports));
             port.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
             port.PropertyChanged += (s, e) => OnPropertyChanged(nameof(isScrollVisible));
-            //port.PropertyChanged += (s, e) => { OnPropertyChanged(nameof(XMax)); OnPropertyChanged(nameof(XMin)); };
             chart.Series.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Series));
             chart.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
         }

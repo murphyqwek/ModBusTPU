@@ -11,13 +11,16 @@ using TestMODBUS.Models.INotifyPropertyBased;
 
 namespace TestMODBUS.Models.Port
 {
+    //Дата-класс для хранения и обновления списка доступных портов
     static class ListAvailablePorts
     {
+        #region Public Attributes
         public static ObservableCollection<string> AvailablePorts { get; private set; } = new ObservableCollection<string>();
 
         public const string NoAvaiblePortsString = "Нет доступных";
 
         public static bool IsAnyPortAvailable => AvailablePorts[0] != NoAvaiblePortsString;
+        #endregion
 
         public static void UpdateAvailablePortList()
         {

@@ -9,8 +9,8 @@ namespace TestMODBUS.Models.ModbusCommands
 {
     public static class ModBusValueConverter
     {
-        const double koeffValueChanne = 10.0 / 32768.0;
-        const double AmperKoeff = 188; 
+        const double koeffValueChanne = 10.0 / 32768.0; //Коэффициент перевода данных в значение напряжение на выходе датчика
+        const double AmperKoeff = 188; //Коэффициент перевода значения напряжение на выходе датчика в значение тока(нужно подобрать)
 
         public static double ConvertFromHexToDoubleFromChannelData(string ChannelData)
         {

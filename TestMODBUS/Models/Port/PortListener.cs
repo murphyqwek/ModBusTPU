@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
@@ -38,21 +39,31 @@ namespace TestMODBUS.Models.Port
             if(_port == null)
                 throw new ArgumentNullException(nameof(Port));
 
-            if (!_port.Open())
-                return;
+            _port.Open();
 
-            // Проверка на модуль
+            // Проверка на модуль (пока не нужно)
 
             //Запуск потока
             listenningThread = new Thread(() => Listen(_port, _connector, delay));
             listenningThread.Start();
         }
 
-        private void Listen(ObservablePort Port, DataConnector Connector, int delay = 100)
+        public void StopListen()
         {
+            if (_port != null)
+                _port.Close();
+        }
+
+        private void Listen(ObservablePort Port, DataConnector Connector, int delay)
+        {
+            if (delay <= 100)
+                throw new ArgumentException("Delay must be more than 50 milliseconds");
+
             Stopwatch timer = new Stopwatch();
             timer.Start();
-            Random random = new Random();
+            const int measureTime = 50; //Это время, за котрое программа считает все данные со всех каналов. Пока подбирается вручную
+            delay = delay - measureTime; //Таким образом мы учитываем время на считывания, и промежутки измерения будут примерно такими же, какими их задал пользователь
+
             while (Port.IsPortOpen)
             {
                 try
@@ -61,22 +72,22 @@ namespace TestMODBUS.Models.Port
                     byte[][] ChannelData = new byte[8][];
                     for (int channel = 0; channel < 8; channel++)
                     {
-                        byte[] sendCommand = ModBusCommandsList.GetReadChannelCommand(channel);
+                        byte[] sendCommand = ModBusCommandsList.GetReadChannelCommand(channel); //Получаем команду, чтобы считать данные с конкретного канала
                         Port.Send(sendCommand);
 
-                        var recieved = Port.ReadAll();
+                        var recieved = Port.ReadCommand();
 
                         if (recieved == null)
                             return;
 
-                        //var recieved = random.Next(0, 50).ToString();
                         ChannelData[channel] = recieved;
                     }
-                    Connector.SaveData(ChannelData, time);
+                    Connector.SaveData(ChannelData, time); //Сохраняем данные в хранилище через промежуточный класс-конектор
                     Thread.Sleep(delay);
                 }
                 catch(System.IO.IOException)
                 {
+                    ErrorMessageBox.Show("Возникли проблемы с портом. Проверьте соединение");
                     if (_port != null)
                         _port.Close();
                     break;
@@ -84,10 +95,5 @@ namespace TestMODBUS.Models.Port
             }
         }
 
-        public void StopListen()
-        {
-            if(_port != null)
-                _port.Close();
-        }
     }
 }
