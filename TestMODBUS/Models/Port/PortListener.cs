@@ -16,6 +16,7 @@ using TestMODBUS.Models.ModbusCommands;
 
 namespace TestMODBUS.Models.Port
 {
+    //Класс, который считывает данные с порт и сохраняет черз DataConnector в хранилище данных новые данные
     public class PortListener : INotifyBase
     {
         private ObservablePort _port = new ObservablePort();
