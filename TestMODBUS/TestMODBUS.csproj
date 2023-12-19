@@ -115,7 +115,9 @@
     <Compile Include="Converter\StartButtonColorConverter.cs" />
     <Compile Include="Converter\ScrollChartVisibilityConverter.cs" />
     <Compile Include="Converter\ZoomBoolConverter.cs" />
+    <Compile Include="Exceptions\ChosenPortUnavailableException.cs" />
     <Compile Include="Exceptions\FileIsAlreadyOpenException.cs" />
+    <Compile Include="Exceptions\NoPortAvailableException.cs" />
     <Compile Include="Models\Chart\WindowingDataHelper.cs" />
     <Compile Include="Models\Data\Data.cs" />
     <Compile Include="Models\Data\DataConnector.cs" />

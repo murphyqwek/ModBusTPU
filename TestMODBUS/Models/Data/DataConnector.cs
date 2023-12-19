@@ -22,7 +22,7 @@ namespace TestMODBUS.Models.Data
         }
 
         //Функция переводит полученные байты в значение с датчиков
-        private double ParseData(byte[] data)
+        private double ParseData(byte[] data, int channel)
         {
             try
             {
@@ -30,8 +30,16 @@ namespace TestMODBUS.Models.Data
                 channelData[0] = data[3]; //Вытаскиваем из всей команды байты с данными
                 channelData[1] = data[4];
 
+
+                
                 string ChannelDataString = BitConverter.ToString(channelData).Replace("-", ""); //Переводим байты в hex и в строку
 
+                if (channel == 0) //канал тока
+                    return ModBusValueConverter.ConvertHexToAmperValue(ChannelDataString);
+                if (channel == 6) //Канал напряжения
+                    return ModBusValueConverter.ConvertHexToVoltValue(ChannelDataString);
+
+                //Не используемые каналы
                 return ModBusValueConverter.ConvertFromHexToDoubleFromChannelData(ChannelDataString);
             }
             catch
@@ -45,7 +53,7 @@ namespace TestMODBUS.Models.Data
         {
             for (int Channel = 0; Channel < _data.ChannelsData.Count; Channel++) {
                 double x = Convert.ToDouble(Time);
-                double y = ParseData(ChannelsData[Channel]);
+                double y = ParseData(ChannelsData[Channel], Channel);
 
                 _data.AddNewPoint(new Point(x, y), Channel);
             }

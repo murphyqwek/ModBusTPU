@@ -39,7 +39,7 @@
                     <lvc:Axis Title="Время, мс" FontSize="15" Unit="1" MinValue="{Binding XMin, Mode=OneWay}" MaxValue="{Binding XMax, Mode=OneWay}"/>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="Напряжение, В" MaxValue="14" MinValue="-14" FontSize="15" Unit="1"/>
+                    <lvc:Axis Title="Напряжение, В" MaxValue="50" MinValue="-10" FontSize="15" Unit="1"/>
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
             <Slider Grid.Row="1" Visibility="{Binding IsScrollVisible, Converter={StaticResource SliderVisibility}}" Minimum="0" Maximum="{Binding MaxStartTime}" Value="{Binding StartPoint, Mode=OneWayToSource}" Margin="15 0">
