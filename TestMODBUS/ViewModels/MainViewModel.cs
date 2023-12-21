@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.ComponentModel;
 using TestMODBUS.Commands;
 using TestMODBUS.Exceptions;
 using TestMODBUS.Models;
@@ -87,30 +88,24 @@ namespace TestMODBUS.ViewModels
         private void StartCommandHandler()
         {
             IsScrollVisible = false; //Во время считывания данных пользователь не должен скроллить график
-            chart.StartDrawing();
 
-            bool isStarted = true; //Если не удалось открыть порт, мы должны отменить предыдущие действия
+            //bool isStarted = true; //Если не удалось открыть порт, мы должны отменить предыдущие действия
 
             try
             {
                 portListener.StartListen(MeasureDelay);
+                chart.StartDrawing();
             }
             catch (NoPortAvailableException ex)
             {
                 ErrorMessageBox.Show(ex.Message);
-                isStarted = false;
+                //isStarted = false;
             }
             catch (ChosenPortUnavailableException ex)
             {
                 ListAvailablePorts.UpdateAvailablePortList();
                 ErrorMessageBox.Show(ex.Message);
-                isStarted = false;
-            }
-
-            if(!isStarted)
-            {
-                isScrollVisible = false;
-                chart.StopDrawing();
+                //isStarted = false;
             }
         }
         #endregion
@@ -125,6 +120,7 @@ namespace TestMODBUS.ViewModels
             IsScrollVisible = true;
             portListener.StopListen();
             chart.StopDrawing();
+            chart.PutAllDataToChart();
         }
         #endregion
 
@@ -175,6 +171,27 @@ namespace TestMODBUS.ViewModels
 
         #endregion
 
+        #region Events
+
+        public void WindowClosing(object sender, CancelEventArgs e)
+        {
+            portListener.StopListen();
+            chart.StopDrawing();
+        }
+
+        #region On Port Closed By Error
+
+        public void OnPortErrorClosedByError()
+        {
+            ErrorMessageBox.Show("Возникли проблемы с портом. Проверьте соединение");
+            chart.StopDrawing();
+            chart.PutAllDataToChart();
+        }
+
+        #endregion
+
+        #endregion
+
         public MainViewModel()
         {
             //Инициализируем объекты
@@ -182,7 +199,7 @@ namespace TestMODBUS.ViewModels
             data = new Data();
 
             var dataConnector = new DataConnector(data);
-            portListener = new PortListener(port, dataConnector);
+            portListener = new PortListener(port, dataConnector, OnPortErrorClosedByError);
             chart = new ChartModel(data);
             
             //Иницилизируем команды

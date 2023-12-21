@@ -34,7 +34,7 @@ namespace TestMODBUS.Models.Data
                 
                 string ChannelDataString = BitConverter.ToString(channelData).Replace("-", ""); //Переводим байты в hex и в строку
 
-                if (channel == 0) //канал тока
+                if (channel == 0 || channel == 1) //каналы тока
                     return ModBusValueConverter.ConvertHexToAmperValue(ChannelDataString);
                 if (channel == 6) //Канал напряжения
                     return ModBusValueConverter.ConvertHexToVoltValue(ChannelDataString);

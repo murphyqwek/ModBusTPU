@@ -145,10 +145,6 @@ namespace TestMODBUS.ViewModels
         public void StopDrawing() 
         { 
             IsDrawing = false;
-            PutAllDataToChart();
-            XMin = 0;
-            XMax = MaxTimeWidth;
-            OnPropertyChanged(nameof(MaxStartTime));
         }
 
         //Обновляет видимое "окно" во время считывания данных
@@ -161,9 +157,17 @@ namespace TestMODBUS.ViewModels
             AddWindowPointsToChart(leftEdge, rightEdge);
         }
 
+        //Загружает все данные в Chart
         public void PutAllDataToChart()
         {
+            XMin = 0;
+            XMax = MaxTimeWidth;
+            OnPropertyChanged(nameof(MaxStartTime));
+
             int lastPointIndex = _dataStorage.GetChannelLastPointIndex();
+
+            if (lastPointIndex == 0)
+                return;
 
             AddWindowPointsToChart(0, lastPointIndex);
         }

@@ -22,15 +22,20 @@ namespace TestMODBUS.Models.Port
         private ObservablePort _port = new ObservablePort();
         private Thread listenningThread;
         private DataConnector _connector;
+        private Action stopByErrorAction; //Событие, когда порт закрывается из-за System.IO Exception
 
-        public PortListener(ObservablePort Port, DataConnector Connector)
+        public PortListener(ObservablePort Port, DataConnector Connector, Action StopByErrorAction)
         {
-            if(Port == null)
+            if (Port == null)
                 throw new ArgumentNullException(nameof(Port));
             
             if(Connector == null)
                 throw new ArgumentNullException(nameof(Connector));
 
+            if (StopByErrorAction == null)
+                throw new ArgumentException(nameof(StopByErrorAction));
+
+            stopByErrorAction = StopByErrorAction;
             _port = Port;
             _connector = Connector;
         }
@@ -57,12 +62,12 @@ namespace TestMODBUS.Models.Port
 
         private void Listen(ObservablePort Port, DataConnector Connector, int delay)
         {
-            if (delay <= 100)
-                throw new ArgumentException("Delay must be more than 50 milliseconds");
+            const int measureTime = 200; //Это время, за котрое программа считает все данные со всех каналов. Пока подбирается вручную
+            if (delay < measureTime + 100)
+                throw new ArgumentException("Delay is too short");
 
             Stopwatch timer = new Stopwatch();
             timer.Start();
-            const int measureTime = 50; //Это время, за котрое программа считает все данные со всех каналов. Пока подбирается вручную
             delay = delay - measureTime; //Таким образом мы учитываем время на считывания, и промежутки измерения будут примерно такими же, какими их задал пользователь
 
             while (Port.IsPortOpen)
@@ -88,9 +93,9 @@ namespace TestMODBUS.Models.Port
                 }
                 catch(System.IO.IOException)
                 {
-                    ErrorMessageBox.Show("Возникли проблемы с портом. Проверьте соединение");
                     if (_port != null)
                         _port.Close();
+                    stopByErrorAction?.Invoke();
                     break;
                 }
             }
