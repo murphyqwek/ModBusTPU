@@ -29,17 +29,15 @@ namespace TestMODBUS.Models.Data
                 byte[] channelData = new byte[2];
                 channelData[0] = data[3]; //Вытаскиваем из всей команды байты с данными
                 channelData[1] = data[4];
-
-
                 
                 string ChannelDataString = BitConverter.ToString(channelData).Replace("-", ""); //Переводим байты в hex и в строку
 
-                if (channel == 0 || channel == 1) //каналы тока
+                if (channel == 0 || channel == 1 || channel == 2 || channel == 3) //Каналы тока
                     return ModBusValueConverter.ConvertHexToAmperValue(ChannelDataString);
-                if (channel == 6) //Канал напряжения
+                if (channel == 5 || channel == 6 || channel == 7) //Каналы напряжения
                     return ModBusValueConverter.ConvertHexToVoltValue(ChannelDataString);
 
-                //Не используемые каналы
+                //Неиспользуемые каналы
                 return ModBusValueConverter.ConvertFromHexToDoubleFromChannelData(ChannelDataString);
             }
             catch
