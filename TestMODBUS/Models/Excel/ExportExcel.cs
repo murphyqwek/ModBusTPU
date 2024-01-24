@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Shapes;
 using TestMODBUS.Exceptions;
 using TestMODBUS.Models.Data;
+using TestMODBUS.Models.Port;
 
 namespace TestMODBUS.Models.Excel
 {
@@ -81,6 +82,16 @@ namespace TestMODBUS.Models.Excel
             return "CH_" + ChannelIndex.ToString();
         }
 
+        private static string GetAxisYName(int ChannelIndex)
+        {
+            if (ChannelTypeList.TokChannels.Contains(ChannelIndex))
+                return "Сила тока, А";
+            if (ChannelTypeList.VoltChannels.Contains(ChannelIndex))
+                return "Напряжение, В";
+
+            return "";
+        }
+
         //Создаёт график данных с канала
         private static void CreateChart(ExcelWorksheet graphicSheet, ExcelWorksheet dataSheet, int ChannelIndex, int DataLength)
         {
@@ -103,7 +114,7 @@ namespace TestMODBUS.Models.Excel
             graphic.XAxis.AddGridlines();
             graphic.XAxis.Title.Text = "Время, мс";
 
-            graphic.YAxis.Title.Text = "Напряжение, В";
+            graphic.YAxis.Title.Text = GetAxisYName(ChannelIndex);
             graphic.YAxis.Title.TextBody.VerticalText = OfficeOpenXml.Drawing.eTextVerticalType.Vertical270;
 
             graphic.Title.Text = ChartTitle;

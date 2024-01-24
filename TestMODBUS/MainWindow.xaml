@@ -8,23 +8,40 @@
         xmlns:conv="clr-namespace:TestMODBUS.Converter"
         xmlns:local="clr-namespace:TestMODBUS" xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="700">
+        Title="MainWindow" Height="450" Width="900">
 
     <Window.Resources>
         <conv:SliderEnabledConverter x:Key="SliderEnabledConverter" />
         <conv:ZoomBoolConverter x:Key="ZoomBoolConverter" />
         <conv:ScrollChartVisibilityConverter x:Key="SliderVisibility" />
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11.0"/>
+        </Style>
     </Window.Resources>
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition MinHeight="30" MaxHeight="40"/>
             <RowDefinition />
             <RowDefinition Height="120" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Border Grid.Row="0" BorderBrush="#d3d3d3" BorderThickness="0 0 0 2">
+            <StackPanel DataContext="{Binding FileNameViewModel}" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0">
+                <TextBlock Text="Эксперимент: "/>
+                <TextBox Text="{Binding Serie, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
+                <TextBlock Text="Ток 1: "/>
+                <TextBox Text="{Binding Tok1, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
+                <TextBlock Text="Ток 2: "/>
+                <TextBox Text="{Binding Tok2, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
+                <TextBlock Text="Время: "/>
+                <TextBox Text="{Binding Time, Mode=TwoWay}" MinWidth="100" Margin="5 0 5 0"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="25"/>
@@ -58,7 +75,7 @@
                 </Slider.Style>
             </Slider>
         </Grid>
-        <Border Grid.Row="1" BorderBrush="LightGray" BorderThickness="1">
+        <Border Grid.Row="2" BorderBrush="LightGray" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50*"/>

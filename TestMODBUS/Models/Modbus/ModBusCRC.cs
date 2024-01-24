@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Models.ModbusCommands
+namespace TestMODBUS.Models.Modbus
 {
     //Класс для подсчёта контрольной суммы
 

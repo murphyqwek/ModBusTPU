@@ -33,6 +33,8 @@ namespace TestMODBUS.ViewModels
         public bool IsDrawing => chart.IsDrawing;
         public int MaxStartTime => chart.MaxStartTime;
 
+        public FileNameViewModel FileNameViewModel { get; }
+
         public bool IsScrollVisible 
         {
             get => isScrollVisible;
@@ -147,7 +149,7 @@ namespace TestMODBUS.ViewModels
 
         private void ExportDataCommandHandler()
         {
-            string path = OpenFileHelper.GetSaveFile();
+            string path = OpenFileHelper.GetSaveFile(FileNameViewModel.GetFileName());
             if (path == null)
                 return;
 
@@ -201,6 +203,9 @@ namespace TestMODBUS.ViewModels
             var dataConnector = new DataConnector(data);
             portListener = new PortListener(port, dataConnector, OnPortErrorClosedByError);
             chart = new ChartModel(data);
+
+            //Создаем класс, который будет хранить имя текущего эксперимента
+            FileNameViewModel = new FileNameViewModel();
             
             //Иницилизируем команды
             StartCommand = new RemoteCommand(StartCommandHandler);

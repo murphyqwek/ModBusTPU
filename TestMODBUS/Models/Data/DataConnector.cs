@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.ModbusCommands;
+using TestMODBUS.Models.Modbus;
+using TestMODBUS.Models.Port;
 
 namespace TestMODBUS.Models.Data
 {
@@ -32,9 +33,9 @@ namespace TestMODBUS.Models.Data
                 
                 string ChannelDataString = BitConverter.ToString(channelData).Replace("-", ""); //Переводим байты в hex и в строку
 
-                if (channel == 0 || channel == 1 || channel == 2 || channel == 3) //Каналы тока
+                if (ChannelTypeList.TokChannels.Contains(channel)) //Каналы тока
                     return ModBusValueConverter.ConvertHexToAmperValue(ChannelDataString);
-                if (channel == 5 || channel == 6 || channel == 7) //Каналы напряжения
+                if (ChannelTypeList.VoltChannels.Contains(channel)) //Каналы напряжения
                     return ModBusValueConverter.ConvertHexToVoltValue(ChannelDataString);
 
                 //Неиспользуемые каналы

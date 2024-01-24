@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TestMODBUS.Models.Data;
 
-namespace TestMODBUS.Models.ModbusCommands
+namespace TestMODBUS.Models.Modbus
 {
     public static class ModBusValueConverter
     {

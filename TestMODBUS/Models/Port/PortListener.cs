@@ -12,7 +12,7 @@ using System.Windows;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.INotifyPropertyBased;
 using TestMODBUS.Models.MessageBoxes;
-using TestMODBUS.Models.ModbusCommands;
+using TestMODBUS.Models.Modbus;
 
 namespace TestMODBUS.Models.Port
 {

@@ -128,14 +128,16 @@
     <Compile Include="Models\MessageBoxes\ErrorMessageBox.cs" />
     <Compile Include="Models\MessageBoxes\RequestYesNoMessageBox.cs" />
     <Compile Include="Models\MessageBoxes\SuccessMessageBox.cs" />
-    <Compile Include="Models\ModbusCommands\ModBusCommandsList.cs" />
-    <Compile Include="Models\ModbusCommands\ModBusCRC.cs" />
-    <Compile Include="Models\ModbusCommands\ModBusValueConverter.cs" />
+    <Compile Include="Models\Modbus\ModBusCommandsList.cs" />
+    <Compile Include="Models\Modbus\ModBusCRC.cs" />
+    <Compile Include="Models\Modbus\ModBusValueConverter.cs" />
     <Compile Include="Models\OpenFileHelper.cs" />
     <Compile Include="Models\Port\ListAvailableSpeeds.cs" />
     <Compile Include="Models\Port\ObservablePort.cs" />
     <Compile Include="Models\Port\PortListener.cs" />
     <Compile Include="Models\Chart\ChartModel.cs" />
+    <Compile Include="Models\Port\ChannelTypeList.cs" />
+    <Compile Include="ViewModels\FileNameViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
