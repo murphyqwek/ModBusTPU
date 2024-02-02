@@ -19,7 +19,21 @@ namespace TestMODBUS.Services
             return $@"{MainFolder}\{AppFolder}\{FolderName}";
         }
 
-        public static string GetField(string FolderName, string FieldName, bool CreateIfNotExist = false)
+        private static RegistryValueKind GetValueKind(object Value)
+        {
+            if(Value == null)
+                return RegistryValueKind.Unknown;
+
+            if(Value is string)
+                return RegistryValueKind.String;
+            if (Value is int || Value is float)
+                return RegistryValueKind.DWord;
+            if(Value is long || Value is double)
+                return RegistryValueKind.QWord;
+            return RegistryValueKind.None;
+        }
+
+        public static object GetField(string FolderName, string FieldName, bool CreateIfNotExist = false)
         {
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(GetFolderPath(FolderName)))
             {
@@ -28,10 +42,7 @@ namespace TestMODBUS.Services
                 if(Value == null && CreateIfNotExist)
                     SetField(FolderName, FieldName, null);
 
-                if (Value != null)
-                    return Value.ToString();
-                else 
-                    return string.Empty;
+                return Value;
             }
         }
 
@@ -39,7 +50,7 @@ namespace TestMODBUS.Services
         {
             using(RegistryKey key = Registry.CurrentUser.CreateSubKey(GetFolderPath(FolderName)))
             {
-                key?.SetValue(FieldName, Value);
+                key?.SetValue(FieldName, Value, GetValueKind(Value));
             }
         }
     }
