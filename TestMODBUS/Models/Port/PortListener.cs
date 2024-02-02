@@ -14,7 +14,7 @@ using TestMODBUS.Models.INotifyPropertyBased;
 using TestMODBUS.Models.MessageBoxes;
 using TestMODBUS.Models.Modbus;
 
-namespace TestMODBUS.Models.Channels
+namespace TestMODBUS.Models.Services
 {
     //Класс, который считывает данные с порт и сохраняет черз DataConnector в хранилище данных новые данные
     public class PortListener : INotifyBase
@@ -43,7 +43,7 @@ namespace TestMODBUS.Models.Channels
         public void StartListen(int delay)
         {
             if(_port == null)
-                throw new ArgumentNullException(nameof(Channels));
+                throw new ArgumentNullException(nameof(Services));
 
             _port.Open();
 

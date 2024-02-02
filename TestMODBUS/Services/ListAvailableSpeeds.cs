@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Models.Channels
+namespace TestMODBUS.Models.Services
 {
     //Дата-класс для хранения списка доступных скоростей порта
     class ListAvailableSpeeds

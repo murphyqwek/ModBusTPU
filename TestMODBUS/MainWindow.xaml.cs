@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TestMODBUS.Models.Excel;
-using TestMODBUS.Models.Channels;
+using TestMODBUS.Models.Services;
 using TestMODBUS.ViewModels;
 
 namespace TestMODBUS

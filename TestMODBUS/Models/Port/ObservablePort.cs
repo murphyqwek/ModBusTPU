@@ -9,7 +9,7 @@ using TestMODBUS.Exceptions;
 using TestMODBUS.Models.INotifyPropertyBased;
 using TestMODBUS.Models.MessageBoxes;
 
-namespace TestMODBUS.Models.Channels
+namespace TestMODBUS.Models.Services
 {
 
     //Обёртка стандартного класса SerialPort

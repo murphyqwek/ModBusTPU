@@ -9,7 +9,7 @@ using TestMODBUS.Models.Data;
 using TestMODBUS.Models.INotifyPropertyBased;
 using TestMODBUS.Models.Modbus;
 
-namespace TestMODBUS.Models.Channels
+namespace TestMODBUS.Models.Services
 {
     //Тестовый класс для имитации работы настоящего прибора
     public class TestPortListener : INotifyBase

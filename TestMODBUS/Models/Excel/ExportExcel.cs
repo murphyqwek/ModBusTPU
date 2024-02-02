@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Shapes;
 using TestMODBUS.Exceptions;
 using TestMODBUS.Models.Data;
-using TestMODBUS.Models.Channels;
+using TestMODBUS.Models.Services;
 
 namespace TestMODBUS.Models.Excel
 {

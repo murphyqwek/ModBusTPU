@@ -10,7 +10,7 @@ using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using TestMODBUS.Models.Channels;
+using TestMODBUS.Models.Services;
 using TestMODBUS.Models.Chart;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.INotifyPropertyBased;

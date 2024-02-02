@@ -17,7 +17,7 @@ using TestMODBUS.Models;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.Excel;
 using TestMODBUS.Models.MessageBoxes;
-using TestMODBUS.Models.Channels;
+using TestMODBUS.Models.Services;
 using TestMODBUS.ViewModels.Base;
 using System.Runtime.InteropServices;
 using System.Windows;
