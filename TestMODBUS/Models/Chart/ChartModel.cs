@@ -268,7 +268,7 @@ namespace TestMODBUS.ViewModels
             double MaxTime = _dataStorage.GetLastTime();
             if (newStartPoint < 0)
                 newStartPoint = 0;
-            if (newStartPoint + MaxTimeWidth > MaxTime && MaxTime >= MaxTimeWidth)
+            if (newStartPoint + MaxTimeWidth >= MaxTime && MaxTime >= MaxTimeWidth)
                 newStartPoint = MaxTime - MaxTimeWidth;
 
             //Границы отображения "окна"
