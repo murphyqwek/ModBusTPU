@@ -13,11 +13,12 @@ using TestMODBUS.Models.Data;
 using TestMODBUS.Models.INotifyPropertyBased;
 using TestMODBUS.Models.MessageBoxes;
 using TestMODBUS.Models.Modbus;
+using TestMODBUS.Models.Port.Interfaces;
 
 namespace TestMODBUS.Models.Services
 {
     //Класс, который считывает данные с порт и сохраняет черз DataConnector в хранилище данных новые данные
-    public class PortListener : INotifyBase
+    public class PortListener : INotifyBase, IPortListener
     {
         private ObservablePort _port = new ObservablePort();
         private Thread listenningThread;

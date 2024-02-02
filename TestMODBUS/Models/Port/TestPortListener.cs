@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.INotifyPropertyBased;
 using TestMODBUS.Models.Modbus;
+using TestMODBUS.Models.Port.Interfaces;
 
 namespace TestMODBUS.Models.Services
 {
     //Тестовый класс для имитации работы настоящего прибора
-    public class TestPortListener : INotifyBase
+    public class TestPortListener : INotifyBase, IPortListener
     {
         private Thread _listenningThread;
         private bool _isListenning = false;

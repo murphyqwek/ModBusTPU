@@ -143,12 +143,15 @@
     <Compile Include="Models\Modbus\ModBusCRC.cs" />
     <Compile Include="Models\Modbus\ModBusValueConverter.cs" />
     <Compile Include="Models\OpenFileHelper.cs" />
-    <Compile Include="Models\Port\ListAvailableSpeeds.cs" />
+    <Compile Include="Models\Port\Interfaces\IPortListener.cs" />
+    <Compile Include="Services\ListAvailableSpeeds.cs" />
     <Compile Include="Models\Port\ObservablePort.cs" />
     <Compile Include="Models\Port\PortListener.cs" />
     <Compile Include="Models\Chart\ChartModel.cs" />
     <Compile Include="Models\Channels\ChannelTypeList.cs" />
     <Compile Include="Models\Port\TestPortListener.cs" />
+    <Compile Include="Services\RegisrtyService.cs" />
+    <Compile Include="Services\Settings.cs" />
     <Compile Include="UserControls\ChartContol.xaml.cs">
       <DependentUpon>ChartContol.xaml</DependentUpon>
     </Compile>
@@ -170,7 +173,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\INotifyPropertyBased\INotifyBase.cs" />
-    <Compile Include="Models\Port\ListAvailablePorts.cs" />
+    <Compile Include="Services\ListAvailablePorts.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

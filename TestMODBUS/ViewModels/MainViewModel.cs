@@ -21,6 +21,7 @@ using TestMODBUS.Models.Services;
 using TestMODBUS.ViewModels.Base;
 using System.Runtime.InteropServices;
 using System.Windows;
+using TestMODBUS.Models.Port.Interfaces;
 
 namespace TestMODBUS.ViewModels
 {
@@ -43,6 +44,7 @@ namespace TestMODBUS.ViewModels
 
         public FileNameViewModel FileNameViewModel { get; }
 
+        /*
         public bool IsScrollVisible 
         {
             get => isScrollVisible;
@@ -60,6 +62,7 @@ namespace TestMODBUS.ViewModels
                     chart1.ChangeWindowStartPoint(value);
             }
         }
+        */
 
         public string PortName
         {
@@ -85,16 +88,22 @@ namespace TestMODBUS.ViewModels
         { 
             get => _debug; 
             set 
-            { 
-                if(!chart1.IsDrawing)
-                    _debug = value;
+            {
+                if (chart1.IsDrawing)
+                    return;
+
+                _debug = value;
+                var _dataConnector = new DataConnector(_data);
+                if (_debug)
+                    _portListener = new TestPortListener(_dataConnector);
+                else
+                    _portListener = new PortListener(port, _dataConnector, StopCommandHandler);
             } 
         }
         
         #endregion
 
-        private PortListener portListener;
-        private TestPortListener testPortListener;
+        private IPortListener _portListener;
         private ObservablePort port;
         private Data _data;
         private ChartModel chart1;
@@ -114,18 +123,11 @@ namespace TestMODBUS.ViewModels
 
         private void StartCommandHandler()
         {
-            IsScrollVisible = false; //Во время считывания данных пользователь не должен скроллить график
-
             try
             {
-                if (!Debug)
-                    portListener.StartListen(MeasureDelay);
-                else
-                {
-                    testPortListener.StartListen(MeasureDelay);
-                    _isWorking = true;
-                    OnPropertyChanged(nameof(IsPortOpen));
-                }
+                _portListener.StartListen(MeasureDelay);
+                _isWorking = true;
+                OnPropertyChanged(nameof(IsPortOpen));
                 chart1.StartDrawing();
                 chart2.StartDrawing();
                 chart3.StartDrawing();
@@ -150,15 +152,9 @@ namespace TestMODBUS.ViewModels
 
         private void StopCommandHandler()
         {
-            IsScrollVisible = true;
-            if (!Debug)
-                portListener.StopListen();
-            else
-            {
-                testPortListener.StopListen();
-                _isWorking = false;
-                OnPropertyChanged(nameof(IsPortOpen));
-            }
+            _portListener.StopListen();
+            _isWorking = false;
+            OnPropertyChanged(nameof(IsPortOpen));
             chart1.StopDrawingAndMoveToStart();
             chart2.StopDrawingAndMoveToStart();
             chart3.StopDrawingAndMoveToStart();
@@ -173,10 +169,9 @@ namespace TestMODBUS.ViewModels
 
         private void ClearCommandHandler()
         {
-            if (RequestYesNoMessageBox.Show("Вы уверены, что хотите очистить график?") != System.Windows.MessageBoxResult.Yes)
+            if (RequestYesNoMessageBox.Show("Вы уверены, что хотите очистить график?") != MessageBoxResult.Yes)
                 return;
 
-            IsScrollVisible = false;
             _data.Clear();
         }
 
@@ -196,28 +191,6 @@ namespace TestMODBUS.ViewModels
                 MessageBox.Show("Вы не заполнили поле «Название эксперимента»", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
-            /*
-            string path = OpenFileHelper.GetSaveFile(name);
-            if (path == null)
-                return;
-            */
-
-            /*
-            try
-            {
-                ExportExcel.SaveData(data, path);
-                if(RequestYesNoMessageBox.Show("Отчёт сохранён. Открыть папку с отчётом?", "Успешно", System.Windows.MessageBoxImage.Information) == System.Windows.MessageBoxResult.Yes)
-                {
-                    string folder = Path.GetDirectoryName(path);
-                    Process.Start("explorer", folder);
-                }
-
-            }
-            catch(Exception e)
-            {
-                ErrorMessageBox.Show(e.Message);
-            } */
-
             ExportWindow exportWindow = new ExportWindow(_data, name);
             exportWindow.ShowDialog();
         }
@@ -230,10 +203,8 @@ namespace TestMODBUS.ViewModels
 
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            if (portListener != null)
-                portListener.StopListen();
-            if(testPortListener != null)
-                testPortListener.StopListen();
+            if (_portListener != null)
+                _portListener.StopListen();
             chart1.StopDrawing();
             chart2.StopDrawing();
             chart3.StopDrawing();
@@ -258,9 +229,8 @@ namespace TestMODBUS.ViewModels
             port = new ObservablePort();
             _data = new Data();
 
-            var dataConnector = new DataConnector(_data);
-            portListener = new PortListener(port, dataConnector, OnPortErrorClosedByError);
-            testPortListener = new TestPortListener(dataConnector);
+            var _dataConnector = new DataConnector(_data);
+            _portListener = new PortListener(port, _dataConnector, OnPortErrorClosedByError);
             chart1 = new ChartModel(_data, new int[] { 0 }, "Ток 1");
             chart2 = new ChartModel(_data, new int[] { 1 }, "Ток 2");
             chart3 = new ChartModel(_data, new int[] { 6 }, "Напряжение");
