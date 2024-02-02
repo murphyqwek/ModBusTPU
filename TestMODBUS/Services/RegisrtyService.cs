@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static OfficeOpenXml.ExcelErrorValue;
 
 namespace TestMODBUS.Services
 {
@@ -46,16 +45,6 @@ namespace TestMODBUS.Services
                 return Value;
             }
         }
-
-        /*
-        private static void CreateField(string FolderName, string FieldName)
-        {
-            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(GetFolderPath(FolderName)))
-            {
-                key?.CreateSubKey(FieldName);
-            }
-        }
-        */
 
         public static void SetField(string FolderName, string FieldName, object Value)
         {
