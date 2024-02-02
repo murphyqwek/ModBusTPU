@@ -152,6 +152,9 @@
     <Compile Include="Models\Port\TestPortListener.cs" />
     <Compile Include="Services\RegisrtyService.cs" />
     <Compile Include="Services\Settings.cs" />
+    <Compile Include="UserControls\ChannelExportSettingElement.xaml.cs">
+      <DependentUpon>ChannelExportSettingElement.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ChartContol.xaml.cs">
       <DependentUpon>ChartContol.xaml</DependentUpon>
     </Compile>
@@ -179,6 +182,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\ChannelExportSettingElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\ChartContol.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

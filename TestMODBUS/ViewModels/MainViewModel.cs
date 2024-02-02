@@ -1,25 +1,13 @@
-﻿using LiveCharts;
-using LiveCharts.Defaults;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.ComponentModel;
 using TestMODBUS.Commands;
 using TestMODBUS.Exceptions;
-using TestMODBUS.Models;
 using TestMODBUS.Models.Data;
-using TestMODBUS.Models.Excel;
 using TestMODBUS.Models.MessageBoxes;
 using TestMODBUS.Models.Services;
 using TestMODBUS.ViewModels.Base;
-using System.Runtime.InteropServices;
 using System.Windows;
 using TestMODBUS.Models.Port.Interfaces;
 
@@ -43,26 +31,6 @@ namespace TestMODBUS.ViewModels
         public int MaxStartTime => chart1.MaxWindowTime;
 
         public FileNameViewModel FileNameViewModel { get; }
-
-        /*
-        public bool IsScrollVisible 
-        {
-            get => isScrollVisible;
-            private set
-            {
-                isScrollVisible = value;
-                OnPropertyChanged();
-            }
-        }
-        public int StartPoint
-        {
-            set
-            {
-                if(!IsDrawing)
-                    chart1.ChangeWindowStartPoint(value);
-            }
-        }
-        */
 
         public string PortName
         {
@@ -89,7 +57,7 @@ namespace TestMODBUS.ViewModels
             get => _debug; 
             set 
             {
-                if (chart1.IsDrawing)
+                if (IsDrawing)
                     return;
 
                 _debug = value;
@@ -110,7 +78,6 @@ namespace TestMODBUS.ViewModels
         private ChartModel chart2;
         private ChartModel chart3;
         private ChartModel chart4;
-        private bool isScrollVisible = false; //Определяет видимость ScrollBar, который сдвигает график данных
         private bool _debug = false;
         private bool _isWorking = false;
 
@@ -169,6 +136,13 @@ namespace TestMODBUS.ViewModels
 
         private void ClearCommandHandler()
         {
+            if (IsDrawing)
+            {
+                ErrorMessageBox.Show("Остановите считывание порта прежде чем очистить графики");
+                return;
+            }
+
+
             if (RequestYesNoMessageBox.Show("Вы уверены, что хотите очистить график?") != MessageBoxResult.Yes)
                 return;
 
@@ -249,7 +223,6 @@ namespace TestMODBUS.ViewModels
             //Подписиваем объекты на OnPropertyChanged других объектов
             ListAvailablePorts.AvailablePorts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Ports));
             port.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
-            port.PropertyChanged += (s, e) => OnPropertyChanged(nameof(isScrollVisible));
         }
     }
 }

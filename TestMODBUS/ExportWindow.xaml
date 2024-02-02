@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestMODBUS"
+        xmlns:uc="clr-namespace:TestMODBUS.UserControls"
         mc:Ignorable="d"
         Title="Экспорт данных" Height="300" Width="400">
     <Grid>
@@ -20,11 +21,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="5 0 0 5">
-                        <TextBlock Text="{Binding StringFormat=CH {0}, Path=ChannelNumber}" Margin="0 0 10 0"/>
-                        <TextBox Text="{Binding Label}" Width="100" Margin="0 0 10 0"/>
-                        <CheckBox IsChecked="{Binding IsChosen}" />
-                    </StackPanel>
+                    <uc:ChannelExportSettingElement Margin="5"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
