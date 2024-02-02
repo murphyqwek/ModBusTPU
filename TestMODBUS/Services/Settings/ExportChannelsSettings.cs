@@ -3,14 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
+using TestMODBUS.Models.Data;
 
-namespace TestMODBUS.Services
+namespace TestMODBUS.Services.Settings
 {
-    public static class Settings
+    public static class ExportChannelsSettings
     {
+        private static string GetChannelLabelFieldName(int ChannelNumber) => $"CH_{ChannelNumber}";
+        private static string GetChannelIsChosenFieldName(int ChannelNumber) => $"CH_{ChannelNumber} IsChosen";
+
+        public static void SaveChannels(IList<ChannelModel> channels)
+        {
+            foreach (var channel in channels)
+            {
+                SaveChannel(channel.ChannelNumber, channel.Label, channel.IsChosen);
+            }
+        }
+
+        public static void SaveChannel(int ChannelNumber, string Label, bool IsChosen)
+        {
+            RegisrtyService.SetField(RegisrtyService.ChannelFolder, GetChannelLabelFieldName(ChannelNumber), Label);
+            RegisrtyService.SetField(RegisrtyService.ChannelFolder, GetChannelIsChosenFieldName(ChannelNumber), IsChosen);
+        }
+
         public static string GetChannelLabel(int ChannelNumber)
         {
-            string ChannelField = $"CH_{ChannelNumber}";
+            string ChannelField = GetChannelLabelFieldName(ChannelNumber);
             string ChannelName = RegisrtyService.GetField(RegisrtyService.ChannelFolder, ChannelField, true).ToString();
 
             if(ChannelName == null)
@@ -24,7 +43,7 @@ namespace TestMODBUS.Services
 
         public static bool GetChannelIsChosen(int ChannelNumber)
         {
-            string ChannelField = $"CH_{ChannelNumber} IsChosen";
+            string ChannelField = GetChannelIsChosenFieldName(ChannelNumber);
             bool IsChannelChosen = false;
             object IsChannelChosenValue = RegisrtyService.GetField(RegisrtyService.ChannelFolder, ChannelField, true);
 
