@@ -6,21 +6,20 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:vm="clr-namespace:TestMODBUS.ViewModels"
         xmlns:conv="clr-namespace:TestMODBUS.Converter"
-        xmlns:local="clr-namespace:TestMODBUS" xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:TestMODBUS.UserControls" xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="900">
+        WindowState="Maximized"
+        Title="ModBus" Height="450" Width="900">
 
     <Window.Resources>
         <conv:SliderEnabledConverter x:Key="SliderEnabledConverter" />
         <conv:ZoomBoolConverter x:Key="ZoomBoolConverter" />
         <conv:ScrollChartVisibilityConverter x:Key="SliderVisibility" />
+        <conv:ChartModelConverter x:Key="ChartModelConverter"/>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="11.0"/>
         </Style>
     </Window.Resources>
-    <Window.DataContext>
-        <vm:MainViewModel />
-    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="30" MaxHeight="40"/>
@@ -29,52 +28,39 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" BorderBrush="#d3d3d3" BorderThickness="0 0 0 2">
-            <StackPanel DataContext="{Binding FileNameViewModel}" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0">
-                <TextBlock Text="Эксперимент: "/>
-                <TextBox Text="{Binding Serie, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
-                <TextBlock Text="Ток 1: "/>
-                <TextBox Text="{Binding Tok1, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
-                <TextBlock Text="Ток 2: "/>
-                <TextBox Text="{Binding Tok2, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
-                <TextBlock Text="Время: "/>
-                <TextBox Text="{Binding Time, Mode=TwoWay}" MinWidth="100" Margin="5 0 5 0"/>
-            </StackPanel>
+            <Grid>
+                <StackPanel DataContext="{Binding FileNameViewModel}" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0">
+                    <TextBlock Text="Эксперимент: "/>
+                    <TextBox Text="{Binding Experiment, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
+                    <TextBlock Text="Ток 1: "/>
+                    <TextBox Text="{Binding Tok1, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
+                    <TextBlock Text="Ток 2: "/>
+                    <TextBox Text="{Binding Tok2, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
+                    <TextBlock Text="Время: "/>
+                    <TextBox Text="{Binding Time, Mode=TwoWay}" MinWidth="100" Margin="5 0 30 0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 10 0">
+                    <TextBlock Text="Test Mode" Margin="0 0 5 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <CheckBox IsChecked="{Binding Debug, Mode=TwoWay}"/>
+                </StackPanel>
+            </Grid>
         </Border>
 
         <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="25"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <lvc:CartesianChart Grid.Row="0" DisableAnimations="True" Hoverable="False" DataTooltip="{x:Null}" Series="{Binding Series}" Zoom="{Binding IsDrawing, Converter={StaticResource SliderEnabledConverter}}" LegendLocation="Top">
-                <lvc:CartesianChart.CacheMode>
-                    <BitmapCache EnableClearType="False" 
-                       RenderAtScale="1"
-                       SnapsToDevicePixels="False" />
-                </lvc:CartesianChart.CacheMode>
-                <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Время, мс" FontSize="15" Unit="1" MinValue="{Binding XMin, Mode=OneWay}" MaxValue="{Binding XMax, Mode=OneWay}"/>
-                </lvc:CartesianChart.AxisX>
-                <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="Напряжение, В" MaxValue="220" MinValue="-10" FontSize="15" Unit="1"/>
-                </lvc:CartesianChart.AxisY>
-            </lvc:CartesianChart>
-            <Slider Grid.Row="1" Visibility="{Binding IsScrollVisible, Converter={StaticResource SliderVisibility}}" Minimum="0" Maximum="{Binding MaxStartTime}" Value="{Binding StartPoint, Mode=OneWayToSource}" Margin="15 0">
-                <Slider.Style>
-                    <Style TargetType="Slider">
-                        <Style.Triggers>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="Minimum" Value="0" />
-                                    <Condition Property="Maximum" Value="0" />
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </MultiTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Slider.Style>
-            </Slider>
+            <local:ChartContol Grid.Row="0" Grid.Column="0" DataContext="{Binding ChartTok1, Converter={StaticResource ChartModelConverter}}" />
+            <local:ChartContol Grid.Row="1" Grid.Column="0" DataContext="{Binding ChartTok2, Converter={StaticResource ChartModelConverter}}" />
+            <local:ChartContol Grid.Row="0" Grid.Column="1" DataContext="{Binding ChartTok3, Converter={StaticResource ChartModelConverter}}"/>
+            <local:ChartContol Grid.Row="1" Grid.Column="1" DataContext="{Binding ChartTok4, Converter={StaticResource ChartModelConverter}}" />
         </Grid>
+
         <Border Grid.Row="2" BorderBrush="LightGray" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -82,6 +68,9 @@
                     <ColumnDefinition Width="60*"/>
                 </Grid.ColumnDefinitions>
 
+                <Grid Grid.Row="1">
+
+                </Grid>
 
                 <GroupBox Grid.Column="0" Header="Порт" Margin="5">
                     <Grid>
@@ -123,7 +112,7 @@
                             <TextBlock Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat='Промежуток между измерениями: {0} мс.'}" Margin="5"/>
                             <Slider Name="DelaySlider" Margin="5 0" Value="{Binding MeasureDelay}" Minimum="300" Maximum="1500" IsSnapToTickEnabled="True" TickFrequency="100" IsEnabled="{Binding IsPortOpen, Converter={StaticResource SliderEnabledConverter}}"/>
                         </StackPanel>
-                        
+
                     </Grid>
                 </GroupBox>
 

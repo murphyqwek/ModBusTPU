@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Shapes;
 using TestMODBUS.Exceptions;
 using TestMODBUS.Models.Data;
-using TestMODBUS.Models.Port;
+using TestMODBUS.Models.Channels;
 
 namespace TestMODBUS.Models.Excel
 {
@@ -47,6 +47,37 @@ namespace TestMODBUS.Models.Excel
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
 
+        public static void SaveData(List<ChannelModel> Channels, string FilePath)
+        {
+            if (isFileOpen(FilePath))
+                throw new FileIsAlreadyOpenException(FilePath);
+
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                //Указываем метаданные Excel файла
+                excelPackage.Workbook.Properties.Created = DateTime.Now;
+
+                //Создаём лист с графиками и лист с данными с каналов
+                ExcelWorksheet graphicSheet = excelPackage.Workbook.Worksheets.Add("Графики");
+                ExcelWorksheet dataSheet = excelPackage.Workbook.Worksheets.Add("Данные с каналов");
+
+                int ChartIndex = 0;
+                foreach(var ChannelModel in Channels)
+                {
+                    if (!ChannelModel.IsChosen)
+                        continue;
+
+                    AddChannelDataColumn(dataSheet, ChannelModel.Data, ChannelModel.ChannelNumber, ChartIndex, ChannelModel.Label);
+                    CreateChart(graphicSheet, dataSheet, ChannelModel.ChannelNumber, ChannelModel.Data.Count - 1, ChannelModel.Label, ChartIndex);
+                    ChartIndex++;
+                }
+
+                //Сохраняем файл
+                FileInfo fi = new FileInfo(FilePath);
+                excelPackage.SaveAs(fi);
+            }
+        }
+
         public static void SaveData(Data.Data DataStorage, string FilePath)
         {
             if (isFileOpen(FilePath))
@@ -67,8 +98,8 @@ namespace TestMODBUS.Models.Excel
                 
                 for(int i = 0; i < DataStorage.ChannelsData.Count; i++)
                 {
-                    AddChannelDataColumn(dataSheet, DataStorage.GetChannelData(i), i);
-                    CreateChart(graphicSheet, dataSheet, i, DataStorage.GetChannelLastPointIndex());
+                    AddChannelDataColumn(dataSheet, DataStorage.GetChannelData(i), i, i, GetChannelTitle(i));
+                    CreateChart(graphicSheet, dataSheet, i, DataStorage.GetChannelLastPointIndex(), GetChannelTitle(i), i);
                 }
 
                 //Сохраняем файл
@@ -93,14 +124,13 @@ namespace TestMODBUS.Models.Excel
         }
 
         //Создаёт график данных с канала
-        private static void CreateChart(ExcelWorksheet graphicSheet, ExcelWorksheet dataSheet, int ChannelIndex, int DataLength)
+        private static void CreateChart(ExcelWorksheet graphicSheet, ExcelWorksheet dataSheet, int ChannelIndex, int DataLength, string Title, int ChartIndex)
         {
-            int DataColumn = ChannelIndex * 3 + 1;
+            int DataColumn = ChartIndex * 3 + 1;
             int DataLastRow = DataLength + 3;
-            int ChartColumn = ChannelIndex * 3 + 1;
-            string ChartTitle = GetChannelTitle(ChannelIndex);
+            int ChartColumn = ChartIndex * 3 + 1;
 
-            var graphic = graphicSheet.Drawings.AddLineChart(ChartTitle, eLineChartType.Line);
+            var graphic = graphicSheet.Drawings.AddLineChart(Title, eLineChartType.Line);
             graphic.SetSize(ChartWidth, ChartHeight);
             graphic.SetPosition(ChartColumn / 3 * ChartHeight, 0);
             graphic.StyleManager.SetChartStyle(ePresetChartStyle.LineChartStyle1, ePresetChartColors.ColorfulPalette1); //ePresetChartStyle.LineChartStyle1 - стиль графика
@@ -112,29 +142,29 @@ namespace TestMODBUS.Models.Excel
             graphic.Series.Add(dataRange, timeRange);
 
             graphic.XAxis.AddGridlines();
-            graphic.XAxis.Title.Text = "Время, мс";
+            graphic.XAxis.Title.Text = "Время, с";
 
             graphic.YAxis.Title.Text = GetAxisYName(ChannelIndex);
             graphic.YAxis.Title.TextBody.VerticalText = OfficeOpenXml.Drawing.eTextVerticalType.Vertical270;
 
-            graphic.Title.Text = ChartTitle;
-            graphic.Series[0].Header = ChartTitle;
+            graphic.Title.Text = Title;
+            graphic.Series[0].Header = Title;
             graphic.Legend.Position = eLegendPosition.TopRight;
 
             graphic.YAxis.Crosses = 0;
         }
 
         //Создаёт колонку с данными с канала
-        private static void AddChannelDataColumn(ExcelWorksheet dataSheet, ObservableCollection<Point> points, int ChannelIndex)
+        private static void AddChannelDataColumn(ExcelWorksheet dataSheet, Collection<Point> points, int ChannelIndex, int ChartIndex, string ColumnTitle)
         {
-            int column = ChannelIndex * 3 + 1;
+            int column = ChartIndex * 3 + 1;
 
-            dataSheet.Cells[2, column].Value = "Время, мс";
-            dataSheet.Cells[2, column + 1].Value = "Напряжение, В";
+            dataSheet.Cells[2, column].Value = "Время, с";
+            dataSheet.Cells[2, column + 1].Value = GetAxisYName(ChannelIndex);
 
             for(int i = 0; i < points.Count; i++)
             {
-                dataSheet.Cells[i + 3, column].Value = points[i].X;
+                dataSheet.Cells[i + 3, column].Value = points[i].X / 1000;
                 dataSheet.Cells[i + 3, column + 1].Value = points[i].Y;
             }
 
@@ -142,7 +172,7 @@ namespace TestMODBUS.Models.Excel
             dataSheet.Columns[column + 1].AutoFit();
 
             dataSheet.Cells[1, column, 1, column + 1].Merge = true;
-            dataSheet.Cells[1, column].Value = GetChannelTitle(ChannelIndex);
+            dataSheet.Cells[1, column].Value = ColumnTitle;//GetChannelTitle(ChannelIndex);
             dataSheet.Cells[1, column].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             dataSheet.Cells[1, column].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
         }

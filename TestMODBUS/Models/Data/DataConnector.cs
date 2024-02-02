@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TestMODBUS.Models.Modbus;
-using TestMODBUS.Models.Port;
+using TestMODBUS.Models.Channels;
 
 namespace TestMODBUS.Models.Data
 {
@@ -20,6 +20,12 @@ namespace TestMODBUS.Models.Data
                 throw new ArgumentNullException(nameof(Data));
 
             _data = Data;
+        }
+
+        //Создает тестовые данные
+        private double GetRandomDouble(Random rand)
+        {
+            return (double)rand.Next(-10, 300);
         }
 
         //Функция переводит полученные байты в значение с датчиков
@@ -53,6 +59,20 @@ namespace TestMODBUS.Models.Data
             for (int Channel = 0; Channel < _data.ChannelsData.Count; Channel++) {
                 double x = Convert.ToDouble(Time);
                 double y = ParseData(ChannelsData[Channel], Channel);
+
+                _data.AddNewPoint(new Point(x, y), Channel);
+            }
+        }
+
+
+        //Сохранение тестовых случайных данных
+        public void SaveDataTest(int Time)
+        {
+            Random rand = new Random();
+            for (int Channel = 0; Channel < _data.ChannelsData.Count; Channel++)
+            {
+                double x = Convert.ToDouble(Time);
+                double y = GetRandomDouble(rand);
 
                 _data.AddNewPoint(new Point(x, y), Channel);
             }

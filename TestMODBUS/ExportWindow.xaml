@@ -1,0 +1,45 @@
+﻿<Window x:Class="TestMODBUS.ExportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestMODBUS"
+        mc:Ignorable="d"
+        Title="Экспорт данных" Height="300" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <ItemsControl Grid.Column="0" ItemsSource="{Binding ExportChannels}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="5 0 0 5">
+                        <TextBlock Text="{Binding StringFormat=CH {0}, Path=ChannelNumber}" Margin="0 0 10 0"/>
+                        <TextBox Text="{Binding Label}" Width="100" Margin="0 0 10 0"/>
+                        <CheckBox IsChecked="{Binding IsChosen}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Button Grid.Column="1"
+            Content="Выгрузить данные" 
+            Height="50" 
+            VerticalAlignment="Bottom" HorizontalAlignment="Stretch" 
+            Margin="5"
+            Command="{Binding ExportDataCommand}"/>
+
+        <TextBlock Grid.Column="1" TextWrapping="Wrap"
+            Text="{Binding StringFormat=Имя файла: {0}, Path=FileName}"
+            VerticalAlignment="Top" HorizontalAlignment="Center"/>
+
+
+    </Grid>
+</Window>

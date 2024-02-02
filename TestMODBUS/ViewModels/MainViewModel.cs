@@ -17,8 +17,10 @@ using TestMODBUS.Models;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.Excel;
 using TestMODBUS.Models.MessageBoxes;
-using TestMODBUS.Models.Port;
+using TestMODBUS.Models.Channels;
 using TestMODBUS.ViewModels.Base;
+using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace TestMODBUS.ViewModels
 {
@@ -27,11 +29,17 @@ namespace TestMODBUS.ViewModels
         #region Public Attributes
         public ObservableCollection<string> Ports => ListAvailablePorts.AvailablePorts;
         public List<int> Speeds => ListAvailableSpeeds.ListPortSpeeds;
-        public SeriesCollection Series => chart.Series;
-        public double XMax => chart.XMax;
-        public double XMin => chart.XMin;
-        public bool IsDrawing => chart.IsDrawing;
-        public int MaxStartTime => chart.MaxStartTime;
+
+        public Data Data { get => _data; }
+        public ChartModel ChartTok1 { get => chart1; }
+        public ChartModel ChartTok2 { get => chart2; }
+        public ChartModel ChartTok3 { get => chart3; }
+        public ChartModel ChartTok4 { get => chart4; }
+
+        public ChartViewModel TestChartModel { get; }
+
+        public bool IsDrawing => chart1.IsDrawing;
+        public int MaxStartTime => chart1.MaxWindowTime;
 
         public FileNameViewModel FileNameViewModel { get; }
 
@@ -49,7 +57,7 @@ namespace TestMODBUS.ViewModels
             set
             {
                 if(!IsDrawing)
-                    chart.ChangeWindowStartPoint(value);
+                    chart1.ChangeWindowStartPoint(value);
             }
         }
 
@@ -70,15 +78,32 @@ namespace TestMODBUS.ViewModels
                 port.SetPortSpeed(value);
             }
         }
-        public bool IsPortOpen => port.IsPortOpen;
+        public bool IsPortOpen => port.IsPortOpen || _isWorking;
         public int MeasureDelay { get; set; } = 300;
+
+        public bool Debug 
+        { 
+            get => _debug; 
+            set 
+            { 
+                if(!chart1.IsDrawing)
+                    _debug = value;
+            } 
+        }
+        
         #endregion
 
         private PortListener portListener;
+        private TestPortListener testPortListener;
         private ObservablePort port;
-        private Data data;
-        private ChartModel chart;
+        private Data _data;
+        private ChartModel chart1;
+        private ChartModel chart2;
+        private ChartModel chart3;
+        private ChartModel chart4;
         private bool isScrollVisible = false; //Определяет видимость ScrollBar, который сдвигает график данных
+        private bool _debug = false;
+        private bool _isWorking = false;
 
         #region Commands
 
@@ -91,23 +116,29 @@ namespace TestMODBUS.ViewModels
         {
             IsScrollVisible = false; //Во время считывания данных пользователь не должен скроллить график
 
-            //bool isStarted = true; //Если не удалось открыть порт, мы должны отменить предыдущие действия
-
             try
             {
-                portListener.StartListen(MeasureDelay);
-                chart.StartDrawing();
+                if (!Debug)
+                    portListener.StartListen(MeasureDelay);
+                else
+                {
+                    testPortListener.StartListen(MeasureDelay);
+                    _isWorking = true;
+                    OnPropertyChanged(nameof(IsPortOpen));
+                }
+                chart1.StartDrawing();
+                chart2.StartDrawing();
+                chart3.StartDrawing();
+                chart4.StartDrawing();
             }
             catch (NoPortAvailableException ex)
             {
                 ErrorMessageBox.Show(ex.Message);
-                //isStarted = false;
             }
             catch (ChosenPortUnavailableException ex)
             {
                 ListAvailablePorts.UpdateAvailablePortList();
                 ErrorMessageBox.Show(ex.Message);
-                //isStarted = false;
             }
         }
         #endregion
@@ -120,9 +151,18 @@ namespace TestMODBUS.ViewModels
         private void StopCommandHandler()
         {
             IsScrollVisible = true;
-            portListener.StopListen();
-            chart.StopDrawing();
-            chart.PutAllDataToChart();
+            if (!Debug)
+                portListener.StopListen();
+            else
+            {
+                testPortListener.StopListen();
+                _isWorking = false;
+                OnPropertyChanged(nameof(IsPortOpen));
+            }
+            chart1.StopDrawingAndMoveToStart();
+            chart2.StopDrawingAndMoveToStart();
+            chart3.StopDrawingAndMoveToStart();
+            chart4.StopDrawingAndMoveToStart();
         }
         #endregion
 
@@ -137,7 +177,7 @@ namespace TestMODBUS.ViewModels
                 return;
 
             IsScrollVisible = false;
-            data.Clear();
+            _data.Clear();
         }
 
         #endregion
@@ -149,14 +189,24 @@ namespace TestMODBUS.ViewModels
 
         private void ExportDataCommandHandler()
         {
-            string path = OpenFileHelper.GetSaveFile(FileNameViewModel.GetFileName());
+            string name = FileNameViewModel.GetFileName();
+
+            if (name == "(  )")
+            {
+                MessageBox.Show("Вы не заполнили поле «Название эксперимента»", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            /*
+            string path = OpenFileHelper.GetSaveFile(name);
             if (path == null)
                 return;
+            */
 
+            /*
             try
             {
                 ExportExcel.SaveData(data, path);
-                if(RequestYesNoMessageBox.Show("Отчёт сохранён. Открыть его?", "Успешно", System.Windows.MessageBoxImage.Information) == System.Windows.MessageBoxResult.Yes)
+                if(RequestYesNoMessageBox.Show("Отчёт сохранён. Открыть папку с отчётом?", "Успешно", System.Windows.MessageBoxImage.Information) == System.Windows.MessageBoxResult.Yes)
                 {
                     string folder = Path.GetDirectoryName(path);
                     Process.Start("explorer", folder);
@@ -166,7 +216,10 @@ namespace TestMODBUS.ViewModels
             catch(Exception e)
             {
                 ErrorMessageBox.Show(e.Message);
-            }
+            } */
+
+            ExportWindow exportWindow = new ExportWindow(_data, name);
+            exportWindow.ShowDialog();
         }
 
         #endregion
@@ -175,10 +228,16 @@ namespace TestMODBUS.ViewModels
 
         #region Events
 
-        public void WindowClosing(object sender, CancelEventArgs e)
+        public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            portListener.StopListen();
-            chart.StopDrawing();
+            if (portListener != null)
+                portListener.StopListen();
+            if(testPortListener != null)
+                testPortListener.StopListen();
+            chart1.StopDrawing();
+            chart2.StopDrawing();
+            chart3.StopDrawing();
+            chart4.StopDrawing();
         }
 
         #region On Port Closed By Error
@@ -186,8 +245,7 @@ namespace TestMODBUS.ViewModels
         public void OnPortErrorClosedByError()
         {
             ErrorMessageBox.Show("Возникли проблемы с портом. Проверьте соединение");
-            chart.StopDrawing();
-            chart.PutAllDataToChart();
+            chart1.StopDrawingAndMoveToStart();
         }
 
         #endregion
@@ -198,11 +256,16 @@ namespace TestMODBUS.ViewModels
         {
             //Инициализируем объекты
             port = new ObservablePort();
-            data = new Data();
+            _data = new Data();
 
-            var dataConnector = new DataConnector(data);
+            var dataConnector = new DataConnector(_data);
             portListener = new PortListener(port, dataConnector, OnPortErrorClosedByError);
-            chart = new ChartModel(data);
+            testPortListener = new TestPortListener(dataConnector);
+            chart1 = new ChartModel(_data, new int[] { 0 }, "Ток 1");
+            chart2 = new ChartModel(_data, new int[] { 1 }, "Ток 2");
+            chart3 = new ChartModel(_data, new int[] { 6 }, "Напряжение");
+            chart4 = new ChartModel(_data, new int[] { 0, 1 }, "Ток 1, Ток 2");
+            TestChartModel = new ChartViewModel(chart1);
 
             //Создаем класс, который будет хранить имя текущего эксперимента
             FileNameViewModel = new FileNameViewModel();
@@ -213,12 +276,10 @@ namespace TestMODBUS.ViewModels
             ClearCommand = new RemoteCommand(ClearCommandHandler);
             ExportDataCommand = new RemoteCommand(ExportDataCommandHandler);
 
-            //Подписиыаем объекты на OnPropertyChanged других объектов
+            //Подписиваем объекты на OnPropertyChanged других объектов
             ListAvailablePorts.AvailablePorts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Ports));
             port.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
             port.PropertyChanged += (s, e) => OnPropertyChanged(nameof(isScrollVisible));
-            chart.Series.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Series));
-            chart.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
         }
     }
 }

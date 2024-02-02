@@ -113,6 +113,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\RemoteCommand.cs" />
+    <Compile Include="Commands\RemoteCommandWithParameter.cs" />
+    <Compile Include="Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converter\ChartModelConverter.cs" />
     <Compile Include="Converter\SliderEnabledConverter.cs" />
     <Compile Include="Converter\StartButtonColorConverter.cs" />
     <Compile Include="Converter\ScrollChartVisibilityConverter.cs" />
@@ -120,9 +123,17 @@
     <Compile Include="Exceptions\ChosenPortUnavailableException.cs" />
     <Compile Include="Exceptions\FileIsAlreadyOpenException.cs" />
     <Compile Include="Exceptions\NoPortAvailableException.cs" />
+    <Compile Include="ExportWindow.xaml.cs">
+      <DependentUpon>ExportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\IsChannelSelectedExtension.cs" />
+    <Compile Include="Models\Channels\ChannelColors.cs" />
     <Compile Include="Models\Chart\WindowingDataHelper.cs" />
+    <Compile Include="Models\Data\ChannelModel.cs" />
     <Compile Include="Models\Data\Data.cs" />
     <Compile Include="Models\Data\DataConnector.cs" />
+    <Compile Include="Models\Data\IObservable.cs" />
+    <Compile Include="Models\Data\ObservableConcurrentList.cs" />
     <Compile Include="Models\Data\Point.cs" />
     <Compile Include="Models\Excel\ExportExcel.cs" />
     <Compile Include="Models\MessageBoxes\ErrorMessageBox.cs" />
@@ -136,9 +147,20 @@
     <Compile Include="Models\Port\ObservablePort.cs" />
     <Compile Include="Models\Port\PortListener.cs" />
     <Compile Include="Models\Chart\ChartModel.cs" />
-    <Compile Include="Models\Port\ChannelTypeList.cs" />
+    <Compile Include="Models\Channels\ChannelTypeList.cs" />
+    <Compile Include="Models\Port\TestPortListener.cs" />
+    <Compile Include="UserControls\ChartContol.xaml.cs">
+      <DependentUpon>ChartContol.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ChannelViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModel.cs" />
     <Compile Include="ViewModels\FileNameViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ExportViewModel.cs" />
+    <Page Include="ExportWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -154,6 +176,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\ChartContol.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

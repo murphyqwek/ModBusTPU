@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Models.Port
+namespace TestMODBUS.Models.Channels
 {
     //Временный класс, который хранит номера портов тока и напряжения
     public class ChannelTypeList

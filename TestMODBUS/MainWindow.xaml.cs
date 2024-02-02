@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TestMODBUS.Models.Excel;
-using TestMODBUS.Models.Port;
+using TestMODBUS.Models.Channels;
 using TestMODBUS.ViewModels;
 
 namespace TestMODBUS
@@ -28,6 +28,9 @@ namespace TestMODBUS
             ExportExcel.SetUp();
             ListAvailablePorts.UpdateAvailablePortList();
             InitializeComponent();
+            MainViewModel viewModel = new MainViewModel();
+            this.DataContext = viewModel;
+            this.Closing += viewModel.OnWindowClosing;
         }
 
         private void PortComboBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

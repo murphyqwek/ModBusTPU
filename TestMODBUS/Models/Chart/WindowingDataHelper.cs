@@ -82,6 +82,34 @@ namespace TestMODBUS.Models.Chart
             return GetWindowData(leftEdge, rightEdge, channelData);
         }
 
+        public static double GetMaxValueOfArray(Data.Data channeData, int start, int end, int[] Channels)
+        {
+            double max = channeData.GetChannelData(0)[start].Y;
+            for (int i = start; i <= end; i++)
+            {
+                foreach(int channel in Channels)
+                {
+                    max = Math.Max(channeData.GetChannelData(channel)[i].Y, max);
+                }
+            }
+
+            return max;
+        }
+
+        public static double GetMinValueOfArray(Data.Data channeData, int start, int end, int[] Channels)
+        {
+            double min = channeData.GetChannelData(0)[start].Y;
+            for (int i = start; i <= end; i++)
+            {
+                foreach (int channel in Channels)
+                {
+                    min = Math.Min(channeData.GetChannelData(channel)[i].Y, min);
+                }
+            }
+
+            return min;
+        }
+
         //Получаем подмассив исходных данных - "окно"
         public static ObservablePoint[] GetWindowData(int leftEdge, int rightEdge, Collection<Point> channelData) 
         {
