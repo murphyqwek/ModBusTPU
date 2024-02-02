@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace TestMODBUS.Services
 {
@@ -26,7 +27,7 @@ namespace TestMODBUS.Services
 
             if(Value is string)
                 return RegistryValueKind.String;
-            if (Value is int || Value is float)
+            if (Value is int || Value is float || Value is bool)
                 return RegistryValueKind.DWord;
             if(Value is long || Value is double)
                 return RegistryValueKind.QWord;
@@ -39,12 +40,22 @@ namespace TestMODBUS.Services
             {
                 object Value = key?.GetValue(FieldName);
 
-                if(Value == null && CreateIfNotExist)
-                    SetField(FolderName, FieldName, null);
+                if (Value == null && CreateIfNotExist)
+                    SetField(FolderName, FieldName, "");
 
                 return Value;
             }
         }
+
+        /*
+        private static void CreateField(string FolderName, string FieldName)
+        {
+            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(GetFolderPath(FolderName)))
+            {
+                key?.CreateSubKey(FieldName);
+            }
+        }
+        */
 
         public static void SetField(string FolderName, string FieldName, object Value)
         {

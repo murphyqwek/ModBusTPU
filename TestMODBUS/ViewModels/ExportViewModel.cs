@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ using TestMODBUS.Models;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.Excel;
 using TestMODBUS.Models.MessageBoxes;
+using TestMODBUS.Services.Settings;
 using TestMODBUS.ViewModels.Base;
 
 namespace TestMODBUS.ViewModels
@@ -23,15 +25,15 @@ namespace TestMODBUS.ViewModels
         public ObservableCollection<ChannelViewModel> ExportChannels { get; }
         public string FileName { get; }
 
+        private List<ChannelModel> _channelsExportSettings = new List<ChannelModel>();
 
-        private List<ChannelModel> _channelsOutputData = new List<ChannelModel>();
-
-
+        #region Commands
+        #region Export Data
         public ICommand ExportDataCommand { get; }
 
         private void ExportDataHandle()
         {
-            if(!_channelsOutputData.Any(channel => channel.IsChosen))
+            if(!_channelsExportSettings.Any(channel => channel.IsChosen))
             {
                 ErrorMessageBox.Show("Нужно выбрать как минимум один канал");
                 return;
@@ -43,7 +45,7 @@ namespace TestMODBUS.ViewModels
 
             try
             {
-                ExportExcel.SaveData(_channelsOutputData, path);
+                ExportExcel.SaveData(_channelsExportSettings, path);
                 if(RequestYesNoMessageBox.Show("Отчёт сохранён. Открыть папку с отчётом?", "Успешно", System.Windows.MessageBoxImage.Information) == System.Windows.MessageBoxResult.Yes)
                 {
                     string folder = Path.GetDirectoryName(path);
@@ -56,13 +58,58 @@ namespace TestMODBUS.ViewModels
                 ErrorMessageBox.Show(e.Message);
             }
         }
+        #endregion
+
+        #region Save Settings
+
+        public ICommand SaveSettingsCommand { get; }
+        public void SaveSettingsCommandHandle()
+        {
+            if (ExportChannelsSettings.SaveChannels(_channelsExportSettings))
+                SuccessMessageBox.Show("Настройки экспорта каналов сохранены");
+            else
+                ErrorMessageBox.Show("Не удалось сохранить настройки экспорта каналов");
+        }
+
+        #endregion
+
+        #region Upload Settings
+
+        public ICommand UploadSettingsCommand { get; }
+
+        public void UploadSettingsHandle()
+        {
+            ExportChannelsSettings.UploadChannelSettings(_channelsExportSettings);
+        }
+
+        #endregion
+
+        #region Clear Channels Export Settings
+
+        public ICommand ClearChannelsExportSettingsCommand { get; }
+
+        public void ClearChannelsExportSettingsHandle()
+        {
+            if (RequestYesNoMessageBox.Show("Вы уверены, что хотите очистить каналы?") != MessageBoxResult.Yes)
+                return;
+
+            ClearChannelsExportSettings();
+        }
+
+        #endregion
+
+        #endregion
 
         public ExportViewModel(Data Data, string FileName) 
         {
             this.FileName = FileName;
             ExportChannels = new ObservableCollection<ChannelViewModel>();
             UploadChannelsData(Data);
+
             ExportDataCommand = new RemoteCommand(ExportDataHandle);
+            SaveSettingsCommand = new RemoteCommand(SaveSettingsCommandHandle);
+            UploadSettingsCommand = new RemoteCommand(UploadSettingsHandle);
+            ClearChannelsExportSettingsCommand = new RemoteCommand(ClearChannelsExportSettingsHandle);
         }
 
         private void UploadChannelsData(Data Data)
@@ -70,8 +117,19 @@ namespace TestMODBUS.ViewModels
             for(int i = 0; i < Data.ChannelsData.Count; i++) 
             {
                 ChannelModel channelModel = new ChannelModel(i, Data.GetChannelData(i).ToList());
-                _channelsOutputData.Add(channelModel);
+                _channelsExportSettings.Add(channelModel);
                 ExportChannels.Add(new ChannelViewModel(channelModel));
+            }
+
+            ExportChannelsSettings.UploadChannelSettings(_channelsExportSettings);
+        }
+
+        private void ClearChannelsExportSettings()
+        {
+            foreach (var channel in _channelsExportSettings)
+            {
+                channel.Label = "";
+                channel.IsChosen = false;
             }
         }
     }

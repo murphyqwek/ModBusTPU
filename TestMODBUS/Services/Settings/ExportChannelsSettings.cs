@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using TestMODBUS.Models.Data;
 
@@ -13,12 +14,14 @@ namespace TestMODBUS.Services.Settings
         private static string GetChannelLabelFieldName(int ChannelNumber) => $"CH_{ChannelNumber}";
         private static string GetChannelIsChosenFieldName(int ChannelNumber) => $"CH_{ChannelNumber} IsChosen";
 
-        public static void SaveChannels(IList<ChannelModel> channels)
+        public static bool SaveChannels(IList<ChannelModel> channels)
         {
             foreach (var channel in channels)
             {
                 SaveChannel(channel.ChannelNumber, channel.Label, channel.IsChosen);
             }
+
+            return true;
         }
 
         public static void SaveChannel(int ChannelNumber, string Label, bool IsChosen)
@@ -30,7 +33,7 @@ namespace TestMODBUS.Services.Settings
         public static string GetChannelLabel(int ChannelNumber)
         {
             string ChannelField = GetChannelLabelFieldName(ChannelNumber);
-            string ChannelName = RegisrtyService.GetField(RegisrtyService.ChannelFolder, ChannelField, true).ToString();
+            string ChannelName = RegisrtyService.GetField(RegisrtyService.ChannelFolder, ChannelField, true)?.ToString();
 
             if(ChannelName == null)
             {
@@ -47,7 +50,7 @@ namespace TestMODBUS.Services.Settings
             bool IsChannelChosen = false;
             object IsChannelChosenValue = RegisrtyService.GetField(RegisrtyService.ChannelFolder, ChannelField, true);
 
-            if(IsChannelChosenValue == null)
+            if(IsChannelChosenValue == null || Boolean.TryParse(IsChannelChosenValue.ToString(), out bool r))
             {
                 RegisrtyService.SetField(RegisrtyService.ChannelFolder, ChannelField, IsChannelChosen);
                 return IsChannelChosen;
@@ -56,6 +59,16 @@ namespace TestMODBUS.Services.Settings
             IsChannelChosen = Convert.ToBoolean(IsChannelChosenValue);
 
             return IsChannelChosen;
+        }
+
+        public static void UploadChannelSettings(IList<ChannelModel> Channels)
+        {
+            foreach (var channel in Channels)
+            {
+                int channelNumber = channel.ChannelNumber;
+                channel.Label = GetChannelLabel(channelNumber);
+                channel.IsChosen = GetChannelIsChosen(channelNumber);
+            }
         }
     }
 }
