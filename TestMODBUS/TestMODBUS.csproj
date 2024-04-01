@@ -152,6 +152,7 @@
     <Compile Include="Models\ModbusSensor\Chart.cs" />
     <Compile Include="Models\ModbusSensor\ChartDataPreparation.cs" />
     <Compile Include="Models\ModbusSensor\ModbusInput.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ModBusInputBase.cs" />
     <Compile Include="Models\ModbusSensor\ModbusSensor.cs" />
     <Compile Include="Models\ModbusSensor\ModbusSensorData.cs" />
     <Compile Include="Models\Modbus\ModBusCommandsList.cs" />
@@ -237,7 +238,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\ModbusSensor\ModBusInputs\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
