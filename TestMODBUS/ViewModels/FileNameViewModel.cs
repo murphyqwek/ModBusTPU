@@ -25,7 +25,12 @@ namespace TestMODBUS.ViewModels
 
         public string GetFileName() 
         {
-            return $"{_experiment}({_tok1} {_tok2} {_time})";
+            return $"{_experiment}({_tok1} А, {_tok2} А, {_time} с)";
+        }
+
+        public bool isFileNameEmpty()
+        {
+            return "( А,  А,  с)" == GetFileName();
         }
     }
 }

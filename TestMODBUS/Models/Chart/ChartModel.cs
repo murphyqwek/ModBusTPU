@@ -15,6 +15,9 @@ using TestMODBUS.Models.Chart;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.INotifyPropertyBased;
 using TestMODBUS.ViewModels.Base;
+using TestMODBUS.Models.Chart.ChartInputModelus;
+using TestMODBUS.Models.Chart.ChartInputModelus.Factories;
+using LiveCharts.Wpf.Charts.Base;
 
 namespace TestMODBUS.ViewModels
 {
@@ -82,7 +85,19 @@ namespace TestMODBUS.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
+        public double CurrentTime
+        {
+            get => _currentrTime;
+
+            private set
+            {
+                _currentrTime = value;
+                XMin = _currentrTime < MaxTimeWidth ? 0 : _currentrTime - MaxTimeWidth; //Нужно, чтобы в начале считывания данных отображаемое окно не двигалось, пока не пройдёт больше MaxTimeWidth
+                XMax = _currentrTime < MaxTimeWidth ? MaxTimeWidth : _currentrTime; //Крайняя точка, до которой будет отрисовываться графика во время считывания данных
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsDrawing
         {
@@ -99,6 +114,17 @@ namespace TestMODBUS.ViewModels
 
         public int MaxWindowTime => _dataStorage.GetChannelLength() != 0 ? Convert.ToInt32(_dataStorage.GetLastTime()) - MaxTimeWidth : 0;
         
+        public ChartInputType ChartInputType 
+        { 
+            get => _type; 
+
+            private set
+            {
+                _type = value;
+                OnPropertyChanged();
+            } 
+        }
+
         public string Title
         {
             private set
@@ -130,23 +156,17 @@ namespace TestMODBUS.ViewModels
         private double _yMax = YMaxStandart;
         private double _yMin = YMinStandart;
 
+        private ChartInputType _type;
+
         private int _lastPointIndex => _dataStorage.GetChannelLastPointIndex();
 
-        private double CurrentTime
-        {
-            get => _currentrTime;
+        private ChartInputModuleBase ChartInputModule;
 
-            set
-            {
-                _currentrTime = value;
-                XMin = _currentrTime < MaxTimeWidth ? 0 : _currentrTime - MaxTimeWidth;
-                XMax = _currentrTime < MaxTimeWidth ? MaxTimeWidth : _currentrTime;
-            }
-        } //Крайняя точка, до которой будет отрисовываться графика во время считывания данных
-        public ObservableConcurrentList Channels { get; }//public ObservableCollection<int> Channels { get; }//Данные с каких каналов отображает чарт
-        private Dictionary<int, LineSeries> SeriesByChannel = new Dictionary<int, LineSeries>();
+        public ObservableConcurrentList Channels { get; }//Данные с каких каналов отображает чарт
 
-        public ChartModel(Data DataStorage, int[]Channels, string Title)
+        public Dictionary<int, LineSeries> SeriesByChannel = new Dictionary<int, LineSeries>();
+
+        public ChartModel(Data DataStorage, int[]Channels, string Title, AbstractChartInputFactory ChartInputFactory, ChartInputType ChartInputType)
         {
             if (DataStorage == null)
                 throw new ArgumentNullException(nameof(DataStorage));
@@ -158,25 +178,53 @@ namespace TestMODBUS.ViewModels
             Series = new SeriesCollection();
             _dataStorage = DataStorage;
             _title = Title;
-            this.Channels = new ObservableConcurrentList();//new ObservableCollection<int>();
+            this.Channels = new ObservableConcurrentList();
 
-            SignToChannels(Channels);
+            ChangeChartInputModule(ChartInputFactory, ChartInputType);
+
+            ChartInputModule.SignToChannels(Channels);
         }
 
-        public void SetNewChannels(int[] NewChannels) 
+        public LineSeries GetSeriesByChannel(int Channel) => SeriesByChannel[Channel];
+
+        public void ChangeChartInputModule(AbstractChartInputFactory ChartInputFactory, ChartInputType ChartInputType)
         {
+            if (isDrawing)
+                throw new Exception("Cannot change ChartInputType while drawing");
+
+            ChartInputModule = ChartInputFactory.GetModule(ChartInputType, this);
+            this.ChartInputType = ChartInputType;
+            Series.Clear();
+            SeriesByChannel.Clear();
             Channels.Clear();
-            foreach(int channel in NewChannels)
-            {
-                Channels.Add(channel);
-            }
+        }
+
+        public void StopDrawingAndMoveToStart()
+        {
+            StopDrawing();
+            ChangeWindowStartPoint(0);
+        }
+
+        public void StartDrawing()
+        {
+            IsDrawing = true;
+            ClearChannels();
+            CurrentTime = 0;
+        }
+
+        public void StopDrawing()
+        {
+            IsDrawing = false;
         }
 
         public void AddNewChannel(int Channel)
         {
             int oldLastSignedChannel = GetLastChannel();
-            Channels.Add(Channel);
-            AddNewChannelOnChart(Channel);
+            if (!ChartInputModule.AddNewChannel(Channel))
+                return;
+
+            //AddNewChannelOnChart(Channel);
+            //Channels.Add(Channel);
             ResignDataStorageLastUpdateChannel(oldLastSignedChannel);
 
             //Если мы ничего не считываем, то новые графики не отображатся на чарте
@@ -195,10 +243,8 @@ namespace TestMODBUS.ViewModels
         public void RemoveChannel(int Channel)
         {
             int oldLastSignedChannel = GetLastChannel();
-            if (!Channels.Contains(Channel))
-                return;
-            Channels.Remove(Channel);
-            Series.Remove(SeriesByChannel[Channel]);
+
+            ChartInputModule.RemoveChannel(Channel);
             SeriesByChannel.Remove(Channel);
             ResignDataStorageLastUpdateChannel(oldLastSignedChannel);
 
@@ -207,14 +253,14 @@ namespace TestMODBUS.ViewModels
             ChangeWindowStartPoint(YMin);
         }
 
-        private void AddNewChannelOnChart(int Channel)
+        public void AddNewSerieOnChart(int Channel, string ChannelTitle, Brush Color)
         {
-            LineSeries lineSeries = InitializeChannelDataSerie("CH_" + Channel.ToString(), Channel);
+            LineSeries lineSeries = InitializeChannelDataSerie(ChannelTitle, Color);
             SeriesByChannel.Add(Channel, lineSeries);
             Series.Add(lineSeries);
         }
 
-        private void ResignDataStorageLastUpdateChannel(int LastSignChannel = -1)
+        public void ResignDataStorageLastUpdateChannel(int LastSignChannel = -1)
         {
             /*
              * Подписываясь на изменение последнего канала, мы гарантируем, что все предыдещие каналы, которые отображает данный чарт, были обновлены
@@ -226,32 +272,15 @@ namespace TestMODBUS.ViewModels
                 _dataStorage.GetChannelData(Channels.Max()).CollectionChanged += DataStorageCollectionChangedHandler;
         }
 
-        //Обновляем список каналов, которые будут отрисовываться
-        public void SignToChannels(int[] NewChannels)
-        {
-            Series.Clear();
-            SeriesByChannel.Clear();
-            SetNewChannels(NewChannels);
-
-
-            foreach (var Channel in Channels)
-            {
-                AddNewChannelOnChart(Channel);
-            }
-
-
-            ResignDataStorageLastUpdateChannel();
-        }
-
         //Создание серии для одного канала данных
-        private LineSeries InitializeChannelDataSerie(string Title, int Channel) 
+        private LineSeries InitializeChannelDataSerie(string Title, Brush Color) 
         {
             LineSeries lineSeries = new LineSeries()
             {
                 Title = Title,
                 Values = new ChartValues<ObservablePoint>(),
                 Fill = Brushes.Transparent,
-                Stroke = ChannelColors.Colors[Channel],
+                Stroke = Color,
                 PointGeometry = null,
                 LineSmoothness = 0,
                 Width = 1
@@ -280,18 +309,6 @@ namespace TestMODBUS.ViewModels
             XMax = newStartPoint + MaxTimeWidth;
         }
 
-        public void StartDrawing()
-        {
-            IsDrawing = true;
-            ClearChannels();
-            CurrentTime = 0;
-        }
-
-        public void StopDrawing() 
-        { 
-            IsDrawing = false;
-        }
-
         //Обновляет видимое "окно" во время считывания данных
         private void AddRecentPoints()
         {
@@ -299,14 +316,11 @@ namespace TestMODBUS.ViewModels
             var WindowDataEdges = WindowingDataHelper.GetDataWindowIndex(CurrentTime, _dataStorage.GetChannelData(0));
             int leftEdge = WindowDataEdges.Item1, rightEdge = WindowDataEdges.Item2;
 
+            //if(leftEdge == 0 && rightEdge == 0)
+                //return;
+
             UpdateYMinAndMax(leftEdge, rightEdge);
             AddWindowPointsToChart(leftEdge, rightEdge);
-        }
-
-        public void StopDrawingAndMoveToStart()
-        {
-            StopDrawing();
-            ChangeWindowStartPoint(0);
         }
 
         //Загружает все данные в Chart
@@ -326,8 +340,8 @@ namespace TestMODBUS.ViewModels
 
         private void UpdateYMinAndMax(int start, int end)
         {
-            YMax = Math.Max(WindowingDataHelper.GetMaxValueOfArray(_dataStorage, start, end, Channels.ToArray()) + YMaxGap, YMax);
-            YMin = Math.Min(WindowingDataHelper.GetMinValueOfArray(_dataStorage, start, end, Channels.ToArray()) + YMinGap, YMin); //YMinGap < 0!!!!
+            YMax = Math.Max(ChartInputModule.GetYMax(start, end, _dataStorage, YMaxGap), YMax);//Math.Max(WindowingDataHelper.GetMaxValueOfArray(_dataStorage, start, end, Channels.ToArray()) + YMaxGap, YMax);
+            YMin = Math.Min(ChartInputModule.GetYMin(start, end, _dataStorage, YMinGap), YMin); //YMinGap < 0!!!!
             //UpdateYAbsoluteMinAdnMax(YMax, YMin);
         }
 
@@ -339,24 +353,16 @@ namespace TestMODBUS.ViewModels
 
             try
             {
-                foreach (var Channel in Channels)
-                {
-                    var NewPoints = WindowingDataHelper.GetWindowData(leftIndex, rightIndex, _dataStorage.GetChannelData(Channel));
-
-                    SeriesByChannel[Channel].Values.Clear();
-                    SeriesByChannel[Channel].Values.AddRange(NewPoints);
-                }
+                ChartInputModule.UpdateSeries(leftIndex, rightIndex, _dataStorage);
             }
-            catch
-            {
-
-            }
+            catch {}
         }
 
         private void ClearChannels()
         {
             CurrentTime = 0;
-            for (int i = 0; i < Series.Count; i++)
+
+            for(int i = 0; i < Series.Count; i++)
                 ClearChannel(i);
 
             YMax = YMaxStandart;

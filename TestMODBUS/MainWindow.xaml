@@ -33,11 +33,14 @@
                     <TextBlock Text="Эксперимент: "/>
                     <TextBox Text="{Binding Experiment, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
                     <TextBlock Text="Ток 1: "/>
-                    <TextBox Text="{Binding Tok1, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
+                    <TextBox Text="{Binding Tok1, Mode=TwoWay}" MinWidth="100" Margin="5 0 3 0"/>
+                    <TextBlock Text="А" Margin="0 0 10 0"/>
                     <TextBlock Text="Ток 2: "/>
-                    <TextBox Text="{Binding Tok2, Mode=TwoWay}" MinWidth="100" Margin="5 0 10 0"/>
+                    <TextBox Text="{Binding Tok2, Mode=TwoWay}" MinWidth="100" Margin="5 0 3 0"/>
+                    <TextBlock Text="А" Margin="0 0 10 0"/>
                     <TextBlock Text="Время: "/>
-                    <TextBox Text="{Binding Time, Mode=TwoWay}" MinWidth="100" Margin="5 0 30 0"/>
+                    <TextBox Text="{Binding Time, Mode=TwoWay}" MinWidth="100" Margin="5 0 3 0"/>
+                    <TextBlock Text="c" Margin="0 0 10 0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 10 0">
                     <TextBlock Text="Test Mode" Margin="0 0 5 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>

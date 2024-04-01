@@ -10,6 +10,8 @@ using TestMODBUS.Models.Services;
 using TestMODBUS.ViewModels.Base;
 using System.Windows;
 using TestMODBUS.Models.Port.Interfaces;
+using TestMODBUS.Models.Chart.ChartInputModelus;
+using TestMODBUS.Models.Chart.ChartInputModelus.Factories;
 
 namespace TestMODBUS.ViewModels
 {
@@ -160,7 +162,7 @@ namespace TestMODBUS.ViewModels
         {
             string name = FileNameViewModel.GetFileName();
 
-            if (name == "(  )")
+            if (FileNameViewModel.isFileNameEmpty())
             {
                 MessageBox.Show("Вы не заполнили поле «Название эксперимента»", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -191,6 +193,9 @@ namespace TestMODBUS.ViewModels
         {
             ErrorMessageBox.Show("Возникли проблемы с портом. Проверьте соединение");
             chart1.StopDrawingAndMoveToStart();
+            chart2.StopDrawingAndMoveToStart();
+            chart3.StopDrawingAndMoveToStart();
+            chart4.StopDrawingAndMoveToStart();
         }
 
         #endregion
@@ -205,11 +210,14 @@ namespace TestMODBUS.ViewModels
 
             var _dataConnector = new DataConnector(_data);
             _portListener = new PortListener(port, _dataConnector, OnPortErrorClosedByError);
-            chart1 = new ChartModel(_data, new int[] { 0 }, "Ток 1");
-            chart2 = new ChartModel(_data, new int[] { 1 }, "Ток 2");
-            chart3 = new ChartModel(_data, new int[] { 6 }, "Напряжение");
-            chart4 = new ChartModel(_data, new int[] { 0, 1 }, "Ток 1, Ток 2");
-            TestChartModel = new ChartViewModel(chart1);
+
+            //Инициализируем Чарты
+            ChartInputSimpleFactory ChartInputFactory = new ChartInputSimpleFactory();
+            chart1 = new ChartModel(_data, new int[] { 0, 5 }, "Мощность", ChartInputFactory, ChartInputType.Power);
+            chart2 = new ChartModel(_data, new int[] { 1 }, "Ток 2", ChartInputFactory, ChartInputType.Standart);
+            chart3 = new ChartModel(_data, new int[] { 6 }, "Напряжение", ChartInputFactory, ChartInputType.Standart);
+            chart4 = new ChartModel(_data, new int[] { 0, 1 }, "Ток 1, Ток 2", ChartInputFactory, ChartInputType.Standart);
+            //TestChartModel = new ChartViewModel(chart1);
 
             //Создаем класс, который будет хранить имя текущего эксперимента
             FileNameViewModel = new FileNameViewModel();

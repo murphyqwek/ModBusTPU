@@ -13,6 +13,7 @@ using TestMODBUS.ViewModels;
 using LiveCharts.Defaults;
 using System.Collections.ObjectModel;
 using System.Runtime.Remoting.Channels;
+using LiveCharts;
 
 namespace TestMODBUS.Models.Chart
 {
@@ -82,30 +83,22 @@ namespace TestMODBUS.Models.Chart
             return GetWindowData(leftEdge, rightEdge, channelData);
         }
 
-        public static double GetMaxValueOfArray(Data.Data channeData, int start, int end, int[] Channels)
+        public static double GetMaxValueOfArray(ObservablePoint[] Points)
         {
-            double max = channeData.GetChannelData(0)[start].Y;
-            for (int i = start; i <= end; i++)
-            {
-                foreach(int channel in Channels)
-                {
-                    max = Math.Max(channeData.GetChannelData(channel)[i].Y, max);
-                }
-            }
+            double max = Double.MinValue;
+
+            foreach(var point in Points)
+                max = Math.Max(point.Y, max);
 
             return max;
         }
 
-        public static double GetMinValueOfArray(Data.Data channeData, int start, int end, int[] Channels)
+        public static double GetMinValueOfArray(ObservablePoint[] Points)
         {
-            double min = channeData.GetChannelData(0)[start].Y;
-            for (int i = start; i <= end; i++)
-            {
-                foreach (int channel in Channels)
-                {
-                    min = Math.Min(channeData.GetChannelData(channel)[i].Y, min);
-                }
-            }
+            double min = Double.MaxValue;
+
+            foreach (var point in Points)
+                min = Math.Max(point.Y, min);
 
             return min;
         }

@@ -77,6 +77,9 @@ namespace TestMODBUS.Models.Services
                 {
                     int time = Convert.ToInt32(timer.ElapsedMilliseconds);
                     byte[][] ChannelData = new byte[8][];
+
+                    //ВАЖНО: каналы должны считываться строго по порядку от 0 до последнего
+                    //Чарт обновляет точки тогда, когда обновился последний канал
                     for (int channel = 0; channel < 8; channel++)
                     {
                         byte[] sendCommand = ModBusCommandsList.GetReadChannelCommand(channel); //Получаем команду, чтобы считать данные с конкретного канала

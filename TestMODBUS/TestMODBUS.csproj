@@ -116,6 +116,7 @@
     <Compile Include="Commands\RemoteCommandWithParameter.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Converter\ChartModelConverter.cs" />
+    <Compile Include="Converter\DoubleConverter.cs" />
     <Compile Include="Converter\SliderEnabledConverter.cs" />
     <Compile Include="Converter\StartButtonColorConverter.cs" />
     <Compile Include="Converter\ScrollChartVisibilityConverter.cs" />
@@ -128,6 +129,13 @@
     </Compile>
     <Compile Include="Extensions\IsChannelSelectedExtension.cs" />
     <Compile Include="Models\Channels\ChannelColors.cs" />
+    <Compile Include="Models\Chart\ChartInputModelus\ChartInputEnergy.cs" />
+    <Compile Include="Models\Chart\ChartInputModelus\ChartInputModuleBase.cs" />
+    <Compile Include="Models\Chart\ChartInputModelus\ChartInputPower.cs" />
+    <Compile Include="Models\Chart\ChartInputModelus\ChartInputStandart.cs" />
+    <Compile Include="Models\Chart\ChartInputModelus\Factories\AbstractFactory.cs" />
+    <Compile Include="Models\Chart\ChartInputModelus\Factories\ChartInputSimpleFactory.cs" />
+    <Compile Include="Models\Chart\ChartInputModelus\Factories\ChartInputType.cs" />
     <Compile Include="Models\Chart\WindowingDataHelper.cs" />
     <Compile Include="Models\Data\ChannelModel.cs" />
     <Compile Include="Models\Data\Data.cs" />
@@ -136,6 +144,8 @@
     <Compile Include="Models\Data\ObservableConcurrentList.cs" />
     <Compile Include="Models\Data\Point.cs" />
     <Compile Include="Models\Excel\ExportExcel.cs" />
+    <Compile Include="Models\MathModules\EnergyMathModule.cs" />
+    <Compile Include="Models\MathModules\PowerMathModule.cs" />
     <Compile Include="Models\MessageBoxes\ErrorMessageBox.cs" />
     <Compile Include="Models\MessageBoxes\RequestYesNoMessageBox.cs" />
     <Compile Include="Models\MessageBoxes\SuccessMessageBox.cs" />
@@ -158,8 +168,10 @@
     <Compile Include="UserControls\ChartContol.xaml.cs">
       <DependentUpon>ChartContol.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ChannelViewModel.cs" />
-    <Compile Include="ViewModels\ChartViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModels\ChannelViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModels\ChartInputTypeViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModels\ChartViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModels\CurrentChannelValueViewModel.cs" />
     <Compile Include="ViewModels\FileNameViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />
