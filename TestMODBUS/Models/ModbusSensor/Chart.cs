@@ -103,6 +103,17 @@ namespace TestMODBUS.Models.ModbusSensor
             }
         }
 
+        public string Title
+        {
+            get => _title;
+
+            set
+            {
+                _title = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Private
@@ -116,10 +127,13 @@ namespace TestMODBUS.Models.ModbusSensor
 
         private bool _isDrawing = false;
 
+        private string _title;
+
         #endregion
 
-        public Chart() 
+        public Chart(string Title = "") 
         {
+            this.Title = Title;
             Series = new SeriesCollection();
         }
 
