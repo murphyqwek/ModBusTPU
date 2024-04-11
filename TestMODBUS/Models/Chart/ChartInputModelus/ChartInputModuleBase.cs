@@ -34,9 +34,9 @@ namespace TestMODBUS.Models.Chart.ChartInputModelus
             _chart.ResignDataStorageLastUpdateChannel();
         }
         abstract public bool AddNewChannel(int Channel);
-        abstract public void UpdateSeries(int LeftIndex, int RightIndex, Data.Data DataStorage);
-        abstract public double GetYMax(int LeftIndex, int RightIndex, Data.Data DataStorage, double YMaxGap);
-        abstract public double GetYMin(int LeftIndex, int RightIndex, Data.Data DataStorage, double YMinGap);
+        abstract public void UpdateSeries(int LeftIndex, int RightIndex, Data.DataStorage DataStorage);
+        abstract public double GetYMax(int LeftIndex, int RightIndex, Data.DataStorage DataStorage, double YMaxGap);
+        abstract public double GetYMin(int LeftIndex, int RightIndex, Data.DataStorage DataStorage, double YMinGap);
 
     }
 }

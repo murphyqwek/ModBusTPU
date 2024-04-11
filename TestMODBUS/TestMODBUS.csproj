@@ -117,6 +117,7 @@
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Converter\ChartModelConverter.cs" />
     <Compile Include="Converter\DoubleConverter.cs" />
+    <Compile Include="Converter\ModbusSensorConverter.cs" />
     <Compile Include="Converter\SliderEnabledConverter.cs" />
     <Compile Include="Converter\StartButtonColorConverter.cs" />
     <Compile Include="Converter\ScrollChartVisibilityConverter.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Exceptions\ChosenPortUnavailableException.cs" />
     <Compile Include="Exceptions\FileIsAlreadyOpenException.cs" />
     <Compile Include="Exceptions\NoPortAvailableException.cs" />
+    <Compile Include="Exceptions\NotAllChannelsChosen.cs" />
     <Compile Include="ExportWindow.xaml.cs">
       <DependentUpon>ExportWindow.xaml</DependentUpon>
     </Compile>
@@ -138,7 +140,7 @@
     <Compile Include="Models\Chart\ChartInputModelus\Factories\ChartInputType.cs" />
     <Compile Include="Models\Chart\WindowingDataHelper.cs" />
     <Compile Include="Models\Data\ChannelModel.cs" />
-    <Compile Include="Models\Data\Data.cs" />
+    <Compile Include="Models\Data\DataStorage.cs" />
     <Compile Include="Models\Data\DataConnector.cs" />
     <Compile Include="Models\Data\IObservable.cs" />
     <Compile Include="Models\Data\ObservableConcurrentList.cs" />
@@ -150,11 +152,20 @@
     <Compile Include="Models\MessageBoxes\RequestYesNoMessageBox.cs" />
     <Compile Include="Models\MessageBoxes\SuccessMessageBox.cs" />
     <Compile Include="Models\ModbusSensor\Chart.cs" />
-    <Compile Include="Models\ModbusSensor\ChartDataPreparation.cs" />
-    <Compile Include="Models\ModbusSensor\ModbusInput.cs" />
-    <Compile Include="Models\ModbusSensor\ModBusInputs\ModBusInputBase.cs" />
+    <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPreparationEnergy.cs" />
+    <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPreparationPower.cs" />
+    <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPreparationStandart.cs" />
+    <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPrepatationBase.cs" />
+    <Compile Include="Models\ModbusSensor\Factories\AbstractModbusSensorFactory.cs" />
+    <Compile Include="Models\ModbusSensor\Factories\ModbusSensorSimpleFactory.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ModbusInputEnergy.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ModBusInputPower.cs" />
     <Compile Include="Models\ModbusSensor\ModbusSensor.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ModBusInputBase.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ModBusInputStandart.cs" />
+    <Compile Include="Models\ModbusSensor\ModbusSensorController.cs" />
     <Compile Include="Models\ModbusSensor\ModbusSensorData.cs" />
+    <Compile Include="Models\ModbusSensor\SensorTypeNameGetter.cs" />
     <Compile Include="Models\Modbus\ModBusCommandsList.cs" />
     <Compile Include="Models\Modbus\ModBusCRC.cs" />
     <Compile Include="Models\Modbus\ModBusValueConverter.cs" />
@@ -178,6 +189,8 @@
     <Compile Include="ViewModels\ChartViewModels\ChartInputTypeViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\ChartViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\CurrentChannelValueViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModels\ModbusSensorViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModels\SensorTypeViewModel.cs" />
     <Compile Include="ViewModels\FileNameViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />
@@ -238,6 +251,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Models\Helpers\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>

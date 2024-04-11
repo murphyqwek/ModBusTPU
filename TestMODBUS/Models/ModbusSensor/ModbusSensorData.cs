@@ -5,54 +5,75 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using TestMODBUS.Models.Services;
 
 namespace TestMODBUS.Models.ModbusSensor
 {
-    internal class ModbusSensorData
+    public class ModbusSensorData
     {
         public ObservableCollection<string> CurrentValues { get; }
-        public ObservableCollection<bool> UsingPorts { get; }
-
-        private Dictionary<string, int> CurrentValuesIndexDictionary = new Dictionary<string, int>();
+        public ObservableCollection<bool> UsingChannels { get; }
 
         public ModbusSensorData() 
         {
             CurrentValues = new ObservableCollection<string>();
-            UsingPorts = new ObservableCollection<bool>();
+            UsingChannels = new ObservableCollection<bool>();
 
-            SetUpUsingPorts();
+            SetUpUsingChannels();
         }
 
-        private void SetUpUsingPorts()
+        private void SetUpUsingChannels()
         {
             for(int i = 0; i < ChannelColors.Colors.Count; i++)
             {
-                UsingPorts.Add(false);
+                UsingChannels.Add(false);
             }
         }
 
-        public void SetUpCurrentValues(IEnumerable<string> NameofValues)
+        public void UnusedAllChannels()
         {
-            CurrentValues.Clear();
-            CurrentValuesIndexDictionary.Clear();
+            for (int i = 0; i < UsingChannels.Count; i++)
+                SetUsingChannel(i, false);
+        }
 
-            int i = 0;
-            foreach(var valueName in NameofValues)
+        public void ClearCurrentValues()
+        {
+            Application.Current.Dispatcher.Invoke(() => CurrentValues.Clear());
+        }
+
+        public void SetCurrentValues(IEnumerable<string> values)
+        {
+            ClearCurrentValues();
+            //TODO maybe not work
+            foreach(var value in values)
+                Application.Current.Dispatcher.Invoke(() => CurrentValues.Add(value));
+        }
+
+        public void SetUsingChannel(int Channel, bool State)
+        {
+            if(Channel < 0 || Channel > 7)
+                throw new ArgumentOutOfRangeException(nameof(Channel));
+
+            UsingChannels[Channel] = State;
+        }
+
+        public List<int> GetUsingChannels()
+        {
+            List<int> UsingChannelsInt = new List<int>();
+
+            for(int i = 0; i < UsingChannels.Count; i++)
             {
-                CurrentValues.Add("");
-                CurrentValuesIndexDictionary.Add(valueName, i);
-                i++;
+                if (UsingChannels[i])
+                    UsingChannelsInt.Add(i);
             }
+
+            return UsingChannelsInt;
         }
 
-        public void SetCurrentValue(string ValueName, string Value)
+        public bool GetChannelUsingState(int Channel)
         {
-            if (!CurrentValuesIndexDictionary.ContainsKey(ValueName))
-                throw new ArgumentException($"Doesn't contain value named {ValueName}");
-
-            int index = CurrentValuesIndexDictionary[ValueName];
-            CurrentValues[index] = Value;
+            return UsingChannels[Channel];
         }
     }
 }

@@ -63,7 +63,7 @@ namespace TestMODBUS.Models.Chart.ChartInputModelus
             return true;
         }
 
-        private ObservablePoint[] GetPoints(int LeftIndex, int RightIndex, Data.Data DataStorage)
+        private ObservablePoint[] GetPoints(int LeftIndex, int RightIndex, Data.DataStorage DataStorage)
         {
             if (_channelTok == -1 || _channelVolt == -1)
                 return null;
@@ -76,7 +76,7 @@ namespace TestMODBUS.Models.Chart.ChartInputModelus
             return PowerPoints;
         }
 
-        public override void UpdateSeries(int LeftIndex, int RightIndex, Data.Data DataStorage)
+        public override void UpdateSeries(int LeftIndex, int RightIndex, Data.DataStorage DataStorage)
         {
             var Points = GetPoints(LeftIndex, RightIndex, DataStorage);
 
@@ -87,7 +87,7 @@ namespace TestMODBUS.Models.Chart.ChartInputModelus
             _chart.Series[0].Values.AddRange(Points);
         }
 
-        public override double GetYMax(int LeftIndex, int RightIndex, Data.Data DataStorage, double YMaxGap)
+        public override double GetYMax(int LeftIndex, int RightIndex, Data.DataStorage DataStorage, double YMaxGap)
         {
             var Points = GetPoints(LeftIndex, RightIndex, DataStorage);
 
@@ -97,7 +97,7 @@ namespace TestMODBUS.Models.Chart.ChartInputModelus
             return WindowingDataHelper.GetMaxValueOfArray(Points) + YMaxGap;
         }
 
-        public override double GetYMin(int LeftIndex, int RightIndex, Data.Data DataStorage, double YMinGap)
+        public override double GetYMin(int LeftIndex, int RightIndex, Data.DataStorage DataStorage, double YMinGap)
         {
             var Points = GetPoints(LeftIndex, RightIndex, DataStorage);
 

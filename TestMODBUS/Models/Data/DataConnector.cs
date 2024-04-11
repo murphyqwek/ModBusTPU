@@ -12,9 +12,9 @@ namespace TestMODBUS.Models.Data
     public class DataConnector
     {
         //Хранилще данных, в которое мы будем сохранять данные
-        private Data _data;
+        private DataStorage _data;
 
-        public DataConnector(Data Data) 
+        public DataConnector(DataStorage Data) 
         { 
             if(Data == null) 
                 throw new ArgumentNullException(nameof(Data));
@@ -72,7 +72,16 @@ namespace TestMODBUS.Models.Data
             for (int Channel = 0; Channel < _data.ChannelsData.Count; Channel++)
             {
                 double x = Convert.ToDouble(Time);
-                double y = GetRandomDouble(rand);
+
+                //double y = GetRandomDouble(rand);
+
+                double y = 0;
+                if (ChannelTypeList.TokChannels.Contains(Channel))
+                    y = (double)rand.Next(270, 290);
+                else if (ChannelTypeList.VoltChannels.Contains(Channel))
+                    y = (double)rand.Next(30, 45);
+                else
+                    y = GetRandomDouble(rand);
 
                 _data.AddNewPoint(new Point(x, y), Channel);
             }

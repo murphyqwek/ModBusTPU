@@ -78,7 +78,7 @@ namespace TestMODBUS.Models.Excel
             }
         }
 
-        public static void SaveData(Data.Data DataStorage, string FilePath)
+        public static void SaveData(Data.DataStorage DataStorage, string FilePath)
         {
             if (isFileOpen(FilePath))
                 throw new FileIsAlreadyOpenException(FilePath);

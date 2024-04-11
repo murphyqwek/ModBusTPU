@@ -35,14 +35,14 @@ namespace TestMODBUS.Models.Chart.ChartInputModelus
             ChannelToSeriesDictionary.Remove(Channel);
         }
 
-        private ObservablePoint[] GetPoints(int LeftIndex, int RightIndex, Data.Data DataStorage, int Channel)
+        private ObservablePoint[] GetPoints(int LeftIndex, int RightIndex, Data.DataStorage DataStorage, int Channel)
         {
             var ChannelPoints = WindowingDataHelper.GetWindowData(LeftIndex, RightIndex, DataStorage.GetChannelData(Channel));
 
             return ChannelPoints;
         }
 
-        public override double GetYMax(int LeftIndex, int RightIndex, Data.Data DataStorage, double YMaxGap)
+        public override double GetYMax(int LeftIndex, int RightIndex, Data.DataStorage DataStorage, double YMaxGap)
         {
             List<ObservablePoint> Points = new List<ObservablePoint>();
             foreach (int Channel in ChannelToSeriesDictionary.Keys)
@@ -54,7 +54,7 @@ namespace TestMODBUS.Models.Chart.ChartInputModelus
             return WindowingDataHelper.GetMaxValueOfArray(Points.ToArray()) + YMaxGap;
         }
 
-        public override double GetYMin(int LeftIndex, int RightIndex, Data.Data DataStorage, double YMinGap)
+        public override double GetYMin(int LeftIndex, int RightIndex, Data.DataStorage DataStorage, double YMinGap)
         {
             List<ObservablePoint> Points = new List<ObservablePoint>();
             foreach (int Channel in ChannelToSeriesDictionary.Keys)
@@ -66,7 +66,7 @@ namespace TestMODBUS.Models.Chart.ChartInputModelus
             return WindowingDataHelper.GetMinValueOfArray(Points.ToArray()) + YMinGap;
         }
 
-        public override void UpdateSeries(int LeftIndex, int RightIndex, Data.Data DataStorage)
+        public override void UpdateSeries(int LeftIndex, int RightIndex, Data.DataStorage DataStorage)
         {
             foreach (int Channel in ChannelToSeriesDictionary.Keys)
             {

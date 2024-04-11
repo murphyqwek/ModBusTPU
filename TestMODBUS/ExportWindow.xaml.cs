@@ -21,7 +21,7 @@ namespace TestMODBUS
     /// </summary>
     public partial class ExportWindow : Window
     {
-        public ExportWindow(Data Data, string name)
+        public ExportWindow(DataStorage Data, string name)
         {
             InitializeComponent();
             ExportViewModel viewModel = new ExportViewModel(Data, name);

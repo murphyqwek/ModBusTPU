@@ -62,6 +62,9 @@ namespace TestMODBUS.Models.Chart
         {
             int index = BinFind(time, channelData);
 
+            if (index == channelData.Count)
+                return index - 1;
+
             //"Окно" должно немного выходить за границы отображаемого "окна", чтобы график не обрывался в начале и в конце 
             return index == channelData.Count - 1 ? index : index + 1; 
         }

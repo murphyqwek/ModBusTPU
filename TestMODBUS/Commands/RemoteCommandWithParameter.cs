@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace TestMODBUS.Commands
 {
-    internal class RemoteCommandWithParameter : ICommand
+    public class RemoteCommandWithParameter : ICommand
     {
         public event EventHandler CanExecuteChanged;
 

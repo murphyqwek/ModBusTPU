@@ -12,6 +12,8 @@ using System.Windows;
 using TestMODBUS.Models.Port.Interfaces;
 using TestMODBUS.Models.Chart.ChartInputModelus;
 using TestMODBUS.Models.Chart.ChartInputModelus.Factories;
+using TestMODBUS.Models.ModbusSensor;
+using TestMODBUS.Models.ModbusSensor.Factories;
 
 namespace TestMODBUS.ViewModels
 {
@@ -21,16 +23,17 @@ namespace TestMODBUS.ViewModels
         public ObservableCollection<string> Ports => ListAvailablePorts.AvailablePorts;
         public List<int> Speeds => ListAvailableSpeeds.ListPortSpeeds;
 
-        public Data Data { get => _data; }
+        public DataStorage Data { get => _data; }
         public ChartModel ChartTok1 { get => chart1; }
         public ChartModel ChartTok2 { get => chart2; }
         public ChartModel ChartTok3 { get => chart3; }
         public ChartModel ChartTok4 { get => chart4; }
 
+        public ModbusSensor Sensor1 { get => sensor1; }
+
         public ChartViewModel TestChartModel { get; }
 
-        public bool IsDrawing => chart1.IsDrawing;
-        public int MaxStartTime => chart1.MaxWindowTime;
+        public bool IsDrawing => sensor1.Chart.IsDrawing;
 
         public FileNameViewModel FileNameViewModel { get; }
 
@@ -51,7 +54,7 @@ namespace TestMODBUS.ViewModels
                 port.SetPortSpeed(value);
             }
         }
-        public bool IsPortOpen => port.IsPortOpen || _isWorking;
+        public bool IsWorking => port.IsPortOpen || _isWorking;
         public int MeasureDelay { get; set; } = 300;
 
         public bool Debug 
@@ -75,11 +78,13 @@ namespace TestMODBUS.ViewModels
 
         private IPortListener _portListener;
         private ObservablePort port;
-        private Data _data;
+        private DataStorage _data;
         private ChartModel chart1;
         private ChartModel chart2;
         private ChartModel chart3;
         private ChartModel chart4;
+
+        private ModbusSensor sensor1;
         private bool _debug = false;
         private bool _isWorking = false;
 
@@ -95,14 +100,21 @@ namespace TestMODBUS.ViewModels
             try
             {
                 _portListener.StartListen(MeasureDelay);
-                _isWorking = true;
-                OnPropertyChanged(nameof(IsPortOpen));
+                sensor1.StartWorking();
+                /*
                 chart1.StartDrawing();
                 chart2.StartDrawing();
                 chart3.StartDrawing();
                 chart4.StartDrawing();
+                */
+                _isWorking = true;
+                OnPropertyChanged(nameof(IsWorking));
             }
             catch (NoPortAvailableException ex)
+            {
+                ErrorMessageBox.Show(ex.Message);
+            }
+            catch(NotAllChannelsChosen ex)
             {
                 ErrorMessageBox.Show(ex.Message);
             }
@@ -123,11 +135,14 @@ namespace TestMODBUS.ViewModels
         {
             _portListener.StopListen();
             _isWorking = false;
-            OnPropertyChanged(nameof(IsPortOpen));
+            OnPropertyChanged(nameof(IsWorking));
+            sensor1.StopWorkingAndMoveToStart();
+            /*
             chart1.StopDrawingAndMoveToStart();
             chart2.StopDrawingAndMoveToStart();
             chart3.StopDrawingAndMoveToStart();
             chart4.StopDrawingAndMoveToStart();
+            */
         }
         #endregion
 
@@ -181,10 +196,15 @@ namespace TestMODBUS.ViewModels
         {
             if (_portListener != null)
                 _portListener.StopListen();
-            chart1.StopDrawing();
-            chart2.StopDrawing();
-            chart3.StopDrawing();
-            chart4.StopDrawing();
+            chart1?.StopDrawing();
+            chart2?.StopDrawing();
+            chart3?.StopDrawing();
+            chart4?.StopDrawing();
+
+            sensor1?.StopWorking();
+
+
+
         }
 
         #region On Port Closed By Error
@@ -192,10 +212,12 @@ namespace TestMODBUS.ViewModels
         public void OnPortErrorClosedByError()
         {
             ErrorMessageBox.Show("Возникли проблемы с портом. Проверьте соединение");
-            chart1.StopDrawingAndMoveToStart();
-            chart2.StopDrawingAndMoveToStart();
-            chart3.StopDrawingAndMoveToStart();
-            chart4.StopDrawingAndMoveToStart();
+            chart1?.StopDrawingAndMoveToStart();
+            chart2?.StopDrawingAndMoveToStart();
+            chart3?.StopDrawingAndMoveToStart();
+            chart4?.StopDrawingAndMoveToStart();
+
+            sensor1?.StopWorking();
         }
 
         #endregion
@@ -206,18 +228,22 @@ namespace TestMODBUS.ViewModels
         {
             //Инициализируем объекты
             port = new ObservablePort();
-            _data = new Data();
+            _data = new DataStorage();
 
             var _dataConnector = new DataConnector(_data);
             _portListener = new PortListener(port, _dataConnector, OnPortErrorClosedByError);
 
             //Инициализируем Чарты
-            ChartInputSimpleFactory ChartInputFactory = new ChartInputSimpleFactory();
-            chart1 = new ChartModel(_data, new int[] { 0, 5 }, "Мощность", ChartInputFactory, ChartInputType.Power);
-            chart2 = new ChartModel(_data, new int[] { 1 }, "Ток 2", ChartInputFactory, ChartInputType.Standart);
-            chart3 = new ChartModel(_data, new int[] { 6 }, "Напряжение", ChartInputFactory, ChartInputType.Standart);
-            chart4 = new ChartModel(_data, new int[] { 0, 1 }, "Ток 1, Ток 2", ChartInputFactory, ChartInputType.Standart);
+            //ChartInputSimpleFactory ChartInputFactory = new ChartInputSimpleFactory();
+            //chart1 = new ChartModel(_data, new int[] { 0, 5 }, "Мощность", ChartInputFactory, ChartInputType.Power);
+            //chart2 = new ChartModel(_data, new int[] { 1 }, "Ток 2", ChartInputFactory, ChartInputType.Standart);
+            //chart3 = new ChartModel(_data, new int[] { 6 }, "Напряжение", ChartInputFactory, ChartInputType.Standart);
+            //chart4 = new ChartModel(_data, new int[] { 0, 1 }, "Ток 1, Ток 2", ChartInputFactory, ChartInputType.Standart);
             //TestChartModel = new ChartViewModel(chart1);
+
+            //Инициализируем модули
+            ModbusSensorSimpleFactory Factory = new ModbusSensorSimpleFactory();
+            sensor1 = new ModbusSensor(new Chart(), _data, Factory, SensorType.Standart, new int[] { 0, 5 });
 
             //Создаем класс, который будет хранить имя текущего эксперимента
             FileNameViewModel = new FileNameViewModel();

@@ -16,6 +16,7 @@
         <conv:ZoomBoolConverter x:Key="ZoomBoolConverter" />
         <conv:ScrollChartVisibilityConverter x:Key="SliderVisibility" />
         <conv:ChartModelConverter x:Key="ChartModelConverter"/>
+        <conv:ModbusSensorConverter x:Key="ModbusSensorConverter"/>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="11.0"/>
         </Style>
@@ -58,10 +59,10 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <local:ChartContol Grid.Row="0" Grid.Column="0" DataContext="{Binding ChartTok1, Converter={StaticResource ChartModelConverter}}" />
-            <local:ChartContol Grid.Row="1" Grid.Column="0" DataContext="{Binding ChartTok2, Converter={StaticResource ChartModelConverter}}" />
-            <local:ChartContol Grid.Row="0" Grid.Column="1" DataContext="{Binding ChartTok3, Converter={StaticResource ChartModelConverter}}"/>
-            <local:ChartContol Grid.Row="1" Grid.Column="1" DataContext="{Binding ChartTok4, Converter={StaticResource ChartModelConverter}}" />
+            <local:ChartContol Grid.Row="0" Grid.Column="0" DataContext="{Binding Sensor1, Converter={StaticResource ModbusSensorConverter}}" />
+            <!-- <<local:ChartContol Grid.Row="1" Grid.Column="0" DataContext="{Binding ChartTok2, Converter={StaticResource ChartModelConverter}}" />-->
+            <!-- <local:ChartContol Grid.Row="0" Grid.Column="1" DataContext="{Binding ChartTok3, Converter={StaticResource ChartModelConverter}}"/> -->
+            <!-- <local:ChartContol Grid.Row="1" Grid.Column="1" DataContext="{Binding ChartTok4, Converter={StaticResource ChartModelConverter}}" /> -->
         </Grid>
 
         <Border Grid.Row="2" BorderBrush="LightGray" BorderThickness="1">
@@ -90,7 +91,7 @@
 
                             <DockPanel Grid.Column="0">
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Порт: " Margin="5 0 5 0" VerticalAlignment="Center"/>
-                                <ComboBox Grid.Row="0" Style="{StaticResource ModifiedComboBox}" Grid.Column="1" Name="PortComboBox" Margin="5" ItemsSource="{Binding Ports}" IsReadOnly="{Binding IsPortOpen}" SelectedItem="{Binding PortName}" PreviewMouseLeftButtonDown="PortComboBox_PreviewMouseLeftButtonDown">
+                                <ComboBox Grid.Row="0" Style="{StaticResource ModifiedComboBox}" Grid.Column="1" Name="PortComboBox" Margin="5" ItemsSource="{Binding Ports}" IsReadOnly="{Binding IsWorking}" SelectedItem="{Binding PortName}" PreviewMouseLeftButtonDown="PortComboBox_PreviewMouseLeftButtonDown">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding}" FontSize="9" />
@@ -101,7 +102,7 @@
 
                             <DockPanel Grid.Column="1">
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Скорость: " Margin="0 0 5 0" Background="White" VerticalAlignment="Center"/>
-                                <ComboBox Grid.Row="1" Style="{DynamicResource ModifiedComboBox}" Grid.Column="1" Name="SpeedComboBox" Margin="5" Background="White" ItemsSource="{Binding Speeds}" IsReadOnly="{Binding IsPortOpen}" SelectedItem="{Binding PortSpeed}">
+                                <ComboBox Grid.Row="1" Style="{DynamicResource ModifiedComboBox}" Grid.Column="1" Name="SpeedComboBox" Margin="5" Background="White" ItemsSource="{Binding Speeds}" IsReadOnly="{Binding IsWorking}" SelectedItem="{Binding PortSpeed}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding}" FontSize="9" />
@@ -113,7 +114,7 @@
 
                         <StackPanel Grid.Row="1" Orientation="Vertical">
                             <TextBlock Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat='Промежуток между измерениями: {0} мс.'}" Margin="5"/>
-                            <Slider Name="DelaySlider" Margin="5 0" Value="{Binding MeasureDelay}" Minimum="300" Maximum="1500" IsSnapToTickEnabled="True" TickFrequency="100" IsEnabled="{Binding IsPortOpen, Converter={StaticResource SliderEnabledConverter}}"/>
+                            <Slider Name="DelaySlider" Margin="5 0" Value="{Binding MeasureDelay}" Minimum="300" Maximum="1500" IsSnapToTickEnabled="True" TickFrequency="100" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}"/>
                         </StackPanel>
 
                     </Grid>
@@ -126,7 +127,7 @@
                             <ColumnDefinition Width="70*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="5 5" Width="100" IsCancel="{Binding IsPortOpen}">
+                        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="5 5" Width="100" IsCancel="{Binding IsWorking}">
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="5"/>
@@ -153,14 +154,14 @@
                         </Button>
 
                         <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 5 5 5">
-                            <Button Grid.Row="0" Grid.Column="0" Content="Очистить график" IsEnabled="{Binding IsPortOpen, Converter={StaticResource SliderEnabledConverter}}" Command="{Binding ClearCommand}">
+                            <Button Grid.Row="0" Grid.Column="0" Content="Очистить график" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}" Command="{Binding ClearCommand}">
                                 <Button.Resources>
                                     <Style TargetType="Border">
                                         <Setter Property="CornerRadius" Value="5"/>
                                     </Style>
                                 </Button.Resources>
                             </Button>
-                            <Button Grid.Row="0" Grid.Column="0" Content="Сохранить график" HorizontalAlignment="Right" IsEnabled="{Binding IsPortOpen, Converter={StaticResource SliderEnabledConverter}}" Command="{Binding ExportDataCommand}">
+                            <Button Grid.Row="0" Grid.Column="0" Content="Сохранить график" HorizontalAlignment="Right" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}" Command="{Binding ExportDataCommand}">
                                 <Button.Resources>
                                     <Style TargetType="Border">
                                         <Setter Property="CornerRadius" Value="5"/>

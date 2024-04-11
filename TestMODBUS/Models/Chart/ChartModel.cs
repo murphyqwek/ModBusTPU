@@ -145,7 +145,7 @@ namespace TestMODBUS.ViewModels
         private const double YMinStandart = -10.0;
 
         private double _currentrTime = 0; 
-        private Data _dataStorage;
+        private DataStorage _dataStorage;
         private bool isDrawing = false;
 
         private string _title;
@@ -166,7 +166,7 @@ namespace TestMODBUS.ViewModels
 
         public Dictionary<int, LineSeries> SeriesByChannel = new Dictionary<int, LineSeries>();
 
-        public ChartModel(Data DataStorage, int[]Channels, string Title, AbstractChartInputFactory ChartInputFactory, ChartInputType ChartInputType)
+        public ChartModel(DataStorage DataStorage, int[]Channels, string Title, AbstractChartInputFactory ChartInputFactory, ChartInputType ChartInputType)
         {
             if (DataStorage == null)
                 throw new ArgumentNullException(nameof(DataStorage));

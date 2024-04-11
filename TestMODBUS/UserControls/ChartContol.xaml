@@ -44,7 +44,7 @@
             <TextBlock Text="{Binding Title}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25 0"/>
             <ComboBox Width="100" 
                       HorizontalAlignment="Center" 
-                      ItemsSource="{Binding ChartInputTypes}" SelectedItem="{Binding CurrentChartInputType}"
+                      ItemsSource="{Binding SensorTypes}" SelectedItem="{Binding CurrentSensorType}"
                       >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -118,18 +118,6 @@
             ItemsSource="{Binding CurrentValues}"
             Visibility="{Binding IsDrawing, Converter={StaticResource SliderVisibility}}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock>
-                        <Run Text="{Binding Title, Mode=OneWay}"/>
-                        <Run Text=": "/>
-                        <Run Text="{Binding ChannelValue, Mode=OneWay, Converter={StaticResource DoubleConverter}}"/>
-                        
-                        <Run Text="{Binding ValueType, Mode=OneWay}"/>
-                    </TextBlock>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Vertical" 

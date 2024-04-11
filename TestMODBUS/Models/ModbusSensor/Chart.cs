@@ -1,5 +1,6 @@
 ﻿using LiveCharts;
 using LiveCharts.Defaults;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Wpf;
 using LiveCharts.Wpf.Charts.Base;
 using System;
@@ -8,17 +9,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using TestMODBUS.Models.Data;
 using TestMODBUS.Models.INotifyPropertyBased;
 
 namespace TestMODBUS.Models.ModbusSensor
 {
-    struct SerieData
+    public struct SerieData
     {
         public string SerieTitle;
         public ObservablePoint[] Points;
     }
 
-    internal class Chart : INotifyBase
+    public class Chart : INotifyBase
     {
         #region Constants
 
@@ -93,7 +95,7 @@ namespace TestMODBUS.Models.ModbusSensor
             }
         }
 
-        public bool isDrawing
+        public bool IsDrawing
         {
             get => _isDrawing;
             private set
@@ -114,6 +116,16 @@ namespace TestMODBUS.Models.ModbusSensor
             }
         }
 
+        public int MaxWindowTime
+        {
+            get => _maxWindowX;
+            set
+            {
+                _maxWindowX = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Private
@@ -125,9 +137,13 @@ namespace TestMODBUS.Models.ModbusSensor
 
         private double _currentX = 0;
 
+        private int _maxWindowX;
+
         private bool _isDrawing = false;
 
         private string _title;
+
+        private Dictionary<string, ISeriesView> SerieByTitle = new Dictionary<string, ISeriesView>();
 
         #endregion
 
@@ -140,13 +156,18 @@ namespace TestMODBUS.Models.ModbusSensor
         public void StartDrawing()
         {
             ClearChannels();
-            ChangeWindowLocation(0, MaxWindowWidth);
-            isDrawing = true;
+            MoveToStart();
+            IsDrawing = true;
         }
 
         public void StopDrawing()
         {
-            isDrawing = false;
+            IsDrawing = false;
+        }
+
+        public void MoveToStart()
+        {
+            ChangeWindowPosition(0, MaxWindowWidth);
         }
 
         public void UpdateAllSeriesPoints(IEnumerable<SerieData> UpdatingSeries)
@@ -154,7 +175,7 @@ namespace TestMODBUS.Models.ModbusSensor
             List<ObservablePoint> AllNewPoints = new List<ObservablePoint>();
             foreach (var UpdatingSerie in UpdatingSeries)
             {
-                UpdateSeriePoints(UpdatingSerie.SerieTitle, UpdatingSerie.Points);
+                UpdateSeriePoints(UpdatingSerie.SerieTitle, UpdatingSerie.Points, true);
                 AllNewPoints.AddRange(UpdatingSerie.Points);
             }
 
@@ -163,20 +184,16 @@ namespace TestMODBUS.Models.ModbusSensor
 
         public void UpdateSeriePoints(string SerieTitle, IEnumerable<ObservablePoint> Points, bool IsUpdatingEdgesY = false)
         {
-            foreach(var serie in Series)
-            {
-                if (serie.Title != SerieTitle)
-                    continue;
+            if(!SerieByTitle.ContainsKey(SerieTitle))
+                throw new ArgumentException($"Didn't find Serie named {SerieTitle}");
 
-                serie.Values.AddRange(Points);
+            var serie = SerieByTitle[SerieTitle];
 
-                if (IsUpdatingEdgesY)
-                    UpdateEdgesY(Points);
+            serie.Values.Clear();
+            serie.Values.AddRange(Points);
 
-                return;
-            }
-
-            throw new ArgumentException($"Didn't find Serie named {SerieTitle}");
+            if (IsUpdatingEdgesY)
+                UpdateEdgesY(Points);
         }
 
         private void UpdateEdgesY(IEnumerable<ObservablePoint> Points)
@@ -194,17 +211,56 @@ namespace TestMODBUS.Models.ModbusSensor
             YMin = Math.Min(newYMin, YMin);
         }
 
-        public void ChangeWindowLocation(double StartPoint, double EndPoint)
+        public void ChangeWindowPosition(double RightEdge)
+        {
+            XMin = RightEdge < MaxWindowWidth ? 0 : RightEdge - MaxWindowWidth; //Нужно, чтобы в начале считывания данных отображаемое окно не двигалось, пока не пройдёт больше MaxTimeWidth
+            XMax = RightEdge < MaxWindowWidth ? MaxWindowWidth : RightEdge; //Крайняя точка, до которой будет отрисовываться графика во время считывания данных
+
+            CurrentX = RightEdge;
+        }
+
+        public void ChangeWindowStartPoint(double newStartPoint, double MaxTime)
+        {
+            if (newStartPoint < 0)
+                newStartPoint = 0;
+            if (newStartPoint + MaxWindowWidth >= MaxTime && MaxTime >= MaxWindowWidth)
+                newStartPoint = MaxTime - MaxWindowWidth;
+
+            ChangeWindowPosition(newStartPoint, newStartPoint + MaxWindowWidth);
+        }
+
+        public void ChangeWindowPosition(double StartPoint, double EndPoint)
         {
             XMin = StartPoint;
             XMax = EndPoint;
         }
 
-        public void AddNewLineSeries(string Title, Brush Color)
+        public void AddNewLineSerie(string Title, Brush Color)
         {
             var NewLineSerie = CreateNewLineSeries(Title, Color);
 
             Series.Add(NewLineSerie);
+            SerieByTitle.Add(Title, NewLineSerie);
+        }
+
+        public void RemoveAllSeries()
+        {
+            Series.Clear();
+            SerieByTitle.Clear();
+        }
+
+        public void RemoveSerie(string Title)
+        {
+            foreach (var Serie in Series) 
+            {
+                if (Serie.Title == Title)
+                {
+                    Series.Remove(Serie);
+                    SerieByTitle.Remove(Title);
+                    break;
+                }
+            }
+
         }
 
         //Создание серии

@@ -98,7 +98,7 @@ namespace TestMODBUS.ViewModels
 
         #endregion
 
-        public ExportViewModel(Data Data, string FileName) 
+        public ExportViewModel(DataStorage Data, string FileName) 
         {
             this.FileName = FileName;
             ExportChannels = new ObservableCollection<ChannelViewModel>();
@@ -110,7 +110,7 @@ namespace TestMODBUS.ViewModels
             ClearChannelsExportSettingsCommand = new RemoteCommand(ClearChannelsExportSettingsHandle);
         }
 
-        private void UploadChannelsData(Data Data)
+        private void UploadChannelsData(DataStorage Data)
         {
             for(int i = 0; i < Data.ChannelsData.Count; i++) 
             {
