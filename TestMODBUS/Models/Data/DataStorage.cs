@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TestMODBUS.Models.Data
@@ -10,6 +11,8 @@ namespace TestMODBUS.Models.Data
     //Дата-класс, который хранит данные со всех каналов
     public class DataStorage
     {
+        public const int MaxChannelCount = 8;
+
         public List<ObservableCollection<Point>> ChannelsData;
         public Dictionary<string, ObservableCollection<Point>> ExtraData;
 
@@ -17,9 +20,51 @@ namespace TestMODBUS.Models.Data
         {
             ChannelsData = new List<ObservableCollection<Point>>();
             ExtraData = new Dictionary<string, ObservableCollection<Point>>();
-            for(int i = 0; i < 8; i++)
+            for(int i = 0; i < MaxChannelCount; i++)
             {
                 ChannelsData.Add(new ObservableCollection<Point>());
+            }
+        }
+
+        [JsonConstructor]
+        public DataStorage(List<ObservableCollection<Point>> channelsData, Dictionary<string, ObservableCollection<Point>> extraData)
+        {
+            TrimLastPoints(channelsData);
+            ChannelsData = channelsData;
+            ExtraData = extraData;
+
+            if(ChannelsData.Count > MaxChannelCount)
+            {
+                ChannelsData.Clear();
+            }
+            for(int i = ChannelsData.Count; i < MaxChannelCount; i++)
+            {
+                ChannelsData.Add(new ObservableCollection<Point>());
+            }
+        }
+
+        private void TrimLastPoints(List<ObservableCollection<Point>> channelsData)
+        {
+            if (channelsData.Count == 0)
+                return;
+
+            //Получаем наименьшее количество полученных точек
+            int minLenght = channelsData[0].Count;
+            foreach(var Channel in channelsData)
+            {
+                minLenght = Math.Min(Channel.Count, minLenght);
+            }
+
+            if (minLenght == channelsData.Count)
+                return;
+
+            foreach (var Channel in channelsData)
+            {
+                if (Channel.Count == minLenght)
+                    continue;
+                int ChannelLenght = Channel.Count;
+                for (int i = minLenght; i < ChannelLenght; i++)
+                    Channel.RemoveAt(Channel.Count - 1);
             }
         }
 
@@ -87,7 +132,7 @@ namespace TestMODBUS.Models.Data
 
         public void AddNewPoint(Point point, int Channel) 
         {
-            if (Channel < 0 || Channel > 7)
+            if (Channel < 0 || Channel > MaxChannelCount - 1)
                 throw new ArgumentOutOfRangeException("Channel");
             ChannelsData[Channel].Add(point);
         }

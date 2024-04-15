@@ -86,7 +86,6 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
             }
 
             return new List<ObservablePoint>();
-            //throw new Exception("Не выбран канал напряжения для энергии");
         }
 
         private List<ObservablePoint> ConvertToObservablePoints(ObservableCollection<Point> Points)

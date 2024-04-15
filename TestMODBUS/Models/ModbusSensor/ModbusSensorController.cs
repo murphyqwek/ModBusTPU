@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
+using TestMODBUS.Models.ModbusSensor.ModBusInputs;
 
 namespace TestMODBUS.Models.ModbusSensor
 {
@@ -33,10 +34,23 @@ namespace TestMODBUS.Models.ModbusSensor
             _sensorData.UnusedAllChannels();
             _sensorData.ClearCurrentValues();
 
-            foreach (var Channel in _dataStorage.ChannelsData)
-                Channel.CollectionChanged -= Handler;
+            DetachImputModuleFromDataStorage(Handler);
 
             _chart.RemoveAllSeries();
+        }
+
+        public void DetachImputModuleFromDataStorage(NotifyCollectionChangedEventHandler Handler)
+        {
+            if (_dataStorage != null)
+            {
+                foreach (var Channel in _dataStorage.ChannelsData)
+                    Channel.CollectionChanged -= Handler;
+            }
+        }
+
+        public void ChangeDataStorage(DataStorage NewDataStorage)
+        {
+            _dataStorage = NewDataStorage;
         }
 
         public void StartDrawing()
@@ -50,12 +64,17 @@ namespace TestMODBUS.Models.ModbusSensor
             _chart.StopDrawing();
         }
 
-        public void StopDrawingAndMoveToStart()
+        public void MoveToStart()
         {
-            StopDrawing();
             _chart.MoveToStart();
             _chart.MaxWindowTime = _dataStorage.GetChannelLength() != 0 ? Convert.ToInt32(_dataStorage.GetLastTime()) - Convert.ToInt32(Chart.MaxWindowWidth) : 0;
             UpdateChartByCurrentX(0);
+        }
+
+        public void StopDrawingAndMoveToStart()
+        {
+            StopDrawing();
+            MoveToStart();
         }
 
         public void SetUsingChannel(int Channel, bool State) => _sensorData.SetUsingChannel(Channel, State);

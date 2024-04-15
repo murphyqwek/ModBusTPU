@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
+using TestMODBUS.Exceptions;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
 
@@ -17,6 +18,7 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
         public ModBusInputBase(ModbusSensorController Controller) 
         { 
             _controller = Controller;
+            _controller.UpdateChartAfterNewChannelAdded();
         }
 
         public ModBusInputBase(ModbusSensorController Controller, IEnumerable<int> Channels)
@@ -28,9 +30,10 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
 
             foreach (int Channel in Channels)
                 AddNewChannel(Channel);
+            _controller.UpdateChartAfterNewChannelAdded();
         }
 
-        public virtual void Detach()
+        public virtual void DetachFromController()
         {
             _controller.DetachInputModule(DataStorageCollectionChangedHandler);
             _controller = null;
@@ -47,15 +50,24 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
 
         protected virtual void UpdateSeries()
         {
-            _controller.UpdateChart(true);
+            if(_controller != null )
+                _controller.UpdateChart(true);
         }
 
-        public virtual bool Start()
+        public virtual void Start()
         {
             if (!CheckAllChannelsChosen())
-                return false;
+                throw new NotAllChannelsChosen();
             _controller.StartDrawing();
-            return true;
+        }
+
+        public void DetachFromDataStorage() => _controller.DetachImputModuleFromDataStorage(DataStorageCollectionChangedHandler);
+
+        public void ResignToAllUsingChannels()
+        {
+            ResignDataStorageLastUpdateChannel();
+
+            _controller.UpdateChartAfterNewChannelAdded();
         }
 
         public virtual void Stop() 
@@ -82,12 +94,10 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
             */
             int lastChannel = _controller.GetLastChannel();
 
-            if (PreviousLastSignChannel != -1)
+            if (PreviousLastSignChannel >= 0)
                 _controller.UnsignToChannelUpdation(PreviousLastSignChannel, DataStorageCollectionChangedHandler);
-                //_dataStorage.GetChannelData(LastSignChannel).CollectionChanged -= DataStorageCollectionChangedHandler;
             if (lastChannel != -1)
                 _controller.SignToChannelUpdation(lastChannel, DataStorageCollectionChangedHandler);
-                //_dataStorage.GetChannelData(lastChannel).CollectionChanged += DataStorageCollectionChangedHandler;
         }
 
         protected void DataStorageCollectionChangedHandler(object sedner, NotifyCollectionChangedEventArgs e)

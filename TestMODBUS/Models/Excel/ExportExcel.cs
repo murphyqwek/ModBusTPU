@@ -4,6 +4,8 @@ using OfficeOpenXml.Drawing.Chart.Style;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Common;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,25 +22,7 @@ namespace TestMODBUS.Models.Excel
         //Размеры чартов в Excel
         private const int ChartHeight = 450;
         private const int ChartWidth = 900;
-        
-        //Проверка, открыт ли файл в другой программе
-        private static bool isFileOpen(string FilePath)
-        {
-            if (!File.Exists(FilePath))
-                return false;
-
-            StreamReader reader;
-            try
-            {
-                reader = new StreamReader(FilePath);
-                reader.Close();
-                return false;
-            }
-            catch (IOException)
-            {
-                return true;
-            }
-        }
+       
 
         //Библиотека EPPlus платная для коммерческого использования и бесплатная для некомерческого использования
         //Перед тем, как её использовать в программе нужно указать тип LicenseContext
@@ -47,9 +31,9 @@ namespace TestMODBUS.Models.Excel
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
 
-        public static void SaveData(List<ChannelModel> Channels, string FilePath)
+        public static void SaveData(List<ChannelModel> Channels, string FilePath, Dictionary<string, string> CommentariesData = null)
         {
-            if (isFileOpen(FilePath))
+            if (OpenFileHelper.isFileOpen(FilePath))
                 throw new FileIsAlreadyOpenException(FilePath);
 
             using (ExcelPackage excelPackage = new ExcelPackage())
@@ -60,6 +44,11 @@ namespace TestMODBUS.Models.Excel
                 //Создаём лист с графиками и лист с данными с каналов
                 ExcelWorksheet graphicSheet = excelPackage.Workbook.Worksheets.Add("Графики");
                 ExcelWorksheet dataSheet = excelPackage.Workbook.Worksheets.Add("Данные с каналов");
+
+                if(CommentariesData != null)
+                {
+                    FillCommentaries(excelPackage, CommentariesData);
+                }
 
                 int ChartIndex = 0;
                 foreach(var ChannelModel in Channels)
@@ -78,9 +67,26 @@ namespace TestMODBUS.Models.Excel
             }
         }
 
+        private static void FillCommentaries(ExcelPackage ExcelPackage, Dictionary<string, string> CommentariesData)
+        {
+            ExcelWorksheet Commentaries = ExcelPackage.Workbook.Worksheets.Add("Комментарии");
+
+            Commentaries.Columns[0].AutoFit();
+            Commentaries.Columns[1].AutoFit();
+
+            int index = 1;
+            foreach(var CommentName in CommentariesData.Keys)
+            {
+                Commentaries.Cells[index, 1].Value = CommentName;//GetChannelTitle(ChannelIndex);
+                Commentaries.Cells[index, 2].Value = CommentariesData[CommentName];
+                Commentaries.Cells[index, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                Commentaries.Cells[index, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            }
+        }
+
         public static void SaveData(Data.DataStorage DataStorage, string FilePath)
         {
-            if (isFileOpen(FilePath))
+            if (OpenFileHelper.isFileOpen(FilePath))
                 throw new FileIsAlreadyOpenException(FilePath);
             if (DataStorage == null)
                 throw new ArgumentNullException(nameof(DataStorage));

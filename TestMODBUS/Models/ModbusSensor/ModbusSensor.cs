@@ -69,11 +69,24 @@ namespace TestMODBUS.Models.ModbusSensor
         private void PresetInputMode(AbstractModbusSensorFactory Factory, SensorType SensorType)
         {
             if (Input != null)
-                Input.Detach();
+                Input.DetachFromController();
 
             ChangeChartDataPreparation(Factory, SensorType);
 
             this.SensorType = SensorType;
+        }
+
+        public void ChangeDataStorage(DataStorage NewDataStorage)
+        {
+            this.DataStorage = NewDataStorage;
+
+            if (this.DataStorage == null)
+                this.DataStorage = new DataStorage();
+
+            Input.DetachFromDataStorage();
+            Controller.ChangeDataStorage(NewDataStorage);
+            Input.ResignToAllUsingChannels();
+            Controller.MoveToStart();
         }
 
         private void ChangeChartDataPreparation(AbstractModbusSensorFactory Factory, SensorType SensorType)
@@ -92,8 +105,7 @@ namespace TestMODBUS.Models.ModbusSensor
 
         public void StartWorking()
         {
-            if (!Input.Start())
-                throw new NotAllChannelsChosen();
+            Input.Start();
         }
 
         public void StopWorking() => Input.Stop();

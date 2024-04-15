@@ -90,8 +90,10 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Text.Json, Version=7.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Xml" />
@@ -142,6 +144,11 @@
     <Compile Include="Models\Data\ChannelModel.cs" />
     <Compile Include="Models\Data\DataStorage.cs" />
     <Compile Include="Models\Data\DataConnector.cs" />
+    <Compile Include="Models\Data\Experiment.cs" />
+    <Compile Include="Models\Data\Helpers\DataFileManager.cs" />
+    <Compile Include="Models\Data\Helpers\DataLog.cs" />
+    <Compile Include="Models\Data\Helpers\DataReader.cs" />
+    <Compile Include="Models\Data\Helpers\DataSaver.cs" />
     <Compile Include="Models\Data\IObservable.cs" />
     <Compile Include="Models\Data\ObservableConcurrentList.cs" />
     <Compile Include="Models\Data\Point.cs" />

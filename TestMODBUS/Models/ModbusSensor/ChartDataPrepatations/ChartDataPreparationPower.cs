@@ -31,17 +31,6 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
             return values;
         }
 
-        /*
-        public override IList<SerieData> GetPointsByCurrentX(IList<int> ChannelsToUpdate, DataStorage DataStorage, double CurrentX)
-        {
-            int LastChannel = ChannelsToUpdate.Last();
-            (int, int) WindowDataEdges;
-            WindowDataEdges = WindowingDataHelper.GetDataWindowIndex(CurrentX, CurrentX + Chart.MaxWindowWidth, DataStorage.GetChannelData(LastChannel));
-            int leftEdge = WindowDataEdges.Item1, rightEdge = WindowDataEdges.Item2;
-            return GetPoints(ChannelsToUpdate, DataStorage, leftEdge, rightEdge);
-        }
-        */
-
         protected override IList<SerieData> GetPoints(IList<int> ChannelsToUpdate, DataStorage DataStorage, int left, int right)
         {
             List<SerieData> SeriesToUpdate = new List<SerieData>();
