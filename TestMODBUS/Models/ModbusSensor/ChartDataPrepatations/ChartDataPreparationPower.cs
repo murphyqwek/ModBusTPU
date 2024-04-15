@@ -27,7 +27,10 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
                     Volt += DataStorage.GetChannelData(Channel).Last().Y;
             }
 
-            values.Add($"Мощность: {PowerMathModule.CountKV(Tok, Volt)} Вт");
+            double value = PowerMathModule.CountKV(Tok, Volt);
+            value = Math.Round(value, 2);
+
+            values.Add($"Мощность: {value} Вт");
             return values;
         }
 

@@ -20,9 +20,12 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
         {
             var EnergyPoints = DataStorage.GetExtraData("energy", Channels);
 
+            double value = EnergyPoints.Last().Y;
+            value = Math.Round(value, 2);
+
             IList<string> values = new List<string>
             {
-                $"Энергия: {EnergyPoints.Last().Y} кВт"
+                $"Энергия: {value} кВт"
             };
 
             return values;
