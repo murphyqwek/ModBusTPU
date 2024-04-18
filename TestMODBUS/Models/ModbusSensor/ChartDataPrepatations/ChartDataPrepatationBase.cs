@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiveCharts.Defaults;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using TestMODBUS.Models.Chart;
 using TestMODBUS.Models.Data;
+using TestMODBUS.Models.Modbus;
+using TestMODBUS.Models.Services;
 
 namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
 {
@@ -36,5 +39,25 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
         protected abstract IList<SerieData> GetPoints(IList<int> ChannelsToUpdate, DataStorage DataStorage, int left, int right);
 
         public abstract IList<string> GetCurrentValues(IList<int> Channels, DataStorage DataStorage);
+
+        protected ObservablePoint[] Convert(ObservablePoint[] Points, int Channel)
+        {
+            if (ChannelTypeList.TokChannels.Contains(Channel))
+            {
+                for (int i = 0; i < Points.Length; i++)
+                {
+                    Points[i].Y = ModBusValueConverter.ConvertToAmperValue(Points[i].Y);
+                }
+            }
+            else if (ChannelTypeList.VoltChannels.Contains(Channel))
+            {
+                for (int i = 0; i < Points.Length; i++)
+                {
+                    Points[i].Y = ModBusValueConverter.ConvertToVoltValue(Points[i].Y);
+                }
+            }
+
+            return Points;
+        }
     }
 }
