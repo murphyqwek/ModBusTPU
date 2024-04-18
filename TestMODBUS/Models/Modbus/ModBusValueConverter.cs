@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,6 +37,28 @@ namespace TestMODBUS.Models.Modbus
 
         public static double ConvertToAmperValue(double Value) => Value * AmperKoeff;
 
+        public static ObservableCollection<Point> ConvertCollectionToAmperValues(ObservableCollection<Point> ValueCollection)
+        {
+            ObservableCollection<Point> result = new ObservableCollection<Point>();
+            foreach (var Point in ValueCollection) {
+                double Value = ConvertToAmperValue(Point.Y);
+                result.Add(new Point(Point.X, Value));
+            }
+
+            return result;
+        }
+
+        public static List<Point> ConvertListToAmperValues(List<Point> ValueList)
+        {
+            List<Point> result = new List<Point>();
+            foreach (var Point in ValueList)
+            {
+                double Value = ConvertToAmperValue(Point.Y);
+                result.Add(new Point(Point.X, Value));
+            }
+
+            return result;
+        }
 
         public static double ConvertHexToVoltValue(string ChannelData)
         {
@@ -44,5 +67,29 @@ namespace TestMODBUS.Models.Modbus
         }
 
         public static double ConvertToVoltValue(double Value) => (Value - HolostMove) * VoltKoeff;// / 16 * 580 * 1.022312;
+
+        public static ObservableCollection<Point> ConvertCollectionToVoltValues(ObservableCollection<Point> ValueCollection)
+        {
+            ObservableCollection<Point> result = new ObservableCollection<Point>();
+            foreach (var Point in ValueCollection)
+            {
+                double Value = ConvertToVoltValue(Point.Y);
+                result.Add(new Point(Point.X, Value));
+            }
+
+            return result;
+        }
+
+        public static List<Point> ConvertListToVoltValues(List<Point> ValueList)
+        {
+            List<Point> result = new List<Point>();
+            foreach (var Point in ValueList)
+            {
+                double Value = ConvertToVoltValue(Point.Y);
+                result.Add(new Point(Point.X, Value));
+            }
+
+            return result;
+        }
     }
 }
