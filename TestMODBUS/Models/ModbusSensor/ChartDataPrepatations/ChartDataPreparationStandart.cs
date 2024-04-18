@@ -1,10 +1,12 @@
-﻿using System;
+﻿using LiveCharts.Defaults;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TestMODBUS.Models.Chart;
 using TestMODBUS.Models.Data;
+using TestMODBUS.Models.Modbus;
 using TestMODBUS.Models.Services;
 
 namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
@@ -16,13 +18,23 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
             IList<string> values = new List<string>();
             foreach(var channel in Channels)
             {
-                string value = $"CH_{channel}: {DataStorage.GetChannelData(channel).Last().Y}";
+                double Value = DataStorage.GetChannelData(channel).Last().Y;
+                string CurrentValue = $"CH_{channel}: ";
+                string ValueType = "";
                 if (ChannelTypeList.TokChannels.Contains(channel))
-                    value += " А";
+                {
+                    Value = ModBusValueConverter.ConvertToAmperValue(Value);
+                    ValueType += " А";
+                }
                 else if (ChannelTypeList.VoltChannels.Contains(channel))
-                    value += " В";
+                {
+                    Value = ModBusValueConverter.ConvertToVoltValue(Value);
+                    ValueType += " В";
+                }
 
-                values.Add(value);
+                CurrentValue += Value.ToString() + ValueType;
+
+                values.Add(CurrentValue);
             }
 
             return values;
@@ -35,6 +47,8 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
             foreach (int Channel in ChannelsToUpdate)
             {
                 var Points = WindowingDataHelper.GetWindowData(left, right, DataStorage.GetChannelData(Channel));
+
+                Points = Convert(Points, Channel);
 
                 SerieData serieData = new SerieData();
                 serieData.SerieTitle = $"CH_{Channel}";
