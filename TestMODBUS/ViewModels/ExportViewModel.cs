@@ -112,7 +112,7 @@ namespace TestMODBUS.ViewModels
 
         private void UploadChannelsData(DataStorage Data)
         {
-            for(int i = 0; i < Data.ChannelsData.Count; i++) 
+            for(int i = 0; i < Data.GetMaxChannelsCount(); i++) 
             {
                 ChannelModel channelModel = new ChannelModel(i, Data.GetChannelData(i).ToList());
                 _channelsExportSettings.Add(channelModel);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -13,7 +14,7 @@ namespace TestMODBUS.Models.Data
     {
         public const int MaxChannelCount = 8;
 
-        public List<ObservableCollection<Point>> ChannelsData;
+        private List<ObservableCollection<Point>> ChannelsData;
         public Dictionary<string, ObservableCollection<Point>> ExtraData;
 
         public DataStorage() 
@@ -135,6 +136,22 @@ namespace TestMODBUS.Models.Data
             if (Channel < 0 || Channel > MaxChannelCount - 1)
                 throw new ArgumentOutOfRangeException("Channel");
             ChannelsData[Channel].Add(point);
+        }
+
+        public int GetMaxChannelsCount() => MaxChannelCount;
+
+        public List<ObservableCollection<Point>> GetAllChannels() => ChannelsData;
+
+        public Dictionary<string, ObservableCollection<Point>> GetAllExtraData() => ExtraData;
+
+        public void UnsingToChannel(int Channel, NotifyCollectionChangedEventHandler Handler) => ChannelsData[Channel].CollectionChanged -= Handler;
+
+        public void SignToChannel(int Channel, NotifyCollectionChangedEventHandler Handler) => ChannelsData[Channel].CollectionChanged += Handler;
+
+        public void UnsingToAllChannels(NotifyCollectionChangedEventHandler Handler)
+        {
+            for (int i = 0; i < MaxChannelCount; i++)
+                UnsingToChannel(i, Handler);
         }
     }
 }

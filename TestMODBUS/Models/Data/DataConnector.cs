@@ -56,7 +56,7 @@ namespace TestMODBUS.Models.Data
 
         public void SaveData(byte[][] ChannelsData, int Time)
         {
-            for (int Channel = 0; Channel < _data.ChannelsData.Count; Channel++) {
+            for (int Channel = 0; Channel < _data.GetMaxChannelsCount(); Channel++) {
                 double x = Convert.ToDouble(Time);
                 double y = ParseData(ChannelsData[Channel], Channel);
 
@@ -69,7 +69,7 @@ namespace TestMODBUS.Models.Data
         public void SaveDataTest(int Time)
         {
             Random rand = new Random();
-            for (int Channel = 0; Channel < _data.ChannelsData.Count; Channel++)
+            for (int Channel = 0; Channel < _data.GetMaxChannelsCount(); Channel++)
             {
                 double x = Convert.ToDouble(Time);
 

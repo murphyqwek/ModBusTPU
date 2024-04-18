@@ -36,7 +36,7 @@ namespace TestMODBUS.Models.Data.Helpers
         {
             string outputData = "";
 
-            for (int i = 0; i < DataStorage.ChannelsData.Count; i++)
+            for (int i = 0; i < DataStorage.GetMaxChannelsCount(); i++)
                 outputData += GetCollectionData($"CH_{i}", DataStorage.GetChannelData(i));
 
             return outputData;

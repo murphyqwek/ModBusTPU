@@ -43,8 +43,7 @@ namespace TestMODBUS.Models.ModbusSensor
         {
             if (_dataStorage != null)
             {
-                foreach (var Channel in _dataStorage.ChannelsData)
-                    Channel.CollectionChanged -= Handler;
+                _dataStorage.UnsingToAllChannels(Handler);
             }
         }
 
@@ -178,9 +177,9 @@ namespace TestMODBUS.Models.ModbusSensor
             UpdateCurrentValues(CurrentValues);
         }
 
-        public void SignToChannelUpdation(int Channel, NotifyCollectionChangedEventHandler Handler) => _dataStorage.GetChannelData(Channel).CollectionChanged += Handler;
+        public void SignToChannelUpdation(int Channel, NotifyCollectionChangedEventHandler Handler) => _dataStorage.SignToChannel(Channel, Handler);
 
-        public void UnsignToChannelUpdation(int Channel, NotifyCollectionChangedEventHandler Handler) => _dataStorage.GetChannelData(Channel).CollectionChanged -= Handler;
+        public void UnsignToChannelUpdation(int Channel, NotifyCollectionChangedEventHandler Handler) => _dataStorage.UnsingToChannel(Channel, Handler);
 
     }
 }

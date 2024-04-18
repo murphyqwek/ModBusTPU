@@ -102,7 +102,7 @@ namespace TestMODBUS.Models.Excel
                 ExcelWorksheet graphicSheet = excelPackage.Workbook.Worksheets.Add("Графики");
                 ExcelWorksheet dataSheet = excelPackage.Workbook.Worksheets.Add("Данные с каналов");
                 
-                for(int i = 0; i < DataStorage.ChannelsData.Count; i++)
+                for(int i = 0; i < DataStorage.GetMaxChannelsCount(); i++)
                 {
                     AddChannelDataColumn(dataSheet, DataStorage.GetChannelData(i), i, i, GetChannelTitle(i));
                     CreateChart(graphicSheet, dataSheet, i, DataStorage.GetChannelLastPointIndex(), GetChannelTitle(i), i);
