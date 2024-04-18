@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.MathModules;
+using TestMODBUS.Models.Modbus;
 using TestMODBUS.Models.Services;
 
 namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
@@ -59,22 +60,28 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
             if(DataStorage.GetChannelLength() == 0)
                 return false;
 
-            var Volt = GetVoltData(DataStorage, Channels);
-            if (Volt.Count == 0)
+            var VoltValuesUnconverted = GetVoltData(DataStorage, Channels);
+            if (VoltValuesUnconverted.Count == 0)
                 return false;
             if (EnergyPoints.Count == 0)
             {
+                double Volt = ModBusValueConverter.ConvertToVoltValue(VoltValuesUnconverted[0].Y);
+                double Time = VoltValuesUnconverted[0].X;
                 double sumTok = SumTokByIndex(DataStorage, Channels, 0);
-                double Energy = EnergyMathModule.CountWithMilliseconds(sumTok, Volt[0].Y, Volt[0].X);
-                EnergyPoints.Add(new Point(Volt[0].X, Energy));
+
+                double Energy = EnergyMathModule.CountWithMilliseconds(sumTok, Volt, Time);
+                EnergyPoints.Add(new Point(VoltValuesUnconverted[0].X, Energy));
             }
 
             for(int i = EnergyPoints.Count; i < DataStorage.GetChannelLength(); i++)
             {
+                double Volt = ModBusValueConverter.ConvertToVoltValue(VoltValuesUnconverted[i].Y);
+                double deltaTime = VoltValuesUnconverted[i].X - VoltValuesUnconverted[i - 1].X;
                 double sumTok = SumTokByIndex(DataStorage, Channels, i);
-                double Energy = EnergyMathModule.CountWithMilliseconds(sumTok, Volt[i].Y, Volt[i].X - Volt[i - 1].X);
+
+                double Energy = EnergyMathModule.CountWithMilliseconds(sumTok, Volt, deltaTime);
                 Energy += EnergyPoints[i - 1].Y;
-                EnergyPoints.Add(new Point(Volt[i].X, Energy));
+                EnergyPoints.Add(new Point(VoltValuesUnconverted[i].X, Energy));
             }
 
             return true;
@@ -108,33 +115,13 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
             {
                 if (!ChannelTypeList.TokChannels.Contains(ChannelNumber))
                     continue;
-
-                sumTok += DataStorage.GetChannelData(ChannelNumber)[index].Y;
+                double Value = DataStorage.GetChannelData(ChannelNumber)[index].Y;
+                sumTok += ModBusValueConverter.ConvertToAmperValue(Value);
             }
 
             return sumTok;
         }
 
-        private List<ObservablePoint> SumTok(DataStorage DataStorage, IList<int> ChannelsToSum)
-        {
-            List<ObservablePoint> SumTokPoints = new List<ObservablePoint>();
-            foreach(var ChannelNumber in ChannelsToSum)
-            {
-                if (!ChannelTypeList.TokChannels.Contains(ChannelNumber))
-                    continue;
-                var Channel = DataStorage.GetChannelData(ChannelNumber);
-                
-                for(int i = 0; i < Channel.Count; i++)
-                {
-                    if (SumTokPoints.Count == i)
-                        SumTokPoints.Add(new ObservablePoint(Channel[0].X, Channel[0].Y));
-                    else
-                        SumTokPoints[i].Y += Channel[i].Y;
-                }
-            }
-
-            return SumTokPoints;
-        }
 
         private ObservableCollection<Point> GetSubArray(ObservableCollection<Point> EnergyPoints, int left, int right)
         {
@@ -156,3 +143,27 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
         }
     }
 }
+
+
+/*
+private List<ObservablePoint> SumTok(DataStorage DataStorage, IList<int> ChannelsToSum)
+{
+    List<ObservablePoint> SumTokPoints = new List<ObservablePoint>();
+    foreach(var ChannelNumber in ChannelsToSum)
+    {
+        if (!ChannelTypeList.TokChannels.Contains(ChannelNumber))
+            continue;
+        var Channel = DataStorage.GetChannelData(ChannelNumber);
+
+        for(int i = 0; i < Channel.Count; i++)
+        {
+            if (SumTokPoints.Count == i)
+                SumTokPoints.Add(new ObservablePoint(Channel[0].X, Channel[0].Y));
+            else
+                SumTokPoints[i].Y += Channel[i].Y;
+        }
+    }
+
+    return SumTokPoints;
+}
+*/
