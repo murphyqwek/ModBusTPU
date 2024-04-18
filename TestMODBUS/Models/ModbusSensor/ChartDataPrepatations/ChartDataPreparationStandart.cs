@@ -18,19 +18,14 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
             IList<string> values = new List<string>();
             foreach(var channel in Channels)
             {
-                double Value = DataStorage.GetChannelData(channel).Last().Y;
+                double Value = GetLastConvertedValue(DataStorage, channel);
                 string CurrentValue = $"CH_{channel}: ";
                 string ValueType = "";
+
                 if (ChannelTypeList.TokChannels.Contains(channel))
-                {
-                    Value = ModBusValueConverter.ConvertToAmperValue(Value);
                     ValueType += " А";
-                }
                 else if (ChannelTypeList.VoltChannels.Contains(channel))
-                {
-                    Value = ModBusValueConverter.ConvertToVoltValue(Value);
                     ValueType += " В";
-                }
 
                 CurrentValue += Value.ToString() + ValueType;
 
