@@ -162,7 +162,7 @@
     <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPreparationEnergy.cs" />
     <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPreparationPower.cs" />
     <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPreparationStandart.cs" />
-    <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPrepatationBase.cs" />
+    <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPreparationBase.cs" />
     <Compile Include="Models\ModbusSensor\Factories\AbstractModbusSensorFactory.cs" />
     <Compile Include="Models\ModbusSensor\Factories\ModbusSensorSimpleFactory.cs" />
     <Compile Include="Models\ModbusSensor\ModBusInputs\ModbusInputEnergy.cs" />

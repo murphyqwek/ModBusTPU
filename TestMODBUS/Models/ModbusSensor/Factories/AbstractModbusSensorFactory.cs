@@ -17,7 +17,7 @@ namespace TestMODBUS.Models.ModbusSensor.Factories
 
     public abstract class AbstractModbusSensorFactory
     {
-        public abstract ChartDataPrepatationBase GetChartDataPrepatation(SensorType SensorType);
+        public abstract ChartDataPreparationBase GetChartDataPrepatation(SensorType SensorType);
 
         public abstract ModBusInputBase GetInputModule(SensorType SensorType, ModbusSensorController Controller, IEnumerable<int> Channels);
 

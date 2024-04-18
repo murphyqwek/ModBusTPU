@@ -7,7 +7,7 @@ namespace TestMODBUS.Models.ModbusSensor.Factories
 {
     public class ModbusSensorSimpleFactory : AbstractModbusSensorFactory
     {
-        public override ChartDataPrepatationBase GetChartDataPrepatation(SensorType SensorType)
+        public override ChartDataPreparationBase GetChartDataPrepatation(SensorType SensorType)
         {
             switch(SensorType)
             {

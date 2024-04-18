@@ -11,7 +11,7 @@ using TestMODBUS.Models.Services;
 
 namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
 {
-    public class ChartDataPreparationStandart : ChartDataPrepatationBase
+    public class ChartDataPreparationStandart : ChartDataPreparationBase
     {
         public override IList<string> GetCurrentValues(IList<int> Channels, DataStorage DataStorage)
         {

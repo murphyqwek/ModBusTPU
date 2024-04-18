@@ -16,9 +16,9 @@ namespace TestMODBUS.Models.ModbusSensor
         private ModbusSensorData _sensorData;
         private DataStorage _dataStorage;
         private Chart _chart;
-        private ChartDataPrepatationBase _dataPreparation;
+        private ChartDataPreparationBase _dataPreparation;
 
-        public ModbusSensorController(ModbusSensorData SensorData, DataStorage DataStorage, Chart Chart, ChartDataPrepatationBase DataPreparation)
+        public ModbusSensorController(ModbusSensorData SensorData, DataStorage DataStorage, Chart Chart, ChartDataPreparationBase DataPreparation)
         {
             _sensorData = SensorData;
             _dataStorage = DataStorage;
@@ -26,7 +26,7 @@ namespace TestMODBUS.Models.ModbusSensor
             _dataPreparation = DataPreparation;
         }
 
-        public void ChangeChartDataPreparation(ChartDataPrepatationBase DataPreparation) => _dataPreparation = DataPreparation;
+        public void ChangeChartDataPreparation(ChartDataPreparationBase DataPreparation) => _dataPreparation = DataPreparation;
 
         public void DetachInputModule(NotifyCollectionChangedEventHandler Handler)
         {

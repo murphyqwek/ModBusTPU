@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using TestMODBUS.Models.Chart;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.MathModules;
+using TestMODBUS.Models.Modbus;
 using TestMODBUS.Models.Services;
 
 namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
 {
-    internal class ChartDataPreparationPower : ChartDataPrepatationBase
+    internal class ChartDataPreparationPower : ChartDataPreparationBase
     {
         public override IList<string> GetCurrentValues(IList<int> Channels, DataStorage DataStorage)
         {
@@ -21,10 +22,11 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
 
             foreach (var Channel in Channels)
             {
+                double Value = DataStorage.GetChannelData(Channel).Last().Y;
                 if (ChannelTypeList.TokChannels.Contains(Channel))
-                    Tok += DataStorage.GetChannelData(Channel).Last().Y;
+                    Tok += ModBusValueConverter.ConvertToAmperValue(Value);
                 if (ChannelTypeList.VoltChannels.Contains(Channel))
-                    Volt += DataStorage.GetChannelData(Channel).Last().Y;
+                    Volt += ModBusValueConverter.ConvertToAmperValue(Value);
             }
 
             double value = PowerMathModule.CountKV(Tok, Volt);

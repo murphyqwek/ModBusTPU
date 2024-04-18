@@ -12,7 +12,7 @@ using TestMODBUS.Models.Services;
 
 namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
 {
-    public abstract class ChartDataPrepatationBase
+    public abstract class ChartDataPreparationBase
     {
         public virtual double GetNewCurrentPosition(DataStorage DataStorage)
         {
