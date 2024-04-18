@@ -30,13 +30,19 @@ namespace TestMODBUS.Models.Modbus
 
         public static double ConvertHexToAmperValue(string ChannelData)
         {
-            return ConvertFromHexToDoubleFromChannelData(ChannelData) * AmperKoeff;
+            double Value = ConvertFromHexToDoubleFromChannelData(ChannelData);
+            return ConvertToAmperValue(Value);
         }
+
+        public static double ConvertToAmperValue(double Value) => Value * AmperKoeff;
 
 
         public static double ConvertHexToVoltValue(string ChannelData)
         {
-            return (Math.Abs(ConvertFromHexToDoubleFromChannelData(ChannelData)) - HolostMove) * VoltKoeff;// / 16 * 580 * 1.022312;
+            double Value = Math.Abs(ConvertFromHexToDoubleFromChannelData(ChannelData));
+            return ConvertToVoltValue(Value);
         }
+
+        public static double ConvertToVoltValue(double Value) => (Value - HolostMove) * VoltKoeff;// / 16 * 580 * 1.022312;
     }
 }
