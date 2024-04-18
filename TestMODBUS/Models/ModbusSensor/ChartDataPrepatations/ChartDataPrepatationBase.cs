@@ -59,5 +59,21 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
 
             return Points;
         }
+
+        protected double GetLastConvertedValue(DataStorage DataStorage, int Channel)
+        {
+            double Value = DataStorage.GetChannelData(Channel).Last().Y;
+
+            if (ChannelTypeList.TokChannels.Contains(Channel))
+            {
+                Value = ModBusValueConverter.ConvertToAmperValue(Value);
+            }
+            else if (ChannelTypeList.VoltChannels.Contains(Channel))
+            {
+                Value = ModBusValueConverter.ConvertToVoltValue(Value);
+            }
+
+            return Value;
+        }
     }
 }
