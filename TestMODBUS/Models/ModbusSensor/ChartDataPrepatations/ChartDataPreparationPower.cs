@@ -22,17 +22,17 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
 
             foreach (var Channel in Channels)
             {
-                double Value = DataStorage.GetChannelData(Channel).Last().Y;
+                double Value = GetLastConvertedValue(DataStorage, Channel);
                 if (ChannelTypeList.TokChannels.Contains(Channel))
-                    Tok += ModBusValueConverter.ConvertToAmperValue(Value);
+                    Tok += Value;
                 if (ChannelTypeList.VoltChannels.Contains(Channel))
-                    Volt += ModBusValueConverter.ConvertToAmperValue(Value);
+                    Volt += Value;
             }
 
-            double value = PowerMathModule.CountKV(Tok, Volt);
-            value = Math.Round(value, 2);
+            double PowerValue = PowerMathModule.CountKV(Tok, Volt);
+            PowerValue = Math.Round(PowerValue, 2);
 
-            values.Add($"Мощность: {value} Вт");
+            values.Add($"Мощность: {PowerValue} Вт");
             return values;
         }
 
@@ -47,6 +47,7 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
             foreach (var Channel in ChannelsToUpdate)
             {
                 var Points = WindowingDataHelper.GetWindowData(left, right, DataStorage.GetChannelData(Channel));
+                Points = Convert(Points, Channel);
 
                 if (ChannelTypeList.TokChannels.Contains(Channel))
                     AddPoints(TokPoints, Points);
