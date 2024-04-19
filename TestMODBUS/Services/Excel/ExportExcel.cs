@@ -15,7 +15,7 @@ using TestMODBUS.Exceptions;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.Services;
 
-namespace TestMODBUS.Models.Excel
+namespace TestMODBUS.Models.Services.Excel
 {
     public static class ExportExcel
     {
@@ -121,9 +121,9 @@ namespace TestMODBUS.Models.Excel
 
         private static string GetAxisYName(int ChannelIndex)
         {
-            if (ChannelTypeList.TokChannels.Contains(ChannelIndex))
+            if (ChannelTypeList.GetChannelType(ChannelIndex) == ChannelType.Tok)
                 return "Сила тока, А";
-            if (ChannelTypeList.VoltChannels.Contains(ChannelIndex))
+            if (ChannelTypeList.GetChannelType(ChannelIndex) == ChannelType.Volt)
                 return "Напряжение, В";
 
             return "";

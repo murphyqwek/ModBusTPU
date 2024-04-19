@@ -11,10 +11,12 @@ using System.Windows.Input;
 using TestMODBUS.Commands;
 using TestMODBUS.Models;
 using TestMODBUS.Models.Data;
-using TestMODBUS.Models.Excel;
 using TestMODBUS.Models.MessageBoxes;
 using TestMODBUS.Services.Settings;
 using TestMODBUS.ViewModels.Base;
+using TestMODBUS.Models.Services;
+using TestMODBUS.Models.Services.Excel;
+using TestMODBUS.Services.Settings.Channels;
 
 namespace TestMODBUS.ViewModels
 {

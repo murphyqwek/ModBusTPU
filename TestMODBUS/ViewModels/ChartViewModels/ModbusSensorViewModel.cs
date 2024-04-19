@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TestMODBUS.Commands;
-using TestMODBUS.Models.Chart.ChartInputModelus.Factories;
 using TestMODBUS.Models.INotifyPropertyBased;
 using TestMODBUS.Models.ModbusSensor;
 using TestMODBUS.Models.ModbusSensor.Factories;

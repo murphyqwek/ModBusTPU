@@ -13,7 +13,6 @@
         <conv:SliderEnabledConverter x:Key="SliderEnabledConverter" />
         <conv:ZoomBoolConverter x:Key="ZoomBoolConverter" />
         <conv:ScrollChartVisibilityConverter x:Key="SliderVisibility" />
-        <conv:ChartModelConverter x:Key="ChartModelConverter"/>
         <conv:DoubleConverter x:Key="DoubleConverter"/>
         <Style x:Key="ChannelSelectionButton" TargetType="Button">
             <Style.Triggers>

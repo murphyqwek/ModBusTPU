@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using TestMODBUS.Models.Chart;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.Modbus;
 using TestMODBUS.Models.Services;

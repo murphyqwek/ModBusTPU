@@ -19,7 +19,7 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
 
         public override void AddNewChannel(int Channel)
         {
-            if (!ChannelTypeList.VoltChannels.Contains(Channel) && !ChannelTypeList.TokChannels.Contains(Channel))
+            if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Regular)
                 return;
 
             int prevVoltChannel = CheckForVoltChannel(Channel);
@@ -37,13 +37,13 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
 
         private int CheckForVoltChannel(int NewChannel)
         {
-            if(!ChannelTypeList.VoltChannels.Contains(NewChannel))
+            if (ChannelTypeList.GetChannelType(NewChannel) != ChannelType.Volt)
                 return -1;
 
             var channels = _controller.GetUsingChannels();
             foreach(var channel in channels)
             {
-                if(ChannelTypeList.VoltChannels.Contains(channel))
+                if(ChannelTypeList.GetChannelType(NewChannel) == ChannelType.Volt)
                     return channel;
             }
             return -1;
@@ -64,9 +64,9 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
             var channels = _controller.GetUsingChannels();
             foreach (var channel in channels)
             {
-                if (ChannelTypeList.VoltChannels.Contains(channel))
+                if (ChannelTypeList.GetChannelType(channel) == ChannelType.Volt)
                     VoltChannels++;
-                else if (ChannelTypeList.TokChannels.Contains(channel))
+                else if (ChannelTypeList.GetChannelType(channel) == ChannelType.Tok)
                     TokChannels++;
                 else
                     return false;

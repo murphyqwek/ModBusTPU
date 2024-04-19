@@ -15,7 +15,6 @@
         <conv:SliderEnabledConverter x:Key="SliderEnabledConverter" />
         <conv:ZoomBoolConverter x:Key="ZoomBoolConverter" />
         <conv:ScrollChartVisibilityConverter x:Key="SliderVisibility" />
-        <conv:ChartModelConverter x:Key="ChartModelConverter"/>
         <conv:ModbusSensorConverter x:Key="ModbusSensorConverter"/>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="11.0"/>

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TestMODBUS.Models;
-using TestMODBUS.Models.Data.Helpers;
+using TestMODBUS.Models.Services;
 
 namespace TestMODBUS.Services.Settings.Channels
 {

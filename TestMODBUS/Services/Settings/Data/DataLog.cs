@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using TestMODBUS.Models.Data;
 
-namespace TestMODBUS.Models.Data.Helpers
+namespace TestMODBUS.Models.Services.Settings.Data
 {
     public static class DataLog
     {

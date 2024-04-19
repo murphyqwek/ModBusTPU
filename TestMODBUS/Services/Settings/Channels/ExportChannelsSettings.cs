@@ -7,7 +7,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using TestMODBUS.Models.Data;
 
-namespace TestMODBUS.Services.Settings
+namespace TestMODBUS.Services.Settings.Channels
 {
     public static class ExportChannelsSettings
     {

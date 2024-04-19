@@ -117,7 +117,6 @@
     <Compile Include="Commands\RemoteCommand.cs" />
     <Compile Include="Commands\RemoteCommandWithParameter.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
-    <Compile Include="Converter\ChartModelConverter.cs" />
     <Compile Include="Converter\DoubleConverter.cs" />
     <Compile Include="Converter\ModbusSensorConverter.cs" />
     <Compile Include="Converter\SliderEnabledConverter.cs" />
@@ -132,27 +131,20 @@
       <DependentUpon>ExportWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\IsChannelSelectedExtension.cs" />
-    <Compile Include="Models\Channels\ChannelColors.cs" />
-    <Compile Include="Models\Chart\ChartInputModelus\ChartInputEnergy.cs" />
-    <Compile Include="Models\Chart\ChartInputModelus\ChartInputModuleBase.cs" />
-    <Compile Include="Models\Chart\ChartInputModelus\ChartInputPower.cs" />
-    <Compile Include="Models\Chart\ChartInputModelus\ChartInputStandart.cs" />
-    <Compile Include="Models\Chart\ChartInputModelus\Factories\AbstractFactory.cs" />
-    <Compile Include="Models\Chart\ChartInputModelus\Factories\ChartInputSimpleFactory.cs" />
-    <Compile Include="Models\Chart\ChartInputModelus\Factories\ChartInputType.cs" />
-    <Compile Include="Models\Chart\WindowingDataHelper.cs" />
+    <Compile Include="Models\ModbusSensor\WindowingDataHelper.cs" />
+    <Compile Include="Services\Channels\ChannelColors.cs" />
     <Compile Include="Models\Data\ChannelModel.cs" />
     <Compile Include="Models\Data\DataStorage.cs" />
     <Compile Include="Models\Data\DataConnector.cs" />
     <Compile Include="Models\Data\Experiment.cs" />
-    <Compile Include="Models\Data\Helpers\DataFileManager.cs" />
-    <Compile Include="Models\Data\Helpers\DataLog.cs" />
-    <Compile Include="Models\Data\Helpers\DataReader.cs" />
-    <Compile Include="Models\Data\Helpers\DataSaver.cs" />
+    <Compile Include="Services\Settings\Data\DataFileManager.cs" />
+    <Compile Include="Services\Settings\Data\DataLog.cs" />
+    <Compile Include="Services\Settings\Data\DataReader.cs" />
+    <Compile Include="Services\Settings\Data\DataSaver.cs" />
     <Compile Include="Models\Data\IObservable.cs" />
     <Compile Include="Models\Data\ObservableConcurrentList.cs" />
     <Compile Include="Models\Data\Point.cs" />
-    <Compile Include="Models\Excel\ExportExcel.cs" />
+    <Compile Include="Services\Excel\ExportExcel.cs" />
     <Compile Include="Models\MathModules\EnergyMathModule.cs" />
     <Compile Include="Models\MathModules\PowerMathModule.cs" />
     <Compile Include="Models\MessageBoxes\ErrorMessageBox.cs" />
@@ -176,18 +168,17 @@
     <Compile Include="Models\Modbus\ModBusCommandsList.cs" />
     <Compile Include="Models\Modbus\ModBusCRC.cs" />
     <Compile Include="Models\Modbus\ModBusValueConverter.cs" />
-    <Compile Include="Models\OpenFileHelper.cs" />
+    <Compile Include="Services\OpenFileHelper.cs" />
     <Compile Include="Models\Port\Interfaces\IPortListener.cs" />
     <Compile Include="Services\ListAvailableSpeeds.cs" />
     <Compile Include="Models\Port\ObservablePort.cs" />
     <Compile Include="Models\Port\PortListener.cs" />
-    <Compile Include="Models\Chart\ChartModel.cs" />
-    <Compile Include="Models\Channels\ChannelTypeList.cs" />
+    <Compile Include="Services\Channels\ChannelTypeList.cs" />
     <Compile Include="Models\Port\TestPortListener.cs" />
     <Compile Include="Services\RegisrtyService.cs" />
-    <Compile Include="Services\Settings\Channels\ChannelsSettingFileManager.cs" />
-    <Compile Include="Services\Settings\Channels\ChannelsTypeSettings.cs" />
-    <Compile Include="Services\Settings\ExportChannelsSettings.cs" />
+    <Compile Include="Services\Settings\Channels\Types\ChannelsSettingFileManager.cs" />
+    <Compile Include="Services\Settings\Channels\Types\ChannelsTypeSettings.cs" />
+    <Compile Include="Services\Settings\Channels\ExportChannelsSettings.cs" />
     <Compile Include="UserControls\ChannelExportSettingElement.xaml.cs">
       <DependentUpon>ChannelExportSettingElement.xaml</DependentUpon>
     </Compile>
@@ -195,8 +186,6 @@
       <DependentUpon>ChartContol.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ChartViewModels\ChannelViewModel.cs" />
-    <Compile Include="ViewModels\ChartViewModels\ChartInputTypeViewModel.cs" />
-    <Compile Include="ViewModels\ChartViewModels\ChartViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\CurrentChannelValueViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\ModbusSensorViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\SensorTypeViewModel.cs" />

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TestMODBUS.Exceptions;
-using TestMODBUS.Models.Chart.ChartInputModelus.Factories;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.INotifyPropertyBased;
 using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;

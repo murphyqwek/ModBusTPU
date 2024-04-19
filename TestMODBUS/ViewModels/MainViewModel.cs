@@ -10,14 +10,12 @@ using TestMODBUS.Models.Services;
 using TestMODBUS.ViewModels.Base;
 using System.Windows;
 using TestMODBUS.Models.Port.Interfaces;
-using TestMODBUS.Models.Chart.ChartInputModelus;
-using TestMODBUS.Models.Chart.ChartInputModelus.Factories;
 using TestMODBUS.Models.ModbusSensor;
 using TestMODBUS.Models.ModbusSensor.Factories;
-using TestMODBUS.Models.Data.Helpers;
 using System;
 using Microsoft.Win32;
 using TestMODBUS.Models;
+using TestMODBUS.Models.Services.Settings.Data;
 
 namespace TestMODBUS.ViewModels
 {
