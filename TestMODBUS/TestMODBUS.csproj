@@ -185,6 +185,7 @@
     <Compile Include="Models\Channels\ChannelTypeList.cs" />
     <Compile Include="Models\Port\TestPortListener.cs" />
     <Compile Include="Services\RegisrtyService.cs" />
+    <Compile Include="Services\Settings\ChannelTypeSettings.cs" />
     <Compile Include="Services\Settings\ExportChannelsSettings.cs" />
     <Compile Include="UserControls\ChannelExportSettingElement.xaml.cs">
       <DependentUpon>ChannelExportSettingElement.xaml</DependentUpon>

@@ -50,7 +50,7 @@ namespace TestMODBUS.Models.Data
             return _collection.Max();
         }
 
-        public int Min() { return _collection.Min(); }
+        public int Min() => _collection.Min();
 
         public int Count => _collection.Count();
 
