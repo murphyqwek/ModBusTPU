@@ -23,9 +23,9 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
             foreach (var Channel in Channels)
             {
                 double Value = GetLastConvertedValue(DataStorage, Channel);
-                if (ChannelTypeList.TokChannels.Contains(Channel))
+                if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Tok)
                     Tok += Value;
-                if (ChannelTypeList.VoltChannels.Contains(Channel))
+                if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Volt)
                     Volt += Value;
             }
 
@@ -49,9 +49,9 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
                 var Points = WindowingDataHelper.GetWindowData(left, right, DataStorage.GetChannelData(Channel));
                 Points = Convert(Points, Channel);
 
-                if (ChannelTypeList.TokChannels.Contains(Channel))
+                if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Tok)
                     AddPoints(TokPoints, Points);
-                if (ChannelTypeList.VoltChannels.Contains(Channel))
+                if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Volt)
                     AddPoints(VoltPoints, Points);
             }
 

@@ -36,14 +36,14 @@ namespace TestMODBUS.Models.Chart.ChartInputModelus
         public override bool AddNewChannel(int Channel)
         {
             bool IsChannelTokOrVolt = false;
-            if (ChannelTypeList.TokChannels.Contains(Channel))
+            if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Tok)
             {
                 if (_channelTok != -1)
                     _chart.Channels.Remove(_channelTok);
                 _channelTok = Channel;
                 IsChannelTokOrVolt = true;
             }
-            if (ChannelTypeList.VoltChannels.Contains(Channel))
+            if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Volt)
             {
                 if (_channelVolt != -1)
                     _chart.Channels.Remove(_channelVolt);

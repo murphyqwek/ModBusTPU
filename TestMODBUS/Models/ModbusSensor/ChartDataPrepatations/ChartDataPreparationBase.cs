@@ -42,14 +42,14 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
 
         protected ObservablePoint[] Convert(ObservablePoint[] Points, int Channel)
         {
-            if (ChannelTypeList.TokChannels.Contains(Channel))
+            if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Tok)
             {
                 for (int i = 0; i < Points.Length; i++)
                 {
                     Points[i].Y = ModBusValueConverter.ConvertToAmperValue(Points[i].Y);
                 }
             }
-            else if (ChannelTypeList.VoltChannels.Contains(Channel))
+            else if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Volt)
             {
                 for (int i = 0; i < Points.Length; i++)
                 {
@@ -64,11 +64,11 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
         {
             double Value = DataStorage.GetChannelData(Channel).Last().Y;
 
-            if (ChannelTypeList.TokChannels.Contains(Channel))
+            if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Tok)
             {
                 Value = ModBusValueConverter.ConvertToAmperValue(Value);
             }
-            else if (ChannelTypeList.VoltChannels.Contains(Channel))
+            else if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Volt)
             {
                 Value = ModBusValueConverter.ConvertToVoltValue(Value);
             }

@@ -91,7 +91,7 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
         {
             foreach(var channel in Channels)
             {
-                if (ChannelTypeList.VoltChannels.Contains(channel))
+                if (ChannelTypeList.GetChannelType(channel) == ChannelType.Volt)
                     return ConvertToObservablePoints(DataStorage.GetChannelData(channel));
             }
 
@@ -111,11 +111,11 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
         private double SumTokByIndex(DataStorage DataStorage, IList<int> ChannelsToSum, int index)
         {
             double sumTok = 0;
-            foreach (var ChannelNumber in ChannelsToSum)
+            foreach (var Channel in ChannelsToSum)
             {
-                if (!ChannelTypeList.TokChannels.Contains(ChannelNumber))
+                if (ChannelTypeList.GetChannelType(Channel) != ChannelType.Tok)
                     continue;
-                double Value = DataStorage.GetChannelData(ChannelNumber)[index].Y;
+                double Value = DataStorage.GetChannelData(Channel)[index].Y;
                 sumTok += ModBusValueConverter.ConvertToAmperValue(Value);
             }
 

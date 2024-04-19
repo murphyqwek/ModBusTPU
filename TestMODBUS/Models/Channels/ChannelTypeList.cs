@@ -20,17 +20,6 @@ namespace TestMODBUS.Models.Services
     {
         private static List<ChannelType> ChannelsType = new List<ChannelType>();
 
-        public static HashSet<int> TokChannels = new HashSet<int>()
-        {
-            0, 1, 2, 3,
-        };
-
-        public static HashSet<int> VoltChannels = new HashSet<int>()
-        {
-            5, 6, 7,
-        };
-
-
         public static void SetChannelsType(List<ChannelType> NewChannelsType)
         {
             if (NewChannelsType.Count != DataStorage.MaxChannelCount)
