@@ -33,14 +33,13 @@ namespace TestMODBUS.Services.Settings.Channels
             ChannelTypeList.SetChannelsType(StandartChannelType);
         }
 
-        public static void SetUserChannelsType(string UserSettings)
+        public static bool SetUserChannelsType(string UserSettings)
         {
             string[] ChannelsType = UserSettings.Split(' ');
 
             if (ChannelsType.Length != DataStorage.MaxChannelCount)
             {
-                SetStandartChannelsType();
-                return;
+                return false;
             }
 
             List<ChannelType> UserChannelsType = new List<ChannelType>();
@@ -58,12 +57,13 @@ namespace TestMODBUS.Services.Settings.Channels
                         UserChannelsType.Add(Models.Services.ChannelType.Volt);
                         break;
                     default:
-                        SetStandartChannelsType();
-                        return;
+                        return false;
                 }
             }
 
             ChannelTypeList.SetChannelsType(UserChannelsType);
+
+            return true;
         }
 
         public static string GetChannelsTypeSettings() 
