@@ -37,7 +37,7 @@ namespace TestMODBUS.ViewModels
                 return;
             }
 
-            string path = OpenFileHelper.GetSaveFile(FileName);
+            string path = OpenFileHelper.GetSaveFile("*.xlsx|*.xlsx;", ".xlsx", FileName);
             if (path == null)
                 return;
 

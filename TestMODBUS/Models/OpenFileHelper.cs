@@ -10,13 +10,13 @@ namespace TestMODBUS.Models
 {
     public static class OpenFileHelper
     {
-        public static string GetSaveFile(string FileName = "Отчёт")
+        public static string GetSaveFile(string Filter, string DefaultExt, string FileName = "")
         {
             SaveFileDialog sf = new SaveFileDialog();
             sf.Title = "Сохранить файл как...";
             sf.FileName = FileName;
-            sf.Filter = "*.xlsx|*.xlsx;";
-            sf.DefaultExt = ".xlsx";
+            sf.Filter = Filter;
+            sf.DefaultExt = DefaultExt;
 
             if (sf.ShowDialog() == true)
             {

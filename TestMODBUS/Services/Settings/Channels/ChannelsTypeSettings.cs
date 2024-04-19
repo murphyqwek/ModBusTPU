@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.Services;
 
-namespace TestMODBUS.Services.Settings
+namespace TestMODBUS.Services.Settings.Channels
 {
-    public static class ChannelTypeSettings
+    public static class ChannelsTypeSettings
     {
         private const string TokChannelType = "T";
         private const string VoltChannelType = "V";
@@ -66,7 +66,7 @@ namespace TestMODBUS.Services.Settings
             ChannelTypeList.SetChannelsType(UserChannelsType);
         }
 
-        public static string GetChannelsType() 
+        public static string GetChannelsTypeSettings() 
         {
             string output = "";
 
@@ -81,6 +81,8 @@ namespace TestMODBUS.Services.Settings
                     case ChannelType.Volt:    output += VoltChannelType; break;
                 }
             }
+
+            output = output.TrimEnd();
 
             return output;
         }
