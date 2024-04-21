@@ -18,7 +18,7 @@ namespace TestMODBUS.Services.Settings.Channels
         private const string RegistryFOLDER = "channels";
         private const string DefaultFileFIELDNAME = "Default File";
 
-        public static void SetDefaultSettings()
+        public static void UploadDefaultSettings()
         {
             string FilePath = GetDefaultFileSettingsRegistry();
 
@@ -33,13 +33,6 @@ namespace TestMODBUS.Services.Settings.Channels
             string FilePath = OpenFileHelper.GetFilePath($"*.{FileEXTENSION}|*.{FileEXTENSION};", $".{FileEXTENSION}");
 
             SetUserSettings(FilePath , true);
-        }
-
-        public static void UploadDefaultSettings()
-        {
-            string FilePath = GetDefaultFileSettingsRegistry();
-
-            SetUserSettings(FilePath, false);
         }
 
         private static void SetUserSettings(string FilePath, bool SetItAsDefault)

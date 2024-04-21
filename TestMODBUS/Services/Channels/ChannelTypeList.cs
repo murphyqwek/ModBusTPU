@@ -19,6 +19,7 @@ namespace TestMODBUS.Models.Services
     public static class ChannelTypeList
     {
         private static List<ChannelType> ChannelsType = new List<ChannelType>();
+        public static int ChannelCounts => DataStorage.MaxChannelCount;
 
         public static void SetChannelsType(List<ChannelType> NewChannelsType)
         {
