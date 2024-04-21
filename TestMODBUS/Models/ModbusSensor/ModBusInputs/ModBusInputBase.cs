@@ -116,5 +116,7 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
         }
 
         public abstract bool CheckAllChannelsChosen();
+
+        public abstract void CheckNewChannelsTypes();
     }
 }

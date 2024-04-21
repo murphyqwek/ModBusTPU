@@ -94,6 +94,8 @@ namespace TestMODBUS.Models.ModbusSensor
         public bool GetChannelUsingState(int Channel) => _sensorData.GetChannelUsingState(Channel); 
         public IList<bool> GetAllChannels() => _sensorData.UsingChannels;
 
+        public void DeleteExtraData() => _dataPreparation.DeleteExtraData(GetUsingChannels(), _dataStorage);
+
         public void UpdateChartAfterNewChannelAdded()
         {
             if (_dataStorage.GetChannelLength() == 0 || _chart.IsDrawing)

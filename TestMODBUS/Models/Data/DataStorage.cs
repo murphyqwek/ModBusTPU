@@ -113,6 +113,14 @@ namespace TestMODBUS.Models.Data
             return ExtraData[key];
         }
 
+        public void DeleteExtraData(string key, IList<int> UsingChannels)
+        {
+            key = GetKeyToExtraData(key, UsingChannels);
+
+            if (ExtraData.ContainsKey(key))
+                ExtraData.Remove(key);
+        }
+
         private string GetKeyToExtraData(string key, IList<int> UsingChannels) 
         {
             string output = key;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,7 +55,7 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
             int lastChannel = _controller.GetLastChannel();
             _controller.SetUsingChannel(Channel, false);
             if (_controller.GetUsingChannels().Count == 0)
-                _controller.RemoveSerie($"Мощность");
+                _controller.RemoveSerie("Мощность");
             ResignDataStorageLastUpdateChannel(lastChannel);
         }
 
@@ -76,6 +77,17 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
                 return true;
             else
                 return false;
+        }
+
+        public override void CheckNewChannelsTypes()
+        {
+            _controller.RemoveSerie("Мощность");
+            foreach (int Channel in _controller.GetUsingChannels())
+            {
+                _controller.UnsignToChannelUpdation(Channel, DataStorageCollectionChangedHandler);
+                _controller.SetUsingChannel(Channel, false);
+            }
+            _controller.UpdateChartAfterNewChannelAdded();
         }
     }
 }

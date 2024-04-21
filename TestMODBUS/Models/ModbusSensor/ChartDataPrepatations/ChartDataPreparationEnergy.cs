@@ -141,6 +141,11 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
                 array[i] = new ObservablePoint(EnergyPoints[i].X, EnergyPoints[i].Y);
             return array;   
         }
+
+        public override void DeleteExtraData(IList<int> UsingChannels, DataStorage DataStorage)
+        {
+            DataStorage.DeleteExtraData("energy", UsingChannels);
+        }
     }
 }
 

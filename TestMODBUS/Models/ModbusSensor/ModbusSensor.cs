@@ -112,5 +112,7 @@ namespace TestMODBUS.Models.ModbusSensor
         public void StopWorkingAndMoveToStart() => Input.StopAndMoveToStart();
 
         public void ChangeWindowPosition(double CurrentX) => Input.ChangeWindowPosition(CurrentX);
+
+        public void CheckNewChannelsTypes() => Input.CheckNewChannelsTypes();
     }
 }

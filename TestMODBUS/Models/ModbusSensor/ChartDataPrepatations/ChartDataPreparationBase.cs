@@ -74,5 +74,7 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
 
             return Value;
         }
+
+        public virtual void DeleteExtraData(IList<int> UsingChannels, DataStorage DataStorage) { }
     }
 }

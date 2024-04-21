@@ -53,7 +53,7 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
             int lastChannel = _controller.GetLastChannel();
             _controller.SetUsingChannel(Channel, false);
             if (_controller.GetUsingChannels().Count == 0)
-                _controller.RemoveSerie($"Мощность");
+                _controller.RemoveSerie("Энергия");
             ResignDataStorageLastUpdateChannel(lastChannel);
         }
 
@@ -75,6 +75,18 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
                 return true;
             else
                 return false;
+        }
+
+        public override void CheckNewChannelsTypes()
+        {
+            _controller.DeleteExtraData();
+            _controller.RemoveSerie("Энергия");
+            foreach (int Channel in _controller.GetUsingChannels())
+            {
+                _controller.UnsignToChannelUpdation(Channel, DataStorageCollectionChangedHandler);
+                _controller.SetUsingChannel(Channel, false);
+            }
+            _controller.UpdateChartAfterNewChannelAdded();
         }
     }
 }

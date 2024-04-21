@@ -37,6 +37,11 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
                 return false;
         }
 
+        public override void CheckNewChannelsTypes()
+        {
+            _controller.UpdateChartAfterNewChannelAdded();
+        }
+
         public override void RemoveChannel(int Channel)
         {
             int lastChannel = _controller.GetLastChannel();
