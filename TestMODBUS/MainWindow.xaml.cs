@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TestMODBUS.Models.Services;
 using TestMODBUS.Models.Services.Excel;
+using TestMODBUS.Services.Settings.Channels;
 using TestMODBUS.ViewModels;
 
 namespace TestMODBUS
@@ -25,6 +26,7 @@ namespace TestMODBUS
     {
         public MainWindow()
         {
+            ChannelsSettingFileManager.UploadDefaultSettings();
             ExportExcel.SetUp();
             ListAvailablePorts.UpdateAvailablePortList();
             InitializeComponent();

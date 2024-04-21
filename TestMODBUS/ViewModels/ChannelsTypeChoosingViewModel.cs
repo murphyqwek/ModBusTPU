@@ -39,6 +39,8 @@ namespace TestMODBUS.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public bool IsChanged = false;
         #endregion
 
         #region Private Fields
@@ -100,8 +102,9 @@ namespace TestMODBUS.ViewModels
                     return;
 
                 IsSaved = true;
+                IsApplied = true;
                 UploadChannels();
-                SuccessMessageBox.Show("Настрйоки загружены");
+                SuccessMessageBox.Show("Настрйоки загружены и применены");
             }
             catch(Exception ex)
             {
@@ -143,10 +146,9 @@ namespace TestMODBUS.ViewModels
         }
 
         #endregion
+
         public ChannelsTypeChoosingViewModel()
         {
-            ChannelsSettingFileManager.UploadDefaultSettings();
-
             Channels = new ObservableCollection<ChannelTypeViewModel>();
             UploadChannels();
 

@@ -41,11 +41,8 @@
                     <TextBlock Text="Время: "/>
                     <TextBox Text="{Binding Time, Mode=TwoWay}" MinWidth="50" Margin="5 0 3 0"/>
                     <TextBlock Text="c" Margin="0 0 10 0"/>
-                    <TextBlock Text="Счётчик до: "/>
-                    <TextBox Text="{Binding Time, Mode=TwoWay}" MinWidth="50" Margin="5 0 3 0"/>
-                    <TextBlock Text="Счётчик после: "/>
-                    <TextBox Text="{Binding Time, Mode=TwoWay}" MinWidth="50" Margin="5 0 3 0"/>
                 </StackPanel>
+                <Button Content="Channels" Command="{Binding ChangeChannelsTypeCommand}" Width="100" Height="25" Margin="100 0" HorizontalAlignment="Right"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 10 0">
                     <TextBlock Text="Test Mode" Margin="0 0 5 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <CheckBox IsChecked="{Binding Debug, Mode=TwoWay}"/>

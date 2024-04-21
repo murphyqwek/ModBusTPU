@@ -16,6 +16,7 @@ using System;
 using Microsoft.Win32;
 using TestMODBUS.Models;
 using TestMODBUS.Models.Services.Settings.Data;
+using TestMODBUS.Views;
 
 namespace TestMODBUS.ViewModels
 {
@@ -227,6 +228,35 @@ namespace TestMODBUS.ViewModels
 
         #endregion
 
+        #region
+
+        public ICommand ChangeChannelsTypeCommand { get; }
+
+        private void ChangeChannelsTypeCommandHandler()
+        {
+            var Types = ChannelTypeList.GetChannelsType();
+            var temp = new ChannelType[Types.Count];
+            Types.CopyTo(temp);
+
+
+            var ChannelsTypesWindow = new ChannelsTypeWindow();
+            ChannelsTypesWindow.ShowDialog();
+
+            for (int i = 0; i < ChannelTypeList.ChannelCounts; i++)
+            {
+                if (temp[i] != ChannelTypeList.GetChannelType(i))
+                {
+                    sensor1.CheckNewChannelsTypes();
+                    sensor2.CheckNewChannelsTypes();
+                    sensor3.CheckNewChannelsTypes();
+                    sensor4.CheckNewChannelsTypes();
+                    return;
+                }
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Events
@@ -285,6 +315,7 @@ namespace TestMODBUS.ViewModels
             ClearCommand = new RemoteCommand(ClearCommandHandler);
             ExportDataCommand = new RemoteCommand(ExportDataCommandHandler);
             UploadDataStorageCommand = new RemoteCommand(UploadDataStorageCommandHandler);
+            ChangeChannelsTypeCommand = new RemoteCommand(ChangeChannelsTypeCommandHandler);
 
             //Подписиваем объекты на OnPropertyChanged других объектов
             ListAvailablePorts.AvailablePorts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Ports));
