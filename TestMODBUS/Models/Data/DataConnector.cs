@@ -79,9 +79,9 @@ namespace TestMODBUS.Models.Data
 
                 double y = 0;
                 if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Tok)
-                    y = (double)rand.Next(270, 290);
+                    y = (double)rand.Next(270, 290) / 200;
                 else if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Volt)
-                    y = (double)rand.Next(30, 45);
+                    y = (double)rand.Next(30, 45) / 37.05881 + 2.039;
                 else
                     y = GetRandomDouble(rand);
 

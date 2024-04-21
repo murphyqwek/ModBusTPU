@@ -66,6 +66,11 @@ namespace TestMODBUS.Services.Settings.Channels
             return true;
         }
 
+        public static void SetUserChannelsType(List<ChannelType> NewChannelsType)
+        {
+            ChannelTypeList.SetChannelsType(NewChannelsType);
+        }
+
         public static string GetChannelsTypeSettings() 
         {
             string output = "";

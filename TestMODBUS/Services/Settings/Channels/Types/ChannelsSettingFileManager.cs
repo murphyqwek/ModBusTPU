@@ -28,11 +28,18 @@ namespace TestMODBUS.Services.Settings.Channels
                 SetUserSettings(FilePath, true);
         }
 
-        public static void SetUserSettings()
+        public static void UploadUserSettings()
         {
             string FilePath = OpenFileHelper.GetFilePath($"*.{FileEXTENSION}|*.{FileEXTENSION};", $".{FileEXTENSION}");
 
             SetUserSettings(FilePath , true);
+        }
+
+        public static void UploadDefaultSettings()
+        {
+            string FilePath = GetDefaultFileSettingsRegistry();
+
+            SetUserSettings(FilePath, false);
         }
 
         private static void SetUserSettings(string FilePath, bool SetItAsDefault)
