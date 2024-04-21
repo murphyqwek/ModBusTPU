@@ -35,7 +35,17 @@ namespace TestMODBUS.ViewModels
                 BackgroundColor = ChannelTypeBackgroundDictionary[_channelType];
             }
         }
-        public ChannelType ChannelType => _channelType;
+        public ChannelType ChannelType 
+        {
+            get => _channelType;
+            private set
+            {
+                if (_channelType == value)
+                    return;
+                _channelType = value;
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
 

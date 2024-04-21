@@ -24,7 +24,7 @@ namespace TestMODBUS.Models.Services
         public static void SetChannelsType(List<ChannelType> NewChannelsType)
         {
             if (NewChannelsType.Count != DataStorage.MaxChannelCount)
-                throw new Exception($"Count of {nameof(NewChannelsType)} must be equal {nameof(DataStorage.MaxChannelCount)}");
+                throw new Exception($"Количество каналов в файле настроек типов каналов должен быть равен {DataStorage.MaxChannelCount}");
             ChannelsType = NewChannelsType;
         }
 
@@ -35,5 +35,7 @@ namespace TestMODBUS.Models.Services
 
             return ChannelsType[Channel];
         }
+
+        public static List<ChannelType> GetChannelsType() => ChannelsType;
     }
 }

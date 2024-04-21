@@ -23,48 +23,55 @@ namespace TestMODBUS.Services.Settings.Channels
             string FilePath = GetDefaultFileSettingsRegistry();
 
             if (string.IsNullOrEmpty(FilePath))
+            {
                 ChannelsTypeSettings.SetStandartChannelsType();
-            else
+                return;
+            }
+
+            try
+            {
                 SetUserSettings(FilePath, true);
+            }
+            catch
+            {
+                SetDefalutFileSettingsRegisrty("");
+                ChannelsTypeSettings.SetStandartChannelsType();
+            }
         }
 
-        public static void UploadUserSettings()
+        public static bool UploadUserSettings()
         {
-            string FilePath = OpenFileHelper.GetFilePath($"*.{FileEXTENSION}|*.{FileEXTENSION};", $".{FileEXTENSION}");
+            string FilePath = OpenFileHelper.GetFilePath($"*{FileEXTENSION}|*{FileEXTENSION};", $"{FileEXTENSION}");
 
-            SetUserSettings(FilePath , true);
+            if (string.IsNullOrEmpty(FilePath))
+                return false;
+
+            return SetUserSettings(FilePath , true);
         }
 
-        private static void SetUserSettings(string FilePath, bool SetItAsDefault)
+        private static bool SetUserSettings(string FilePath, bool SetItAsDefault)
         {
             string Settings = File.ReadAllText(FilePath);
 
-            if (!ChannelsTypeSettings.SetUserChannelsType(Settings))
-            {
-                ErrorMessageBox.Show("Не удалось загрузить настройки каналов");
-                ChannelsTypeSettings.SetStandartChannelsType();
-                SetDefalutFileSettingsRegisrty("");
-            }
-            else
-            {
-                if (SetItAsDefault)
-                    SetDefalutFileSettingsRegisrty(FilePath);
-                SuccessMessageBox.Show("Настройки каналов успешно загружены");
-            }
+            ChannelsTypeSettings.SetUserChannelsType(Settings);
+            if (SetItAsDefault)
+                SetDefalutFileSettingsRegisrty(FilePath);
+
+            return true;
         }
 
-        public static void SaveSettings()
+        public static bool SaveSettings(List<ChannelType> ChannelsType)
         {
-            string Filename = OpenFileHelper.GetSaveFile($"*.{FileEXTENSION}|*.{FileEXTENSION};", $".{FileEXTENSION}");
+            string Filename = OpenFileHelper.GetSaveFile($"*{FileEXTENSION}|*{FileEXTENSION};", $"{FileEXTENSION}");
             if (Filename == null)
-                return;
+                return false;
 
-            SaveSettings(Filename);
+            return SaveSettings(Filename, ChannelsType);
         }
 
-        private static void SaveSettings(string Filepath)
+        private static bool SaveSettings(string Filepath, List<ChannelType> ChannelsType)
         {
-            string Settings = ChannelsTypeSettings.GetChannelsTypeSettings();
+            string Settings = ChannelsTypeSettings.GetChannelsTypeSettings(ChannelsType);
 
             using (StreamWriter outputFile = new StreamWriter(Filepath, false))
             {
@@ -72,6 +79,8 @@ namespace TestMODBUS.Services.Settings.Channels
             }
 
             SetDefalutFileSettingsRegisrty(Filepath);
+
+            return true;
         }
 
         private static void SetDefalutFileSettingsRegisrty(string FilePath)

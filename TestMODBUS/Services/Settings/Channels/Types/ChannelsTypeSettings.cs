@@ -33,13 +33,14 @@ namespace TestMODBUS.Services.Settings.Channels
             ChannelTypeList.SetChannelsType(StandartChannelType);
         }
 
-        public static bool SetUserChannelsType(string UserSettings)
+        public static void SetUserChannelsType(string UserSettings)
         {
+            UserSettings = UserSettings.TrimEnd('\r', '\n');
             string[] ChannelsType = UserSettings.Split(' ');
 
             if (ChannelsType.Length != DataStorage.MaxChannelCount)
             {
-                return false;
+                throw new Exception("Файл настроек типов каналов был повреждён");
             }
 
             List<ChannelType> UserChannelsType = new List<ChannelType>();
@@ -57,13 +58,11 @@ namespace TestMODBUS.Services.Settings.Channels
                         UserChannelsType.Add(Models.Services.ChannelType.Volt);
                         break;
                     default:
-                        return false;
+                        throw new Exception("Файл настроек типов каналов был повреждён");
                 }
             }
 
             ChannelTypeList.SetChannelsType(UserChannelsType);
-
-            return true;
         }
 
         public static void SetUserChannelsType(List<ChannelType> NewChannelsType)
@@ -71,25 +70,30 @@ namespace TestMODBUS.Services.Settings.Channels
             ChannelTypeList.SetChannelsType(NewChannelsType);
         }
 
-        public static string GetChannelsTypeSettings() 
+        public static string GetChannelsTypeSettings(List<ChannelType> ChannelsType) 
         {
             string output = "";
 
-            for(int i = 0; i < DataStorage.MaxChannelCount; i++)
+            foreach(var Type in ChannelsType)
             {
-                var Type = ChannelTypeList.GetChannelType(i);
-
                 switch (Type)
                 {
-                    case ChannelType.Regular: output += RegularChannelType + " "; break;
-                    case ChannelType.Tok:     output += TokChannelType + " "; break;
+                    case ChannelType.Regular: output += RegularChannelType; break;
+                    case ChannelType.Tok:     output += TokChannelType; break;
                     case ChannelType.Volt:    output += VoltChannelType; break;
                 }
+
+                output += " ";
             }
 
             output = output.TrimEnd();
 
             return output;
+        }
+
+        public static string GetCurrentChannelsTypeSetting()
+        {
+            return GetChannelsTypeSettings(ChannelTypeList.GetChannelsType());
         }
     }
 }

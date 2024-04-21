@@ -4,14 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestMODBUS.Views"
+        xmlns:conv="clr-namespace:TestMODBUS.Converter"
         mc:Ignorable="d"
         Title="ChannelsTypeWindow" Height="450" Width="400"
         MaxHeight="450" MaxWidth="400"
         MinHeight="450" MinWidth="400">
+    <Window.Resources>
+        <conv:BoolToYellowColorConverter x:Key="BoolToYellowColorConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="80*"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
 
         <!--#region Channels type ListBox -->
@@ -21,7 +25,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True" />
+                    <WrapPanel IsItemsHost="True"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
@@ -44,6 +48,73 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <!--#endregion-->
+        
+        <!--#region Bottom menu-->
+        <Border Grid.Row="1"
+                BorderBrush="LightGray" BorderThickness="0 1 0 0"> 
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60*"/>
+                    <ColumnDefinition Width="40*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--#region Uploading and Saving Menu -->
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50*"/>
+                        <RowDefinition Height="50*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" 
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                        <Button
+                            Content="Сохранить"
+                            VerticalAlignment="Center" HorizontalAlignment="Center"
+                            Width="75" Height="25"
+                            Background="{Binding IsSaved, Converter={StaticResource BoolToYellowColorConverter}, Mode=OneWay}"
+                            Command="{Binding SaveCommand}">
+
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                    
+                    <Button Grid.Row="1"
+                        Content="Загрузить"
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Width="100" Height="25"
+                        Command="{Binding UploadCommand}">
+
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </Grid>
+                <!--#endregion-->
+                
+                <!-- Apply settings -->
+                <Button Grid.Column="1"
+                        Content="Применить"
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Width="100" Height="25"
+                        Background="{Binding IsApplied, Converter={StaticResource BoolToYellowColorConverter}}"
+                        Command="{Binding ApplyCommand}">
+
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </Grid>
+        </Border>
         <!--#endregion-->
     </Grid>
 </Window>

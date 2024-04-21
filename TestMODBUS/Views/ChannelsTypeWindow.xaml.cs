@@ -23,7 +23,9 @@ namespace TestMODBUS.Views
         public ChannelsTypeWindow()
         {
             InitializeComponent();
-            this.DataContext = new ChannelsTypeChoosingViewModel();
+            var DataContext = new ChannelsTypeChoosingViewModel();
+            this.DataContext = DataContext;
+            this.Closing += DataContext.OnWindowClosing;
         }
     }
 }

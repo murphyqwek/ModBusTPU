@@ -117,6 +117,7 @@
     <Compile Include="Commands\RemoteCommand.cs" />
     <Compile Include="Commands\RemoteCommandWithParameter.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converter\BoolToYellowColorConverter.cs" />
     <Compile Include="Converter\DoubleConverter.cs" />
     <Compile Include="Converter\ModbusSensorConverter.cs" />
     <Compile Include="Converter\SliderEnabledConverter.cs" />
