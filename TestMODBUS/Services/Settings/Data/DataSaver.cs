@@ -62,6 +62,6 @@ namespace TestMODBUS.Models.Services.Settings.Data
             return outputData;
         }
 
-        private static string GetPointData(Point Point) => $"{{{Point.X}, {Point.Y}}}";
+        private static string GetPointData(Point Point) => $"{{{Point.X}, {Point.Y.ToString().Replace(',', '.')}}}";
     }
 }

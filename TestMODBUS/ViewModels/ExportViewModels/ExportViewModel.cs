@@ -65,7 +65,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
                 }
 
             }
-            catch(IOException e)
+            catch(Exception e)
             {
                 ErrorMessageBox.Show(e.Message);
             }

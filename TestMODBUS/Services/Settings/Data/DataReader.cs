@@ -84,7 +84,7 @@ namespace TestMODBUS.Models.Services.Settings.Data
                 PointCleared = PointCleared.Remove(PointCleared.Length - 1, 1);
                 PointCleared = PointCleared.Remove(0, 1);
                 var PointCoord = PointCleared.Split(',');
-                points.Add(new Point(Convert.ToDouble(PointCoord[0]), Convert.ToDouble(PointCoord[1])));
+                points.Add(new Point(Convert.ToDouble(PointCoord[0]), Convert.ToDouble(PointCoord[1].Replace('.', ','))));
             }
 
             return points;

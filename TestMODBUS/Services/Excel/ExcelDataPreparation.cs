@@ -86,7 +86,7 @@ namespace TestMODBUS.Services.Excel
             ExcelChart Chart = new ExcelChart();
             Chart.Title = Title;
             Chart.Points = Points;
-            Chart.XTitle = "Время, секунды";
+            Chart.XTitle = "Время, с";
             Chart.YTitle = GetYTittle(ChartPreparation);
             Chart.SerieTitle = SeriePoints[0].SerieTitle;
 
@@ -98,7 +98,7 @@ namespace TestMODBUS.Services.Excel
             var Points = new List<Point>();
             foreach(var point in Series[0].Points)
             {
-                Points.Add(new Point(point.X / 1000, point.Y));
+                Points.Add(new Point(point.X, point.Y));
             }
 
             return Points;
@@ -136,17 +136,17 @@ namespace TestMODBUS.Services.Excel
                     switch (channelType)
                     {
                         case ChannelType.Tok:
-                            Points.Add(new Point(Point.X / 1000, ModBusValueConverter.ConvertToAmperValue(Point.Y)));
+                            Points.Add(new Point(Point.X, ModBusValueConverter.ConvertToAmperValue(Point.Y)));
                             Chart.YTitle = "Сила тока, А";
                             Chart.SerieTitle = "Сила тока";
                             break;
                         case ChannelType.Volt:
-                            Points.Add(new Point(Point.X / 1000, ModBusValueConverter.ConvertToAmperValue(Point.Y)));
+                            Points.Add(new Point(Point.X, ModBusValueConverter.ConvertToVoltValue(Point.Y)));
                             Chart.YTitle = "Напряжение, В";
                             Chart.SerieTitle = "Напряжение";
                             break;
                         case ChannelType.Regular:
-                            Points.Add(new Point(Point.X / 1000, Point.Y));
+                            Points.Add(new Point(Point.X, Point.Y));
                             Chart.YTitle = "";
                             Chart.SerieTitle = "";
                             break;

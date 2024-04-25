@@ -83,7 +83,7 @@ namespace TestMODBUS.Models.Data
                 else if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Volt)
                     y = (double)rand.Next(30, 45) / 37.05881 + 2.039;
                 else
-                    y = GetRandomDouble(rand);
+                    y = (double)rand.Next(30, 45) / 37.05881 + 2.039;
 
                 _data.AddNewPoint(new Point(x, y), Channel);
             }
