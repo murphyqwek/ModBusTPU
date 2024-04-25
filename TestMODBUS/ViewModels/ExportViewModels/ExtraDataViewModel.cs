@@ -32,7 +32,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
             }
         }
         public ObservableCollection<bool> Channels { get; }
-        public ChartDataPreparationBase DataPreparationBase { get => _dataPreparation; }
+        public ChartDataPreparationBase ChartDataPreparation { get => _chartDataPreparation; }
         public IFilter Filter { get => _filter; }
         public bool IsAllChosen 
         { 
@@ -54,7 +54,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
         #region Private Fields
 
         private string _name;
-        private ChartDataPreparationBase _dataPreparation;
+        private ChartDataPreparationBase _chartDataPreparation;
         private IFilter _filter;
         private bool _isAllChosen;
         private Action<ExtraDataViewModel> _deleteFunction;
@@ -100,7 +100,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
         public ExtraDataViewModel(ChartDataPreparationBase DataPreparation, IFilter Filter, string Type, Action<ExtraDataViewModel> DeleteFunction)
         {
-            _dataPreparation = DataPreparation;
+            _chartDataPreparation = DataPreparation;
             _filter = Filter;
             this.Type = Type;
             _deleteFunction = DeleteFunction;
@@ -115,7 +115,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
             DeleteCommand = new RemoteCommand(DeleteCommandHandler);
         }
 
-        private IList<int> GetUsingChannels()
+        public IList<int> GetUsingChannels()
         {
             var UsingChannels = new List<int>();
             for (int i = 0; i < Channels.Count; i++)

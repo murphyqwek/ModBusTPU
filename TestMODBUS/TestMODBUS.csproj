@@ -141,6 +141,7 @@
     <Compile Include="Models\Data\DataStorage.cs" />
     <Compile Include="Models\Data\DataConnector.cs" />
     <Compile Include="Models\Data\Experiment.cs" />
+    <Compile Include="Services\Excel\ExcelDataPreparation.cs" />
     <Compile Include="Services\Settings\Data\DataFileManager.cs" />
     <Compile Include="Services\Settings\Data\DataLog.cs" />
     <Compile Include="Services\Settings\Data\DataReader.cs" />

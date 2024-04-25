@@ -35,6 +35,12 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
             return GetPoints(ChannelsToUpdate, DataStorage, leftEdge, rightEdge);
         }
 
+        public virtual IList<SerieData> GetAllPoints(IList<int> Channels, DataStorage DataStorage)
+        {
+            int left = 0, right = DataStorage.GetChannelLastPointIndex();
+            return GetPoints(Channels, DataStorage, left, right);
+        }
+
         protected abstract IList<SerieData> GetPoints(IList<int> ChannelsToUpdate, DataStorage DataStorage, int left, int right);
 
         public abstract IList<string> GetCurrentValues(IList<int> Channels, DataStorage DataStorage);
