@@ -27,7 +27,7 @@ namespace TestMODBUS
         public MainWindow()
         {
             ChannelsSettingFileManager.UploadDefaultSettings();
-            ExportExcel.SetUp();
+            ExcelExport.SetUp();
             ListAvailablePorts.UpdateAvailablePortList();
             InitializeComponent();
             MainViewModel viewModel = new MainViewModel();

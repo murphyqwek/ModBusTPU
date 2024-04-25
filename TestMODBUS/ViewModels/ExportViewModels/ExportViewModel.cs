@@ -19,6 +19,7 @@ using TestMODBUS.Models.Services.Excel;
 using TestMODBUS.Services.Settings.Channels;
 using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
 using TestMODBUS.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
+using TestMODBUS.Services.Excel;
 
 namespace TestMODBUS.ViewModels.ExportViewModels
 {
@@ -35,6 +36,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
         #endregion
 
         private List<ChannelModel> _channelsExportSettings = new List<ChannelModel>();
+        private DataStorage _dataStorage;
 
         #region Commands
         #region Export Data
@@ -54,7 +56,8 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
             try
             {
-                ExportExcel.SaveData(_channelsExportSettings, path);
+                Export(path);
+                //ExportExcel.SaveData(_channelsExportSettings, path);
                 if(RequestYesNoMessageBox.Show("Отчёт сохранён. Открыть папку с отчётом?", "Успешно", System.Windows.MessageBoxImage.Information) == System.Windows.MessageBoxResult.Yes)
                 {
                     string folder = Path.GetDirectoryName(path);
@@ -62,10 +65,47 @@ namespace TestMODBUS.ViewModels.ExportViewModels
                 }
 
             }
-            catch(Exception e)
+            catch(IOException e)
             {
                 ErrorMessageBox.Show(e.Message);
             }
+        }
+
+        private void Export(string FilePath)
+        {
+            if (!IsAllChannelsChosen())
+            {
+                ErrorMessageBox.Show("Не все поля заполены корректно");
+                return;
+            }
+
+            var RawDataPage = ExcelDataPreparation.ExtractRawData(_dataStorage);
+            var ChannelsDataPage = ExcelDataPreparation.ExtractChannelsData(_channelsExportSettings);
+
+            Dictionary<string, IEnumerable<ExtraDataViewModel>> ExtraData = new Dictionary<string, IEnumerable<ExtraDataViewModel>>()
+            {
+                { "Мощность", PowerExtraData },
+                { "Энергия", EnergyExtraData }
+            };
+
+            var ExtraDataPages = ExcelDataPreparation.ExtractExtraData(ExtraData, _dataStorage);
+
+            ExcelExport.SaveData(RawDataPage, ChannelsDataPage, ExtraDataPages, FilePath);
+        }
+
+        private bool IsAllChannelsChosen()
+        {
+            foreach (var data in PowerExtraData)
+            {
+                if (!data.IsAllChosen)
+                    return false;
+            }
+            foreach (var data in EnergyExtraData)
+            {
+                if (!data.IsAllChosen)
+                    return false;
+            }
+            return true;
         }
         #endregion
 
@@ -135,11 +175,13 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
         #endregion
 
-        public ExportViewModel(DataStorage Data, string FileName) 
+        public ExportViewModel(DataStorage DataStorage, string FileName) 
         {
+            _dataStorage = DataStorage;
             this.FileName = FileName;
             ExportChannels = new ObservableCollection<ChannelViewModel>();
-            UploadChannelsData(Data);
+
+            UploadChannelsData(DataStorage);
 
             PowerExtraData = new ObservableCollection<ExtraDataViewModel>();
             EnergyExtraData = new ObservableCollection<ExtraDataViewModel>();

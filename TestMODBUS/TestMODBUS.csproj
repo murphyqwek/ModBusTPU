@@ -149,7 +149,7 @@
     <Compile Include="Models\Data\IObservable.cs" />
     <Compile Include="Models\Data\ObservableConcurrentList.cs" />
     <Compile Include="Models\Data\Point.cs" />
-    <Compile Include="Services\Excel\ExportExcel.cs" />
+    <Compile Include="Services\Excel\ExcelExport.cs" />
     <Compile Include="Models\MathModules\EnergyMathModule.cs" />
     <Compile Include="Models\MathModules\PowerMathModule.cs" />
     <Compile Include="Models\MessageBoxes\ErrorMessageBox.cs" />

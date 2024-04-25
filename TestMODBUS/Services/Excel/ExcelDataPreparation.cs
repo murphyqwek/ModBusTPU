@@ -17,6 +17,7 @@ namespace TestMODBUS.Services.Excel
         public string Title;
         public List<Point> Points;
         public string XTitle, YTitle;
+        public string SerieTitle;
     }
 
     public struct ExcelPage
@@ -30,7 +31,7 @@ namespace TestMODBUS.Services.Excel
         //Подготавливает дополнительные данные для Excel
         //Ключ - название листа, на котором будут графики
         //Значение - Данные графика: заголовок, ChartDataPreparation, используемые каналы
-        public static List<ExcelPage> ExtractExtraDataForExcel(Dictionary<string, List<ExtraDataViewModel>> ExtraData, DataStorage DataStorage)
+        public static List<ExcelPage> ExtractExtraData(Dictionary<string, IEnumerable<ExtraDataViewModel>> ExtraData, DataStorage DataStorage)
         {
             List<ExcelPage> Pages = new List<ExcelPage>();
             foreach(var PageTitle in ExtraData.Keys)
@@ -41,13 +42,15 @@ namespace TestMODBUS.Services.Excel
             return Pages;
         }
 
-        private static ExcelPage ExtractPage(string PageTitle, List<ExtraDataViewModel> ChartsRawData, DataStorage DataStorage)
+        private static ExcelPage ExtractPage(string PageTitle, IEnumerable<ExtraDataViewModel> ChartsRawData, DataStorage DataStorage)
         {
             List<ExcelChart> Charts = new List<ExcelChart>();
 
             foreach(var ChartRawData in ChartsRawData) 
-            { 
-                Charts.Add(ExtractChart(ChartRawData, DataStorage));
+            {
+                var chart = ExtractChart(ChartRawData, DataStorage);
+                if(chart.Title != null)
+                    Charts.Add(chart);
             }
 
             ExcelPage Page = new ExcelPage();
@@ -59,6 +62,9 @@ namespace TestMODBUS.Services.Excel
 
         private static ExcelChart ExtractChart(ExtraDataViewModel ChartRawData, DataStorage DataStorage) 
         {
+            if (DataStorage.GetChannelLength() == 0)
+                return new ExcelChart();
+
             var UsingChannels = ChartRawData.GetUsingChannels();
             var Filter = ChartRawData.Filter;
             var ChartPreparation = ChartRawData.ChartDataPreparation;
@@ -80,8 +86,9 @@ namespace TestMODBUS.Services.Excel
             ExcelChart Chart = new ExcelChart();
             Chart.Title = Title;
             Chart.Points = Points;
-            Chart.XTitle = "Секунды";
+            Chart.XTitle = "Время, секунды";
             Chart.YTitle = GetYTittle(ChartPreparation);
+            Chart.SerieTitle = SeriePoints[0].SerieTitle;
 
             return Chart;
         }
@@ -102,55 +109,88 @@ namespace TestMODBUS.Services.Excel
             switch(DataPreparation)
             {
                 case ChartDataPreparationPower p:
-                    return "кВт";
+                    return "Мощность, кВт";
                 case ChartDataPreparationEnergy e:
-                    return "кВт*ч";
-                case ChartDataPreparationStandart s:
-                    return "-";
+                    return "Энергия, кВт*ч";
                 default:
                     throw new Exception("Необработанный ChartDataPreparation в ExcelDataPreparation");
             }
         }
 
-        private static ExcelPage ExtractChannels(List<ChannelModel> Channels)
+        public static ExcelPage ExtractChannelsData(List<ChannelModel> Channels)
         {
             ExcelPage Page = new ExcelPage();
             List<ExcelChart> Charts = new List<ExcelChart>();
 
-            foreach(var channel in Channels)
+            foreach(var Channel in Channels)
             {
+                if (!Channel.IsChosen)
+                    continue;
+
                 ExcelChart Chart = new ExcelChart();
                 var Points = new List<Point>();
 
-                foreach(var Point in Points)
+                foreach(var Point in Channel.Data)
                 {
-                    var channelType = ChannelTypeList.GetChannelType(channel.ChannelNumber);
+                    var channelType = ChannelTypeList.GetChannelType(Channel.ChannelNumber);
                     switch (channelType)
                     {
                         case ChannelType.Tok:
                             Points.Add(new Point(Point.X / 1000, ModBusValueConverter.ConvertToAmperValue(Point.Y)));
-                            Chart.YTitle = "А";
+                            Chart.YTitle = "Сила тока, А";
+                            Chart.SerieTitle = "Сила тока";
                             break;
                         case ChannelType.Volt:
                             Points.Add(new Point(Point.X / 1000, ModBusValueConverter.ConvertToAmperValue(Point.Y)));
-                            Chart.YTitle = "В";
+                            Chart.YTitle = "Напряжение, В";
+                            Chart.SerieTitle = "Напряжение";
                             break;
                         case ChannelType.Regular:
-                            Chart.YTitle = "";
                             Points.Add(new Point(Point.X / 1000, Point.Y));
+                            Chart.YTitle = "";
+                            Chart.SerieTitle = "";
                             break;
                         default:
                             throw new Exception("Необработанный тип каналов в ExcelDataPreparation");   
                     }
                 }
-                Chart.Title = channel.Label;
-                Chart.XTitle = "Секунды";
+                Chart.Title = Channel.Label;
+                Chart.XTitle = "Вермя, с";
                 Chart.Points = Points;
 
                 Charts.Add(Chart);
             }
 
             Page.Title = "Данные с каналов";
+            Page.Charts = Charts;
+
+            return Page;
+        }
+
+        public static ExcelPage ExtractRawData(DataStorage DataStorage)
+        {
+            ExcelPage Page = new ExcelPage();
+            List<ExcelChart> Charts = new List<ExcelChart>();
+
+            for(int i = 0; i < DataStorage.MaxChannelCount; i++)
+            {
+                ExcelChart Chart = new ExcelChart();
+                var Points = new List<Point>();
+
+                foreach (var Point in DataStorage.GetChannelData(i))
+                {
+                    Points.Add(new Point(Point.X / 1000, Point.Y));
+                }
+                Chart.Title = $"CH_{i}";
+                Chart.YTitle = "Сырые данные";
+                Chart.XTitle = "Время, с";
+                Chart.Points = Points;
+                Chart.SerieTitle = $"CH_{i}";
+
+                Charts.Add(Chart);
+            }
+
+            Page.Title = "Сырые Данные с каналов";
             Page.Charts = Charts;
 
             return Page;
