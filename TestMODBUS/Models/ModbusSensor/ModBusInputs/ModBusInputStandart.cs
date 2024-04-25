@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
 using TestMODBUS.Models.ModbusSensor.ModBusInputs;
+using TestMODBUS.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
 using TestMODBUS.Models.Services;
 
 namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
 {
     public class ModBusInputStandart : ModBusInputBase
     {
+        private IFilter _filter = new StandratFilter();
+
         public ModBusInputStandart(ModbusSensorController Controller) : base(Controller)
         {
         }
@@ -31,10 +34,8 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
 
         public override bool CheckAllChannelsChosen()
         {
-            if (_controller.GetUsingChannels().Count > 0)
-                return true;
-            else
-                return false;
+            var channels = _controller.GetUsingChannels();
+            return _filter.IsAllChannelsChosen(channels);
         }
 
         public override void CheckNewChannelsTypes()

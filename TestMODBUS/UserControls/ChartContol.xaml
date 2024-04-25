@@ -14,18 +14,7 @@
         <conv:ZoomBoolConverter x:Key="ZoomBoolConverter" />
         <conv:ScrollChartVisibilityConverter x:Key="SliderVisibility" />
         <conv:DoubleConverter x:Key="DoubleConverter"/>
-        <Style x:Key="ChannelSelectionButton" TargetType="Button">
-            <Style.Triggers>
-                <Trigger Property="extensions:IsChannelSelectedExtension.IsChannelSelected" Value="False">
-                    <Setter Property="Background" Value="LightGray"/>
-                    <Setter Property="Foreground" Value="Gray"/>
-                </Trigger>
-                <Trigger Property="extensions:IsChannelSelectedExtension.IsChannelSelected" Value="True">
-                    <Setter Property="Background" Value="GreenYellow"/>
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>

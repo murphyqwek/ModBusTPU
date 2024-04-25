@@ -10,24 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TestMODBUS.Models.Data;
-using TestMODBUS.ViewModels;
-using TestMODBUS.ViewModels.ExportViewModels;
 
-namespace TestMODBUS
+namespace TestMODBUS.UserControls
 {
     /// <summary>
-    /// Логика взаимодействия для ExportWindow.xaml
+    /// Логика взаимодействия для ExtraDataExportElement.xaml
     /// </summary>
-    public partial class ExportWindow : Window
+    public partial class ExtraDataExportElement : UserControl
     {
-        public ExportWindow(DataStorage Data, string name)
+        public ExtraDataExportElement()
         {
             InitializeComponent();
-            ExportViewModel viewModel = new ExportViewModel(Data, name);
-
-            this.DataContext = viewModel;
         }
     }
 }

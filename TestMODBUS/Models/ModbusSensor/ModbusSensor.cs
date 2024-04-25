@@ -102,10 +102,9 @@ namespace TestMODBUS.Models.ModbusSensor
 
         public void RemoveChannel(int Channel) => Input.RemoveChannel(Channel);
 
-        public void StartWorking()
-        {
-            Input.Start();
-        }
+        public void StartWorking() => Input.Start();
+
+        public bool AllNeededChannelsChonsen() => Input.CheckAllChannelsChosen();
 
         public void StopWorking() => Input.Stop();
 

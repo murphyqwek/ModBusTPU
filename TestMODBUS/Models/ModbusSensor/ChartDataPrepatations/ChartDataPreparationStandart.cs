@@ -21,7 +21,7 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
                 string CurrentValue = $"CH_{channel}: ";
                 string ValueType = "";
 
-                if (ChannelTypeList.GetChannelType(channel) == ChannelType.Volt)
+                if (ChannelTypeList.GetChannelType(channel) == ChannelType.Tok)
                     ValueType += " А";
                 else if (ChannelTypeList.GetChannelType(channel) == ChannelType.Volt)
                     ValueType += " В";

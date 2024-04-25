@@ -132,6 +132,9 @@
       <DependentUpon>ExportWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\IsChannelSelectedExtension.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\IFilter.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\OnlyOneVoltAndSeveralTokFilter.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\StandratFilter.cs" />
     <Compile Include="Models\ModbusSensor\WindowingDataHelper.cs" />
     <Compile Include="Services\Channels\ChannelColors.cs" />
     <Compile Include="Models\Data\ChannelModel.cs" />
@@ -186,15 +189,19 @@
     <Compile Include="UserControls\ChartContol.xaml.cs">
       <DependentUpon>ChartContol.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ExtraDataExportElement.xaml.cs">
+      <DependentUpon>ExtraDataExportElement.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ChannelsTypeChoosingViewModel.cs" />
     <Compile Include="ViewModels\ChannelTypeViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\CurrentChannelValueViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\ModbusSensorViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\SensorTypeViewModel.cs" />
+    <Compile Include="ViewModels\ExportViewModels\ExtraDataViewModel.cs" />
     <Compile Include="ViewModels\FileNameViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\ExportViewModel.cs" />
+    <Compile Include="ViewModels\ExportViewModels\ExportViewModel.cs" />
     <Compile Include="Views\ChannelsTypeWindow.xaml.cs">
       <DependentUpon>ChannelsTypeWindow.xaml</DependentUpon>
     </Compile>
@@ -217,11 +224,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Styles\Buttons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\ChannelExportSettingElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ChartContol.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ExtraDataExportElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

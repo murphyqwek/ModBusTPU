@@ -19,15 +19,18 @@ namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
     {
         public override IList<string> GetCurrentValues(IList<int> Channels, DataStorage DataStorage)
         {
+            IList<string> values = new List<string>();
             var EnergyPoints = DataStorage.GetExtraData("energy", Channels);
+
+            if (EnergyPoints == null)
+                return values;
+            if(EnergyPoints.Count == 0)
+                return values;
 
             double value = EnergyPoints.Last().Y;
             value = Math.Round(value, 2);
 
-            IList<string> values = new List<string>
-            {
-                $"Энергия: {value} кВт"
-            };
+            values.Add($"Энергия: {value} кВт");
 
             return values;
         }

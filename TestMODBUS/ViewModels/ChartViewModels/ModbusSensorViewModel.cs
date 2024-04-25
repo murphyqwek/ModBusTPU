@@ -64,7 +64,7 @@ namespace TestMODBUS.ViewModels.ChartViewModels
 
         public ICommand ChangeChannelListCommand { get; }
 
-        private void ChaneChannelListHandler(object Channel)
+        private void ChangeChannelListHandler(object Channel)
         {
             if (!Int32.TryParse(Channel.ToString(), out int channel))
                 throw new Exception("Channel must be Interger");
@@ -93,7 +93,7 @@ namespace TestMODBUS.ViewModels.ChartViewModels
             Channels = _sensor.SensorData.UsingChannels;
             CurrentValues = _sensor.SensorData.CurrentValues;
 
-            ChangeChannelListCommand = new RemoteCommandWithParameter(ChaneChannelListHandler);
+            ChangeChannelListCommand = new RemoteCommandWithParameter(ChangeChannelListHandler);
 
             _chart.Series.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Series));
             _chart.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);

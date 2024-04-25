@@ -5,6 +5,11 @@
              StartupUri="MainWindow.xaml"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" xmlns:system="clr-namespace:System;assembly=mscorlib">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Buttons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        
 
         <Style TargetType="Button">
             <Style.Triggers>
@@ -186,7 +191,7 @@
             <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
             <Setter Property="Template" Value="{StaticResource ComboBoxTemplate}"/>
         </Style>
-        
-        
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

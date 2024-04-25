@@ -17,13 +17,22 @@ using TestMODBUS.ViewModels.Base;
 using TestMODBUS.Models.Services;
 using TestMODBUS.Models.Services.Excel;
 using TestMODBUS.Services.Settings.Channels;
+using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
+using TestMODBUS.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
 
-namespace TestMODBUS.ViewModels
+namespace TestMODBUS.ViewModels.ExportViewModels
 {
     public class ExportViewModel : BaseViewModel
     {
+        #region Public Attributes
+
+        public ObservableCollection<ExtraDataViewModel> PowerExtraData { get; }
+        public ObservableCollection<ExtraDataViewModel> EnergyExtraData { get; }
+
         public ObservableCollection<ChannelViewModel> ExportChannels { get; }
         public string FileName { get; }
+
+        #endregion
 
         private List<ChannelModel> _channelsExportSettings = new List<ChannelModel>();
 
@@ -98,6 +107,32 @@ namespace TestMODBUS.ViewModels
 
         #endregion
 
+        #region Add New Power ExtraData
+
+        public ICommand AddNewPowerExtraDataCommand { get; }
+
+        public void AddNewPowerExtraDataCommandHander()
+        {
+            var newExtraData = new ExtraDataViewModel(new ChartDataPreparationPower(), new OnlyOneVoltAndSeveralTokFilter(),
+                                                      "Power", DeleteExtraData);
+            PowerExtraData.Add(newExtraData);
+        }
+
+        #endregion
+
+        #region Add New Energy ExtraData
+
+        public ICommand AddNewEnergyExtraDataCommand { get; }
+
+        public void AddNewEnergyExtraDataCommandHandler()
+        {
+            var newExtraData = new ExtraDataViewModel(new ChartDataPreparationEnergy(), new OnlyOneVoltAndSeveralTokFilter(),
+                                                      "Energy", DeleteExtraData);
+            EnergyExtraData.Add(newExtraData);
+        }
+
+        #endregion
+
         #endregion
 
         public ExportViewModel(DataStorage Data, string FileName) 
@@ -106,10 +141,15 @@ namespace TestMODBUS.ViewModels
             ExportChannels = new ObservableCollection<ChannelViewModel>();
             UploadChannelsData(Data);
 
+            PowerExtraData = new ObservableCollection<ExtraDataViewModel>();
+            EnergyExtraData = new ObservableCollection<ExtraDataViewModel>();
+
             ExportDataCommand = new RemoteCommand(ExportDataHandle);
             SaveSettingsCommand = new RemoteCommand(SaveSettingsCommandHandle);
             UploadSettingsCommand = new RemoteCommand(UploadSettingsHandle);
             ClearChannelsExportSettingsCommand = new RemoteCommand(ClearChannelsExportSettingsHandle);
+            AddNewPowerExtraDataCommand = new RemoteCommand(AddNewPowerExtraDataCommandHander);
+            AddNewEnergyExtraDataCommand = new RemoteCommand(AddNewEnergyExtraDataCommandHandler);
         }
 
         private void UploadChannelsData(DataStorage Data)
@@ -131,6 +171,14 @@ namespace TestMODBUS.ViewModels
                 channel.Label = "";
                 channel.IsChosen = false;
             }
+        }
+
+        private void DeleteExtraData(ExtraDataViewModel ExtraData)
+        {
+            if(ExtraData.Type == "Power")
+                PowerExtraData.Remove(ExtraData);
+            if (ExtraData.Type == "Energy")
+                EnergyExtraData.Remove(ExtraData);
         }
     }
 }

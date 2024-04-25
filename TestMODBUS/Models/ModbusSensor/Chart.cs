@@ -207,6 +207,9 @@ namespace TestMODBUS.Models.ModbusSensor
                 newYMin = Math.Min(newYMin, point.Y);
             }
 
+
+            //YMax = newYMax;
+            //YMin = newYMin;
             YMax = Math.Max(newYMax, YMax);
             YMin = Math.Min(newYMin, YMin);
         }

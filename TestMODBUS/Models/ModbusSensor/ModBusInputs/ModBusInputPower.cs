@@ -5,12 +5,15 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
+using TestMODBUS.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
 using TestMODBUS.Models.Services;
 
 namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
 {
     internal class ModBusInputPower : ModBusInputBase
     {
+        private IFilter _filter = new OnlyOneVoltAndSeveralTokFilter();
+
         public ModBusInputPower(ModbusSensorController Controller) : base(Controller)
         {
         }
@@ -23,8 +26,8 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
             if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Regular)
                 return;
 
-            int prevVoltChannel = CheckForVoltChannel(Channel);
-            if (prevVoltChannel != -1)
+            int prevVoltChannel = GetVoltChannel();
+            if (prevVoltChannel != -1 && ChannelTypeList.GetChannelType(Channel) == ChannelType.Volt)
                 _controller.SetUsingChannel(prevVoltChannel, false);
 
             int previousLastChannel = _controller.GetLastChannel();
@@ -36,15 +39,12 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
             _controller.UpdateChartAfterNewChannelAdded();
         }
 
-        private int CheckForVoltChannel(int NewChannel)
+        private int GetVoltChannel()
         {
-            if (ChannelTypeList.GetChannelType(NewChannel) != ChannelType.Volt)
-                return -1;
-
             var channels = _controller.GetUsingChannels();
             foreach(var channel in channels)
             {
-                if(ChannelTypeList.GetChannelType(NewChannel) == ChannelType.Volt)
+                if(ChannelTypeList.GetChannelType(channel) == ChannelType.Volt)
                     return channel;
             }
             return -1;
@@ -61,22 +61,8 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
 
         public override bool CheckAllChannelsChosen()
         {
-            int TokChannels = 0, VoltChannels = 0;
             var channels = _controller.GetUsingChannels();
-            foreach (var channel in channels)
-            {
-                if (ChannelTypeList.GetChannelType(channel) == ChannelType.Volt)
-                    VoltChannels++;
-                else if (ChannelTypeList.GetChannelType(channel) == ChannelType.Tok)
-                    TokChannels++;
-                else
-                    return false;
-            }
-
-            if (TokChannels > 0 && VoltChannels == 1)
-                return true;
-            else
-                return false;
+            return _filter.IsAllChannelsChosen(channels);
         }
 
         public override void CheckNewChannelsTypes()

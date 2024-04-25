@@ -73,9 +73,10 @@ namespace TestMODBUS.ViewModels
                     _portListener = new PortListener(port, _dataConnector, StopCommandHandler);
             } 
         }
-        
+
         #endregion
 
+        #region Private Fields
         private IPortListener _portListener;
         private ObservablePort port;
         private DataStorage _data;
@@ -86,6 +87,7 @@ namespace TestMODBUS.ViewModels
         private ModbusSensor sensor4;
         private bool _debug = false;
         private bool _isWorking = false;
+        #endregion
 
         #region Commands
 
@@ -96,6 +98,15 @@ namespace TestMODBUS.ViewModels
 
         private void StartCommandHandler()
         {
+            if(!sensor1.AllNeededChannelsChonsen() ||
+                !sensor2.AllNeededChannelsChonsen() ||
+                !sensor3.AllNeededChannelsChonsen() ||
+                !sensor4.AllNeededChannelsChonsen())
+            {
+                ErrorMessageBox.Show("Не все нужные каналы были выбраны");
+                return;
+            }
+
             if(_data.GetChannelLength() > 0)
             {
                 if (RequestYesNoMessageBox.Show("Перед запуском проверьте, что сохранилы предыдущие данные") != MessageBoxResult.Yes)
@@ -124,6 +135,7 @@ namespace TestMODBUS.ViewModels
             }
             catch(NotAllChannelsChosen ex)
             {
+                StopCommandHandler();
                 ErrorMessageBox.Show(ex.Message);
             }
             catch (ChosenPortUnavailableException ex)
@@ -228,7 +240,7 @@ namespace TestMODBUS.ViewModels
 
         #endregion
 
-        #region
+        #region Open ChangeChannelsType Menu
 
         public ICommand ChangeChannelsTypeCommand { get; }
 
