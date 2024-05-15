@@ -15,6 +15,8 @@ using TestMODBUS.Exceptions;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.Services;
 using TestMODBUS.Services.Excel;
+using OfficeOpenXml.Style;
+using System.Xml.Linq;
 
 namespace TestMODBUS.Models.Services.Excel
 {
@@ -32,7 +34,7 @@ namespace TestMODBUS.Models.Services.Excel
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
 
-        public static void SaveData(ExcelPage RawDataPage, ExcelPage ChannelsPage, IList<ExcelPage> ExtraDataPages, string FilePath)
+        public static void SaveData(ExcelPage RawDataPage, ExcelPage ChannelsPage, IList<ExcelPage> ExtraDataPages, IList<Commentary> Commentaries, string BigComment, string FilePath)
         {
             if (OpenFileHelper.isFileOpen(FilePath))
                 throw new FileIsAlreadyOpenException(FilePath);
@@ -43,7 +45,7 @@ namespace TestMODBUS.Models.Services.Excel
                 ExcelPackage.Workbook.Properties.Created = DateTime.Now;
 
                 //Заполняем комментарии
-                //TODO: Сделать
+                FillCommentaries(ExcelPackage, Commentaries, BigComment);
 
                 //Заполняем дополнительные данные
                 foreach (var Page in ExtraDataPages)
@@ -82,21 +84,41 @@ namespace TestMODBUS.Models.Services.Excel
             return dataSheet;
         }
 
-        private static void FillCommentaries(ExcelPackage ExcelPackage, Dictionary<string, string> CommentariesData)
+        private static void FillCommentaries(ExcelPackage ExcelPackage, IList<Commentary> CommentariesData, string BigComment)
         {
             ExcelWorksheet Commentaries = ExcelPackage.Workbook.Worksheets.Add("Комментарии");
 
-            Commentaries.Columns[0].AutoFit();
-            Commentaries.Columns[1].AutoFit();
+            var Title = Commentaries.Cells["A1:B1"];
+            Title.Merge = true;
+            Title.Value = "Внешние данные";
+            Title.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            Title.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
-            int index = 1;
-            foreach(var CommentName in CommentariesData.Keys)
+            Commentaries.Columns[1].AutoFit();
+            Commentaries.Columns[2].AutoFit();
+
+            int index = 2;
+            foreach(var Comment in CommentariesData)
             {
-                Commentaries.Cells[index, 1].Value = CommentName;//GetChannelTitle(ChannelIndex);
-                Commentaries.Cells[index, 2].Value = CommentariesData[CommentName];
-                Commentaries.Cells[index, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                Commentaries.Cells[index, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                Commentaries.Cells[index, 1].Value = Comment.Label;
+                Commentaries.Cells[index, 2].Value = Comment.Comment;
+                Commentaries.Cells[index, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                Commentaries.Cells[index, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                index++;
             }
+
+            var comment_title = Commentaries.Cells["D1:J2"];
+            var comment_section = Commentaries.Cells["D3:J20"];
+
+            comment_title.Merge = true;
+            comment_title.Value = "Комментарии к эксперименту";
+            comment_title.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            comment_title.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+            comment_section.Merge = true;
+            comment_section.Value = BigComment;
+            comment_section.Style.WrapText = true;
+            comment_section.Style.VerticalAlignment = ExcelVerticalAlignment.Top;
         }
 
         //Создаёт графики данных с канала

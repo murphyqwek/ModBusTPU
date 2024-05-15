@@ -26,11 +26,34 @@ namespace TestMODBUS.Services.Excel
         public IList<ExcelChart> Charts;
     }
 
+    public struct Commentary
+    {
+        public string Label;
+        public string Comment;
+    }
+
     public static class ExcelDataPreparation
     {
         //Подготавливает дополнительные данные для Excel
         //Ключ - название листа, на котором будут графики
         //Значение - Данные графика: заголовок, ChartDataPreparation, используемые каналы
+
+        public static List<Commentary> ExtractCommentaries(IEnumerable<CommentaryExportElementViewModel> Commentaries)
+        {
+            var ExtractedComments = new List<Commentary>();
+
+            foreach(var Comment in Commentaries)
+            {
+                var ExtractedComment = new Commentary();
+                ExtractedComment.Label = Comment.Label;
+                ExtractedComment.Comment = Comment.Commentary;
+
+                ExtractedComments.Add(ExtractedComment);
+            }
+
+            return ExtractedComments;
+        }
+
         public static List<ExcelPage> ExtractExtraData(Dictionary<string, IEnumerable<ExtraDataViewModel>> ExtraData, DataStorage DataStorage)
         {
             List<ExcelPage> Pages = new List<ExcelPage>();
@@ -68,7 +91,7 @@ namespace TestMODBUS.Services.Excel
             var UsingChannels = ChartRawData.GetUsingChannels();
             var Filter = ChartRawData.Filter;
             var ChartPreparation = ChartRawData.ChartDataPreparation;
-            var Title = ChartRawData.Name;
+            var Title = ChartRawData.Label;
 
             if (!Filter.IsAllChannelsChosen(UsingChannels))
                 throw new Exception("Не все нужные каналы были выбраны");
@@ -117,7 +140,7 @@ namespace TestMODBUS.Services.Excel
             }
         }
 
-        public static ExcelPage ExtractChannelsData(List<ChannelModel> Channels)
+        public static ExcelPage ExtractChannelsData(List<ChannelModel> Channels, DataStorage DataStorage)
         {
             ExcelPage Page = new ExcelPage();
             List<ExcelChart> Charts = new List<ExcelChart>();
@@ -130,7 +153,7 @@ namespace TestMODBUS.Services.Excel
                 ExcelChart Chart = new ExcelChart();
                 var Points = new List<Point>();
 
-                foreach(var Point in Channel.Data)
+                foreach(var Point in DataStorage.GetChannelData(Channel.ChannelNumber))
                 {
                     var channelType = ChannelTypeList.GetChannelType(Channel.ChannelNumber);
                     switch (channelType)

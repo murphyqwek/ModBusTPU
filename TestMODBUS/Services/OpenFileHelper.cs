@@ -10,7 +10,7 @@ namespace TestMODBUS.Models.Services
 {
     public static class OpenFileHelper
     {
-        public static string GetSaveFile(string Filter, string DefaultExt, string FileName = "")
+        public static string GetSaveFilePath(string Filter, string DefaultExt, string FileName = "")
         {
             SaveFileDialog sf = new SaveFileDialog();
             sf.Title = "Сохранить файл как...";
@@ -29,7 +29,7 @@ namespace TestMODBUS.Models.Services
             
         }
 
-        public static string GetFilePath(string Filter, string DefalutExtension)
+        public static string GetOpenFilePath(string Filter, string DefalutExtension)
         {
             OpenFileDialog of = new OpenFileDialog();
             of.Title = "Открыть...";

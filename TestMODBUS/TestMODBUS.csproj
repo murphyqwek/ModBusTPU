@@ -184,11 +184,18 @@
     <Compile Include="Services\Settings\Channels\Types\ChannelsSettingFileManager.cs" />
     <Compile Include="Services\Settings\Channels\Types\ChannelsTypeSettings.cs" />
     <Compile Include="Services\Settings\Channels\ExportChannelsSettings.cs" />
+    <Compile Include="Services\Settings\Export\ExportReading.cs" />
+    <Compile Include="Services\Settings\Export\ExportSaving.cs" />
+    <Compile Include="Services\Settings\Export\ExportSettings.cs" />
+    <Compile Include="Services\Settings\Export\ExportSettingsManager.cs" />
     <Compile Include="UserControls\ChannelExportSettingElement.xaml.cs">
       <DependentUpon>ChannelExportSettingElement.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ChartContol.xaml.cs">
       <DependentUpon>ChartContol.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CommentariesExportElement.xaml.cs">
+      <DependentUpon>CommentariesExportElement.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ExtraDataExportElement.xaml.cs">
       <DependentUpon>ExtraDataExportElement.xaml</DependentUpon>
@@ -199,6 +206,7 @@
     <Compile Include="ViewModels\ChartViewModels\CurrentChannelValueViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\ModbusSensorViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\SensorTypeViewModel.cs" />
+    <Compile Include="ViewModels\ExportViewModels\CommentaryExportElementViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModels\ExtraDataViewModel.cs" />
     <Compile Include="ViewModels\FileNameViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -234,6 +242,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ChartContol.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CommentariesExportElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

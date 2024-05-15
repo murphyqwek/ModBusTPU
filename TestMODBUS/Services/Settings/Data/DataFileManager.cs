@@ -44,7 +44,7 @@ namespace TestMODBUS.Models.Services.Settings.Data
 
         public static DataStorage ReadLog()
         {
-            var Path = OpenFileHelper.GetFilePath($"*{DataLogEXTENSION}|*{DataLogEXTENSION};", DataLogEXTENSION);
+            var Path = OpenFileHelper.GetOpenFilePath($"*{DataLogEXTENSION}|*{DataLogEXTENSION};", DataLogEXTENSION);
             if (string.IsNullOrEmpty(Path))
                 return null;
 

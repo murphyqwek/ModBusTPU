@@ -20,6 +20,7 @@ using TestMODBUS.Services.Settings.Channels;
 using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
 using TestMODBUS.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
 using TestMODBUS.Services.Excel;
+using TestMODBUS.Services.Settings.Export;
 
 namespace TestMODBUS.ViewModels.ExportViewModels
 {
@@ -29,14 +30,25 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
         public ObservableCollection<ExtraDataViewModel> PowerExtraData { get; }
         public ObservableCollection<ExtraDataViewModel> EnergyExtraData { get; }
+        public ObservableCollection<CommentaryExportElementViewModel> Commentaries { get; }
+        public ObservableCollection<ChannelViewModel> ChannelsData { get; }
 
-        public ObservableCollection<ChannelViewModel> ExportChannels { get; }
         public string FileName { get; }
-
+        public string BigComment 
+        {
+            get => _bigComment;
+            set
+            {
+                if(_bigComment == value) return;
+                _bigComment = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         private List<ChannelModel> _channelsExportSettings = new List<ChannelModel>();
         private DataStorage _dataStorage;
+        private string _bigComment;
 
         #region Commands
         #region Export Data
@@ -44,26 +56,43 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
         private void ExportDataHandle()
         {
-            if(!_channelsExportSettings.Any(channel => channel.IsChosen))
+            if(!_channelsExportSettings.All(channel => channel.IsChosen))
             {
                 ErrorMessageBox.Show("Нужно выбрать как минимум один канал");
                 return;
             }
 
-            string path = OpenFileHelper.GetSaveFile("*.xlsx|*.xlsx;", ".xlsx", FileName);
+            if (!IsAllChannelsChosen())
+            {
+                ErrorMessageBox.Show("Не все поля заполены корректно");
+                return;
+            }
+
+            if (Commentaries.Any(commentary => string.IsNullOrEmpty(commentary.Commentary)))
+            {
+                var response = RequestYesNoMessageBox.Show("Не все внешние данные заполнены, продолжить?");
+
+                if (response != MessageBoxResult.Yes)
+                    return;
+            }
+
+            if (string.IsNullOrEmpty(BigComment))
+            {
+                var response = RequestYesNoMessageBox.Show("Комменатарии не заполнены, продолжить?");
+
+                if (response != MessageBoxResult.Yes)
+                    return;
+            }
+
+            string path = OpenFileHelper.GetSaveFilePath("*.xlsx|*.xlsx;", ".xlsx", FileName);
             if (path == null)
                 return;
 
             try
             {
                 Export(path);
-                //ExportExcel.SaveData(_channelsExportSettings, path);
-                if(RequestYesNoMessageBox.Show("Отчёт сохранён. Открыть папку с отчётом?", "Успешно", System.Windows.MessageBoxImage.Information) == System.Windows.MessageBoxResult.Yes)
-                {
-                    string folder = Path.GetDirectoryName(path);
-                    Process.Start("explorer", folder);
-                }
-
+                if (RequestYesNoMessageBox.Show("Отчёт сохранён. Открыть его?", "Успешно", MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    Process.Start(path);
             }
             catch(Exception e)
             {
@@ -73,14 +102,10 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
         private void Export(string FilePath)
         {
-            if (!IsAllChannelsChosen())
-            {
-                ErrorMessageBox.Show("Не все поля заполены корректно");
-                return;
-            }
-
             var RawDataPage = ExcelDataPreparation.ExtractRawData(_dataStorage);
-            var ChannelsDataPage = ExcelDataPreparation.ExtractChannelsData(_channelsExportSettings);
+            var ChannelsDataPage = ExcelDataPreparation.ExtractChannelsData(_channelsExportSettings, _dataStorage);
+
+            var ExtractedCommentaries = ExcelDataPreparation.ExtractCommentaries(Commentaries);
 
             Dictionary<string, IEnumerable<ExtraDataViewModel>> ExtraData = new Dictionary<string, IEnumerable<ExtraDataViewModel>>()
             {
@@ -90,21 +115,17 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
             var ExtraDataPages = ExcelDataPreparation.ExtractExtraData(ExtraData, _dataStorage);
 
-            ExcelExport.SaveData(RawDataPage, ChannelsDataPage, ExtraDataPages, FilePath);
+            ExcelExport.SaveData(RawDataPage, ChannelsDataPage, ExtraDataPages, ExtractedCommentaries, BigComment, FilePath);
         }
 
         private bool IsAllChannelsChosen()
         {
-            foreach (var data in PowerExtraData)
-            {
-                if (!data.IsAllChosen)
-                    return false;
-            }
-            foreach (var data in EnergyExtraData)
-            {
-                if (!data.IsAllChosen)
-                    return false;
-            }
+            if (!PowerExtraData.All(data => data.IsAllChosen) && PowerExtraData.Count > 0)
+                return false;
+            if (!EnergyExtraData.All(data => data.IsAllChosen) && EnergyExtraData.Count > 0)
+                return false;
+            if (!Commentaries.All(data => !string.IsNullOrEmpty(data.Label)) && Commentaries.Count > 0)
+                return false;
             return true;
         }
         #endregion
@@ -114,10 +135,18 @@ namespace TestMODBUS.ViewModels.ExportViewModels
         public ICommand SaveSettingsCommand { get; }
         public void SaveSettingsCommandHandle()
         {
-            if (ExportChannelsSettings.SaveChannels(_channelsExportSettings))
-                SuccessMessageBox.Show("Настройки экспорта каналов сохранены");
-            else
-                ErrorMessageBox.Show("Не удалось сохранить настройки экспорта каналов");
+            ExportSettings ExportSettings = new ExportSettings(ChannelsData, PowerExtraData, EnergyExtraData, Commentaries);
+            try
+            {
+                if (!ExportSettingsManager.SaveSettings(ExportSettings))
+                    return;
+
+                SuccessMessageBox.Show("Настройки успешно сохранены");
+            }
+            catch(Exception ex)
+            {
+                ErrorMessageBox.Show(ex.Message);
+            }
         }
 
         #endregion
@@ -128,7 +157,19 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
         public void UploadSettingsHandle()
         {
-            ExportChannelsSettings.UploadChannelSettings(_channelsExportSettings);
+            try
+            {
+                var NewExportSettings = ExportSettingsManager.UploadExportSettings();
+                if (NewExportSettings == null)
+                    return;
+
+                UploadSettings(NewExportSettings);
+                SuccessMessageBox.Show("Настройки успешно применены");
+            }
+            catch (Exception ex)
+            {
+                ErrorMessageBox.Show(ex.Message);
+            }
         }
 
         #endregion
@@ -173,18 +214,32 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
         #endregion
 
+        #region Add New Commentary
+
+        public ICommand AddNewCommentaryCommand { get; }
+
+        public void AddNewCommentaryCommandHandler()
+        {
+            var NewCommentary = new CommentaryExportElementViewModel(DeleteCommentary);
+            Commentaries.Add(NewCommentary);
+        }
+
+        #endregion
+
         #endregion
 
         public ExportViewModel(DataStorage DataStorage, string FileName) 
         {
             _dataStorage = DataStorage;
             this.FileName = FileName;
-            ExportChannels = new ObservableCollection<ChannelViewModel>();
 
-            UploadChannelsData(DataStorage);
+            ChannelsData = new ObservableCollection<ChannelViewModel>();
 
             PowerExtraData = new ObservableCollection<ExtraDataViewModel>();
             EnergyExtraData = new ObservableCollection<ExtraDataViewModel>();
+            Commentaries = new ObservableCollection<CommentaryExportElementViewModel>();
+
+            UploadSettings(ExportSettingsManager.GetStandartExportSettings());
 
             ExportDataCommand = new RemoteCommand(ExportDataHandle);
             SaveSettingsCommand = new RemoteCommand(SaveSettingsCommandHandle);
@@ -192,18 +247,17 @@ namespace TestMODBUS.ViewModels.ExportViewModels
             ClearChannelsExportSettingsCommand = new RemoteCommand(ClearChannelsExportSettingsHandle);
             AddNewPowerExtraDataCommand = new RemoteCommand(AddNewPowerExtraDataCommandHander);
             AddNewEnergyExtraDataCommand = new RemoteCommand(AddNewEnergyExtraDataCommandHandler);
+            AddNewCommentaryCommand = new RemoteCommand(AddNewCommentaryCommandHandler);
         }
 
-        private void UploadChannelsData(DataStorage Data)
+        private void DefalutSettings()
         {
-            for(int i = 0; i < Data.GetMaxChannelsCount(); i++) 
+            ChannelsData.Clear();
+            for (int i = 0; i < DataStorage.MaxChannelCount; i++) 
             {
-                ChannelModel channelModel = new ChannelModel(i, Data.GetChannelData(i).ToList());
-                _channelsExportSettings.Add(channelModel);
-                ExportChannels.Add(new ChannelViewModel(channelModel));
+                ChannelModel channelModel = new ChannelModel(i);
+                ChannelsData.Add(new ChannelViewModel(channelModel));
             }
-
-            ExportChannelsSettings.UploadChannelSettings(_channelsExportSettings);
         }
 
         private void ClearChannelsExportSettings()
@@ -221,6 +275,38 @@ namespace TestMODBUS.ViewModels.ExportViewModels
                 PowerExtraData.Remove(ExtraData);
             if (ExtraData.Type == "Energy")
                 EnergyExtraData.Remove(ExtraData);
+        }
+
+        private void DeleteCommentary(CommentaryExportElementViewModel CommentData)
+        {
+            Commentaries.Remove(CommentData);
+        }
+
+        private void UploadSettings(ExportSettings Settings)
+        {
+            if (Settings == null)
+            {
+                DefalutSettings();
+                return;
+            }
+
+            ChannelsData.Clear();
+            foreach(var Channel in Settings.ChannelsData)
+            {
+                ChannelsData.Add(new ChannelViewModel(new ChannelModel(Channel.Channel, Channel.IsChosen, Channel.Label)));
+            }
+
+            PowerExtraData.Clear();
+            foreach (var ExtraData in Settings.PowerData)
+                PowerExtraData.Add(new ExtraDataViewModel(new ChartDataPreparationPower(), new OnlyOneVoltAndSeveralTokFilter(), "Power", DeleteExtraData, ExtraData));
+
+            EnergyExtraData.Clear();
+            foreach (var ExtraData in Settings.EnergyData)
+                PowerExtraData.Add(new ExtraDataViewModel(new ChartDataPreparationEnergy(), new OnlyOneVoltAndSeveralTokFilter(), "Energy", DeleteExtraData, ExtraData));
+
+            Commentaries.Clear();
+            foreach (var Commentary in Settings.CommentaryLabels)
+                Commentaries.Add(new CommentaryExportElementViewModel(Commentary, DeleteCommentary));
         }
     }
 }

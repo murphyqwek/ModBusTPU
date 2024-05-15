@@ -34,14 +34,19 @@ namespace TestMODBUS.Models.Data
         }
 
         private bool _isChosen = false;
-        public Collection<Point> Data;
         private string _label;
 
-        public ChannelModel(int ChannelNumber, List<Point> ChannelData)
+        public ChannelModel(int ChannelNumber)
         {
-            Data = new Collection<Point>(ChannelData);
             this.ChannelNumber = ChannelNumber;
             Label = $"CH_{ChannelNumber}";
+        }
+
+        public ChannelModel(int ChannelNumber, bool IsChosen, string Label)
+        {
+            this.ChannelNumber = ChannelNumber;
+            this.IsChosen = IsChosen;
+            this.Label = Label;
         }
     }
 }

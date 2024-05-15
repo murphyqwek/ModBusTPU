@@ -10,6 +10,7 @@ using TestMODBUS.Commands;
 using TestMODBUS.Models.Data;
 using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
 using TestMODBUS.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
+using TestMODBUS.Services.Settings.Export;
 using TestMODBUS.ViewModels.Base;
 
 namespace TestMODBUS.ViewModels.ExportViewModels
@@ -18,7 +19,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
     {
         #region Public Attributes
 
-        public string Name 
+        public string Label 
         { 
             get => _name; 
             set
@@ -97,6 +98,26 @@ namespace TestMODBUS.ViewModels.ExportViewModels
         #endregion
 
         #endregion
+
+        public ExtraDataViewModel(ChartDataPreparationBase DataPreparation, IFilter Filter, string Type, Action<ExtraDataViewModel> DeleteFunction, ExtraData Data)
+        {
+            _chartDataPreparation = DataPreparation;
+            _filter = Filter;
+            this.Type = Type;
+            _deleteFunction = DeleteFunction;
+
+            Channels = new ObservableCollection<bool>();
+            for (int i = 0; i < DataStorage.MaxChannelCount; i++)
+                Channels.Add(false);
+
+            foreach (var Channel in Data.UsingChannels)
+                AddNewChannel(Channel);
+
+            ChangeChannelListCommand = new RemoteCommandWithParameter(ChangeChannelListHandler);
+            DeleteCommand = new RemoteCommand(DeleteCommandHandler);
+
+            Label = Data.Label;
+        }
 
         public ExtraDataViewModel(ChartDataPreparationBase DataPreparation, IFilter Filter, string Type, Action<ExtraDataViewModel> DeleteFunction)
         {
