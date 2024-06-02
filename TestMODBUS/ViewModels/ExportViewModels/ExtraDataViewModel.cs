@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,13 @@ using TestMODBUS.ViewModels.Base;
 
 namespace TestMODBUS.ViewModels.ExportViewModels
 {
+    public enum ExtraDataFieldStatus
+    {
+        NotAllChannelsChosen,
+        EmptyName,
+        Filled
+    }
+
     public class ExtraDataViewModel : BaseViewModel
     {
         #region Public Attributes
@@ -28,26 +36,25 @@ namespace TestMODBUS.ViewModels.ExportViewModels
                     return;
 
                 _name = value;
-                IsAllChosen = Filter.IsAllChannelsChosen(GetUsingChannels()) && !string.IsNullOrEmpty(_name);
+                UpdateStaus();
                 OnPropertyChanged();
             }
         }
         public ObservableCollection<bool> Channels { get; }
         public ChartDataPreparationBase ChartDataPreparation { get => _chartDataPreparation; }
         public IFilter Filter { get => _filter; }
-        public bool IsAllChosen 
-        { 
-            get => _isAllChosen; 
-            private set
+        public bool IsAllChosen => _status == ExtraDataFieldStatus.Filled; 
+        public ExtraDataFieldStatus Status
+        {
+            get => _status;
+            set
             {
-                if (_isAllChosen == value)
+                if(value == _status)
                     return;
-
-                _isAllChosen = value;
+                _status = value;
                 OnPropertyChanged();
             }
         }
-
         public string Type { get; }
 
         #endregion
@@ -57,7 +64,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
         private string _name;
         private ChartDataPreparationBase _chartDataPreparation;
         private IFilter _filter;
-        private bool _isAllChosen;
+        private ExtraDataFieldStatus _status;
         private Action<ExtraDataViewModel> _deleteFunction;
 
         #endregion
@@ -77,7 +84,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
             else
                 AddNewChannel(channel);
 
-            IsAllChosen = Filter.IsAllChannelsChosen(GetUsingChannels()) && !string.IsNullOrEmpty(_name);
+            UpdateStaus();
         }
 
         private void AddNewChannel(int NewChannel)
@@ -154,6 +161,16 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
             foreach (int Channel in Channels)
                 this.Channels[Channel] = true;
+        }
+
+        private void UpdateStaus()
+        {
+            if (!Filter.IsAllChannelsChosen(GetUsingChannels()))
+                Status = ExtraDataFieldStatus.NotAllChannelsChosen;
+            else if (string.IsNullOrEmpty(_name))
+                Status = ExtraDataFieldStatus.EmptyName;
+            else
+                Status = ExtraDataFieldStatus.Filled;
         }
     }
 }

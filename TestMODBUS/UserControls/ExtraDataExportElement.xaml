@@ -13,14 +13,17 @@
                Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}"/>
         <Ellipse Width="20" Margin="5 0" 
                  DockPanel.Dock="Left"
-                 extensions:IsChannelSelectedExtension.IsChannelSelected="{Binding IsAllChosen}">
+                 extensions:ExtraDataFieldStatusExtension.ExtraDataFieldStatus="{Binding Status}">
             <Ellipse.Style>
                 <Style TargetType="Ellipse">
                     <Style.Triggers>
-                        <Trigger Property="extensions:IsChannelSelectedExtension.IsChannelSelected" Value="False">
+                        <Trigger Property="extensions:ExtraDataFieldStatusExtension.ExtraDataFieldStatus" Value="NotAllChannelsChosen">
                             <Setter Property="Fill" Value="#eb101f"/>
                         </Trigger>
-                        <Trigger Property="extensions:IsChannelSelectedExtension.IsChannelSelected" Value="True">
+                        <Trigger Property="extensions:ExtraDataFieldStatusExtension.ExtraDataFieldStatus" Value="EmptyName">
+                            <Setter Property="Fill" Value="#ffda05"/>
+                        </Trigger>
+                        <Trigger Property="extensions:ExtraDataFieldStatusExtension.ExtraDataFieldStatus" Value="Filled">
                             <Setter Property="Fill" Value="GreenYellow"/>
                         </Trigger>
                     </Style.Triggers>

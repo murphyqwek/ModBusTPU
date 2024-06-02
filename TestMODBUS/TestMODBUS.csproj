@@ -131,6 +131,7 @@
     <Compile Include="ExportWindow.xaml.cs">
       <DependentUpon>ExportWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\ExtraDataFieldStatusExtension.cs" />
     <Compile Include="Extensions\IsChannelSelectedExtension.cs" />
     <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\IFilter.cs" />
     <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\OnlyOneVoltAndSeveralTokFilter.cs" />
