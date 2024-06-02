@@ -82,7 +82,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
                     return;
             }
 
-            string path = OpenFileHelper.GetSaveFilePath("*.xlsx|*.xlsx;", ".xlsx", "Отчёт");
+            string path = FileHelper.GetSaveFilePath("*.xlsx|*.xlsx;", ".xlsx", "Отчёт");
             if (path == null)
                 return;
 

@@ -175,7 +175,7 @@
     <Compile Include="Models\Modbus\ModBusCommandsList.cs" />
     <Compile Include="Models\Modbus\ModBusCRC.cs" />
     <Compile Include="Models\Modbus\ModBusValueConverter.cs" />
-    <Compile Include="Services\OpenFileHelper.cs" />
+    <Compile Include="Services\FileHelper.cs" />
     <Compile Include="Models\Port\Interfaces\IPortListener.cs" />
     <Compile Include="Services\ListAvailableSpeeds.cs" />
     <Compile Include="Models\Port\ObservablePort.cs" />

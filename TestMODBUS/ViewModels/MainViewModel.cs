@@ -188,6 +188,28 @@ namespace TestMODBUS.ViewModels
 
         #endregion
 
+        #region BackUp Command 
+        
+        public ICommand BackUpCommand { get; }
+        private void BackUpCommandHandler()
+        {
+            string FilePath = FileHelper.GetSaveFilePath($"*{DataFileManager.DataLogEXTENSION}|*{DataFileManager.DataLogEXTENSION};", DataFileManager.DataLogEXTENSION);
+            if (FilePath == null)
+                return;
+
+            try
+            {
+                DataFileManager.SaveLogs(Data, FilePath);
+                SuccessMessageBox.Show("Эксперимент успешно сохранены");
+            }
+            catch(Exception ex)
+            {
+                ErrorMessageBox.Show(ex.Message);
+            }
+        }
+
+        #endregion
+
         #region Export Data Command
 
         //Экспорт данных в Excel
@@ -321,6 +343,7 @@ namespace TestMODBUS.ViewModels
             ExportDataCommand = new RemoteCommand(ExportDataCommandHandler);
             UploadDataStorageCommand = new RemoteCommand(UploadDataStorageCommandHandler);
             ChangeChannelsTypeCommand = new RemoteCommand(ChangeChannelsTypeCommandHandler);
+            BackUpCommand = new RemoteCommand(BackUpCommandHandler);
 
             //Подписиваем объекты на OnPropertyChanged других объектов
             ListAvailablePorts.AvailablePorts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Ports));

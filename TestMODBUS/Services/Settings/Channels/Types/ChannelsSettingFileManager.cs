@@ -41,7 +41,7 @@ namespace TestMODBUS.Services.Settings.Channels
 
         public static bool UploadUserSettings()
         {
-            string FilePath = OpenFileHelper.GetOpenFilePath($"*{FileEXTENSION}|*{FileEXTENSION};", $"{FileEXTENSION}");
+            string FilePath = FileHelper.GetOpenFilePath($"*{FileEXTENSION}|*{FileEXTENSION};", $"{FileEXTENSION}");
 
             if (string.IsNullOrEmpty(FilePath))
                 return false;
@@ -62,7 +62,7 @@ namespace TestMODBUS.Services.Settings.Channels
 
         public static bool SaveSettings(List<ChannelType> ChannelsType)
         {
-            string Filename = OpenFileHelper.GetSaveFilePath($"*{FileEXTENSION}|*{FileEXTENSION};", $"{FileEXTENSION}");
+            string Filename = FileHelper.GetSaveFilePath($"*{FileEXTENSION}|*{FileEXTENSION};", $"{FileEXTENSION}");
             if (Filename == null)
                 return false;
 

@@ -37,7 +37,7 @@ namespace TestMODBUS.Models.Services.Excel
 
         public static void SaveData(ExcelPage RawDataPage, ExcelPage ChannelsPage, IList<int> ChannelsToChart, IList<ExcelPage> ExtraDataPages, IList<Commentary> Commentaries, string BigComment, string FilePath)
         {
-            if (OpenFileHelper.isFileOpen(FilePath))
+            if (FileHelper.isFileOpen(FilePath))
                 throw new FileIsAlreadyOpenException(FilePath);
 
             using(ExcelPackage ExcelPackage = new ExcelPackage())

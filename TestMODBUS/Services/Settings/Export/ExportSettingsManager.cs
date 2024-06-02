@@ -16,7 +16,7 @@ namespace TestMODBUS.Services.Settings.Export
 
         public static bool SaveSettings(ExportSettings ExportSettings)
         {
-            string FilePath = OpenFileHelper.GetSaveFilePath("*.txt|*.txt;", ".txt");
+            string FilePath = FileHelper.GetSaveFilePath("*.txt|*.txt;", ".txt");
 
             if(FilePath == null)
                 return false;
@@ -31,7 +31,7 @@ namespace TestMODBUS.Services.Settings.Export
 
         public static ExportSettings UploadExportSettings()
         {
-            string FilePath = OpenFileHelper.GetOpenFilePath("*.txt|*.txt;", ".txt");
+            string FilePath = FileHelper.GetOpenFilePath("*.txt|*.txt;", ".txt");
             if (FilePath == null)
                 return null;
 

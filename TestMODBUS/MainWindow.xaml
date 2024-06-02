@@ -29,6 +29,7 @@
 
         <Border Grid.Row="0" BorderBrush="#d3d3d3" BorderThickness="0 0 0 2">
             <Grid>
+                <Button Content="Сохранить эксперимент" Width="200" Margin="5" HorizontalAlignment="Left" Command="{Binding BackUpCommand}" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}"/>
                 <Button Content="Channels" Command="{Binding ChangeChannelsTypeCommand}" Width="100" Height="25" Margin="100 0" HorizontalAlignment="Right"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 10 0">
                     <TextBlock Text="Test Mode" Margin="0 0 5 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>

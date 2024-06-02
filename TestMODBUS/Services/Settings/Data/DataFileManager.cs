@@ -15,7 +15,7 @@ namespace TestMODBUS.Models.Services.Settings.Data
         private static readonly string DataLogPATH = Path.Combine(Environment.GetFolderPath(
                                                                   Environment.SpecialFolder.ApplicationData), "ModBus", "Logs");
 
-        private static readonly string DataLogEXTENSION = ".svmb";
+        public static readonly string DataLogEXTENSION = ".svmb";
 
         private static void CreateFolder()
         {
@@ -27,9 +27,14 @@ namespace TestMODBUS.Models.Services.Settings.Data
         {
             CreateFolder();
 
-            string FileName = DateTime.Now.ToString("dd/MM/yyyy HH.mm.ss") + DataLogEXTENSION;
+            string FilePath = DateTime.Now.ToString("dd/MM/yyyy HH.mm.ss") + DataLogEXTENSION;
 
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine(DataLogPATH, FileName), false))
+            SaveLogs(DataLog, FilePath);
+        }
+
+        private static void SaveLogs(string DataLog, string FilePath)
+        {
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine(DataLogPATH, FilePath), false))
             {
                 outputFile.WriteLine(DataLog);
             }
@@ -42,9 +47,16 @@ namespace TestMODBUS.Models.Services.Settings.Data
             SaveLogs(DataLogs);
         }
 
+        public static void SaveLogs(DataStorage DataStorage, string FilePath)
+        {
+            var DataLogs = DataLog.GetLog(DataStorage);
+
+            SaveLogs(DataLogs, FilePath);
+        }
+
         public static DataStorage ReadLog()
         {
-            var Path = OpenFileHelper.GetOpenFilePath($"*{DataLogEXTENSION}|*{DataLogEXTENSION};", DataLogEXTENSION);
+            var Path = FileHelper.GetOpenFilePath($"*{DataLogEXTENSION}|*{DataLogEXTENSION};", DataLogEXTENSION);
             if (string.IsNullOrEmpty(Path))
                 return null;
 

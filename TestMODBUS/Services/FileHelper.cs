@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestMODBUS.Models.Services
 {
-    public static class OpenFileHelper
+    public static class FileHelper
     {
         public static string GetSaveFilePath(string Filter, string DefaultExt, string FileName = "")
         {
