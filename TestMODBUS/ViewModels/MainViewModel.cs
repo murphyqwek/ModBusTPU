@@ -195,14 +195,7 @@ namespace TestMODBUS.ViewModels
 
         private void ExportDataCommandHandler()
         {
-            string name = FileNameViewModel.GetFileName();
-
-            if (FileNameViewModel.isFileNameEmpty())
-            {
-                MessageBox.Show("Вы не заполнили поле «Название эксперимента»", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-
-            ExportWindow exportWindow = new ExportWindow(_data, name);
+            ExportWindow exportWindow = new ExportWindow(_data);
             exportWindow.ShowDialog();
         }
 

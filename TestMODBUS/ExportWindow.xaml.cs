@@ -22,10 +22,10 @@ namespace TestMODBUS
     /// </summary>
     public partial class ExportWindow : Window
     {
-        public ExportWindow(DataStorage Data, string name)
+        public ExportWindow(DataStorage Data)
         {
             InitializeComponent();
-            ExportViewModel viewModel = new ExportViewModel(Data, name);
+            ExportViewModel viewModel = new ExportViewModel(Data);
 
             this.DataContext = viewModel;
         }

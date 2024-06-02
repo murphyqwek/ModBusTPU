@@ -33,7 +33,6 @@ namespace TestMODBUS.ViewModels.ExportViewModels
         public ObservableCollection<CommentaryExportElementViewModel> Commentaries { get; }
         public ObservableCollection<ChannelViewModel> ChannelsData { get; }
 
-        public string FileName { get; }
         public string BigComment 
         {
             get => _bigComment;
@@ -83,7 +82,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
                     return;
             }
 
-            string path = OpenFileHelper.GetSaveFilePath("*.xlsx|*.xlsx;", ".xlsx", FileName);
+            string path = OpenFileHelper.GetSaveFilePath("*.xlsx|*.xlsx;", ".xlsx", "Отчёт");
             if (path == null)
                 return;
 
@@ -228,10 +227,9 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
         #endregion
 
-        public ExportViewModel(DataStorage DataStorage, string FileName) 
+        public ExportViewModel(DataStorage DataStorage) 
         {
             _dataStorage = DataStorage;
-            this.FileName = FileName;
 
             ChannelsData = new ObservableCollection<ChannelViewModel>();
 
