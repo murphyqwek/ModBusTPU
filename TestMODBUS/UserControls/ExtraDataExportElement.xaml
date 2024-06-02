@@ -7,31 +7,62 @@
              xmlns:extensions="clr-namespace:TestMODBUS.Extensions"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="200">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+    </UserControl.Resources>
     <DockPanel>
         <TextBox MaxWidth="150" MinWidth="50" Width="100"
                DockPanel.Dock="Left" 
                Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}"/>
         <Ellipse Width="20" Margin="5 0" 
                  DockPanel.Dock="Left"
-                 extensions:ExtraDataFieldStatusExtension.ExtraDataFieldStatus="{Binding Status}">
+                 extensions:ExtraDataFieldStatusExtension.ExtraDataFieldStatus="{Binding Status}"
+                 Name="Indicator">
             <Ellipse.Style>
                 <Style TargetType="Ellipse">
                     <Style.Triggers>
                         <Trigger Property="extensions:ExtraDataFieldStatusExtension.ExtraDataFieldStatus" Value="NotAllChannelsChosen">
                             <Setter Property="Fill" Value="#eb101f"/>
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <ToolTip>
+                                        <TextBlock Text="Не все нужные каналы выбраны"/>
+                                    </ToolTip>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                         <Trigger Property="extensions:ExtraDataFieldStatusExtension.ExtraDataFieldStatus" Value="EmptyName">
                             <Setter Property="Fill" Value="#ffda05"/>
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <ToolTip>
+                                        <TextBlock Text="Введите заголовок графика"/>
+                                    </ToolTip>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                         <Trigger Property="extensions:ExtraDataFieldStatusExtension.ExtraDataFieldStatus" Value="Filled">
                             <Setter Property="Fill" Value="GreenYellow"/>
+                            <Setter Property="extensions:ExtraDataFieldTooltipText.ExtraDataFieldTooltipText" Value="Поле полностью заполнено"/>
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <ToolTip>
+                                        <TextBlock Text="Поле полностью заполнено"/>
+                                    </ToolTip>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
             </Ellipse.Style>
         </Ellipse>
         
-        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Left">
             <ItemsControl ItemsSource="{Binding Channels}" 
               HorizontalAlignment="Right" VerticalAlignment="Center" 
               Margin="0 0 5 0"
