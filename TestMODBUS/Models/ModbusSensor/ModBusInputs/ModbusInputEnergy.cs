@@ -31,9 +31,6 @@ namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
             int previousLastChannel = _controller.GetLastChannel();
             _controller.SetUsingChannel(Channel, true);
 
-            if (!CheckAllChannelsChosen())
-                DeleteAll();
-
             if (_controller.GetUsingChannels().Count == 1 && prevVoltChannel == -1)
                 _controller.AddNewLineSerie("Энергия", ChannelColors.Colors[Channel]);
             ResignDataStorageLastUpdateChannel(previousLastChannel);

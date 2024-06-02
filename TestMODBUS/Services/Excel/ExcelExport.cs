@@ -17,6 +17,7 @@ using TestMODBUS.Models.Services;
 using TestMODBUS.Services.Excel;
 using OfficeOpenXml.Style;
 using System.Xml.Linq;
+using System.Windows.Controls;
 
 namespace TestMODBUS.Models.Services.Excel
 {
@@ -34,7 +35,7 @@ namespace TestMODBUS.Models.Services.Excel
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
 
-        public static void SaveData(ExcelPage RawDataPage, ExcelPage ChannelsPage, IList<ExcelPage> ExtraDataPages, IList<Commentary> Commentaries, string BigComment, string FilePath)
+        public static void SaveData(ExcelPage RawDataPage, ExcelPage ChannelsPage, IList<int> ChannelsToChart, IList<ExcelPage> ExtraDataPages, IList<Commentary> Commentaries, string BigComment, string FilePath)
         {
             if (OpenFileHelper.isFileOpen(FilePath))
                 throw new FileIsAlreadyOpenException(FilePath);
@@ -57,11 +58,18 @@ namespace TestMODBUS.Models.Services.Excel
                 }
 
                 //Заполняем обработанные данные
-                if (ChannelsPage.Charts.Count != 0)
+                var ChannelsDataSheet = FillDataSheet(ExcelPackage, ChannelsPage, ChannelsPage.Title + " - Данные");
+                if (ChannelsToChart.Count != 0)
                 {
-                    var ChannelsDataSheet = FillDataSheet(ExcelPackage, ChannelsPage, ChannelsPage.Title + " - Данные");
-                    CreateCharts(ExcelPackage, ChannelsDataSheet, ChannelsPage, ChannelsPage.Title + " - Графики");
+                    ExcelWorksheet ChannelsDataChartSheet = ExcelPackage.Workbook.Worksheets.Add(ChannelsPage.Title + " - Графики");
+                    int ChartIndex = 0;
+                    foreach(var Channel in ChannelsToChart)
+                    {
+                        CreateChart(ChannelsDataChartSheet, ChannelsDataSheet, Channel, ChartIndex, ChannelsPage.Charts[Channel]);
+                        ChartIndex++;
+                    }
                 }
+
                 //Заполняем сырые данные
                 FillDataSheet(ExcelPackage, RawDataPage, RawDataPage.Title);
 
@@ -129,15 +137,15 @@ namespace TestMODBUS.Models.Services.Excel
 
             for(int i = 0; i < Charts.Count; i++)
             {
-                CreateChart(ChartSheet, DataSheet, i, Charts[i]);
+                CreateChart(ChartSheet, DataSheet, i, i, Charts[i]);
             }
         }
 
-        private static void CreateChart(ExcelWorksheet ChartSheet, ExcelWorksheet DataSheet, int ChartIndex, TestMODBUS.Services.Excel.ExcelChart ChartData)
+        private static void CreateChart(ExcelWorksheet ChartSheet, ExcelWorksheet DataSheet, int DataIndex, int ChartIndex, TestMODBUS.Services.Excel.ExcelChart ChartData)
         {
             int DataLength = ChartData.Points.Count;
 
-            int DataColumn = ChartIndex * 3 + 1;
+            int DataColumn = DataIndex * 3 + 1;
             int DataLastRow = DataLength + 3 - 1;
             int ChartColumn = ChartIndex * 3 + 1;
 

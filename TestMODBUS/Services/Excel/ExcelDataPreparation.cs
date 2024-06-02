@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using TestMODBUS.Models.Modbus;
 using TestMODBUS.Models.ModbusSensor;
 using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
 using TestMODBUS.Models.Services;
+using TestMODBUS.ViewModels;
 using TestMODBUS.ViewModels.ExportViewModels;
 
 namespace TestMODBUS.Services.Excel
@@ -24,6 +26,13 @@ namespace TestMODBUS.Services.Excel
     {
         public string Title;
         public IList<ExcelChart> Charts;
+    }
+
+    public struct ChannelsDataExcelPage
+    {
+        public string Title;
+        public List<int> ChannelsToChart;
+        public List<ExcelChart> ChannelsData;
     }
 
     public struct Commentary
@@ -131,25 +140,34 @@ namespace TestMODBUS.Services.Excel
         {
             switch(DataPreparation)
             {
-                case ChartDataPreparationPower p:
+                case ChartDataPreparationPower _:
                     return "Мощность, кВт";
-                case ChartDataPreparationEnergy e:
+                case ChartDataPreparationEnergy _:
                     return "Энергия, кВт*ч";
                 default:
                     throw new Exception("Необработанный ChartDataPreparation в ExcelDataPreparation");
             }
         }
 
-        public static ExcelPage ExtractChannelsData(List<ChannelModel> Channels, DataStorage DataStorage)
+        public static List<int> GetChannelsToChartList(ObservableCollection<ChannelViewModel> Channels)
+        {
+            List<int> ChannelsToChart = new List<int>();
+            foreach(var Channel in Channels)
+            {
+                if (Channel.IsChosen)
+                    ChannelsToChart.Add(Channel.ChannelNumber);
+            }
+
+            return ChannelsToChart;
+        }
+
+        public static ExcelPage ExtractChannelsData(ObservableCollection<ChannelViewModel> Channels, DataStorage DataStorage)
         {
             ExcelPage Page = new ExcelPage();
             List<ExcelChart> Charts = new List<ExcelChart>();
 
             foreach(var Channel in Channels)
             {
-                if (!Channel.IsChosen)
-                    continue;
-
                 ExcelChart Chart = new ExcelChart();
                 var Points = new List<Point>();
 
@@ -182,6 +200,7 @@ namespace TestMODBUS.Services.Excel
                 Chart.Points = Points;
 
                 Charts.Add(Chart);
+
             }
 
             Page.Title = "Данные с каналов";

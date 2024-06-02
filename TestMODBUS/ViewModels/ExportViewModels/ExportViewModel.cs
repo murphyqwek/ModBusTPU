@@ -46,7 +46,6 @@ namespace TestMODBUS.ViewModels.ExportViewModels
         }
         #endregion
 
-        private List<ChannelModel> _channelsExportSettings = new List<ChannelModel>();
         private DataStorage _dataStorage;
         private string _bigComment;
 
@@ -56,7 +55,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
         private void ExportDataHandle()
         {
-            if(!_channelsExportSettings.All(channel => channel.IsChosen))
+            if(!ChannelsData.Any(channel => channel.IsChosen))
             {
                 ErrorMessageBox.Show("Нужно выбрать как минимум один канал");
                 return;
@@ -103,7 +102,8 @@ namespace TestMODBUS.ViewModels.ExportViewModels
         private void Export(string FilePath)
         {
             var RawDataPage = ExcelDataPreparation.ExtractRawData(_dataStorage);
-            var ChannelsDataPage = ExcelDataPreparation.ExtractChannelsData(_channelsExportSettings, _dataStorage);
+            var ChannelsDataPage = ExcelDataPreparation.ExtractChannelsData(ChannelsData, _dataStorage);
+            var ChannelsToChart = ExcelDataPreparation.GetChannelsToChartList(ChannelsData);
 
             var ExtractedCommentaries = ExcelDataPreparation.ExtractCommentaries(Commentaries);
 
@@ -115,7 +115,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
             var ExtraDataPages = ExcelDataPreparation.ExtractExtraData(ExtraData, _dataStorage);
 
-            ExcelExport.SaveData(RawDataPage, ChannelsDataPage, ExtraDataPages, ExtractedCommentaries, BigComment, FilePath);
+            ExcelExport.SaveData(RawDataPage, ChannelsDataPage, ChannelsToChart, ExtraDataPages, ExtractedCommentaries, BigComment, FilePath);
         }
 
         private bool IsAllChannelsChosen()
@@ -239,7 +239,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
             EnergyExtraData = new ObservableCollection<ExtraDataViewModel>();
             Commentaries = new ObservableCollection<CommentaryExportElementViewModel>();
 
-            UploadSettings(ExportSettingsManager.GetStandartExportSettings());
+            UploadStandartSettings();
 
             ExportDataCommand = new RemoteCommand(ExportDataHandle);
             SaveSettingsCommand = new RemoteCommand(SaveSettingsCommandHandle);
@@ -248,6 +248,19 @@ namespace TestMODBUS.ViewModels.ExportViewModels
             AddNewPowerExtraDataCommand = new RemoteCommand(AddNewPowerExtraDataCommandHander);
             AddNewEnergyExtraDataCommand = new RemoteCommand(AddNewEnergyExtraDataCommandHandler);
             AddNewCommentaryCommand = new RemoteCommand(AddNewCommentaryCommandHandler);
+        }
+
+        private void UploadStandartSettings()
+        {
+            try
+            {
+                var Settings = ExportSettingsManager.GetStandartExportSettings();
+                UploadSettings(Settings);
+            }
+            catch
+            {
+                DefalutSettings();
+            }
         }
 
         private void DefalutSettings()
@@ -262,7 +275,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
         private void ClearChannelsExportSettings()
         {
-            foreach (var channel in _channelsExportSettings)
+            foreach (var channel in ChannelsData)
             {
                 channel.Label = "";
                 channel.IsChosen = false;
@@ -302,7 +315,7 @@ namespace TestMODBUS.ViewModels.ExportViewModels
 
             EnergyExtraData.Clear();
             foreach (var ExtraData in Settings.EnergyData)
-                PowerExtraData.Add(new ExtraDataViewModel(new ChartDataPreparationEnergy(), new OnlyOneVoltAndSeveralTokFilter(), "Energy", DeleteExtraData, ExtraData));
+                EnergyExtraData.Add(new ExtraDataViewModel(new ChartDataPreparationEnergy(), new OnlyOneVoltAndSeveralTokFilter(), "Energy", DeleteExtraData, ExtraData));
 
             Commentaries.Clear();
             foreach (var Commentary in Settings.CommentaryLabels)
