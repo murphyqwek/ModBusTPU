@@ -29,11 +29,11 @@ namespace TestMODBUS.Services.Channels
         #endregion
 
         #region Volt
-        private static Brush VoltBackroundChosen = new SolidColorBrush(Color.FromRgb(252, 8, 8));
+        private static Brush VoltBackroundChosen = new SolidColorBrush(Color.FromRgb(252, 111, 3));
         private static Brush VoltForegroundChosen = new SolidColorBrush(Color.FromRgb(250, 250, 255));
 
 
-        private static Brush VoltBackgroundUnchosen = new SolidColorBrush(Color.FromRgb(250, 112, 112));
+        private static Brush VoltBackgroundUnchosen = new SolidColorBrush(Color.FromRgb(250, 179, 125));
         private static Brush VoltForegroundUnchosen = new SolidColorBrush(Color.FromRgb(35, 36, 35));
         #endregion
 
