@@ -25,7 +25,7 @@ namespace ModBusTPU.Models.ModbusSensor
 
         private void SetUpUsingChannels()
         {
-            for(int i = 0; i < ChannelColors.Colors.Count; i++)
+            for(int i = 0; i < ChannelSeriesColors.Colors.Count; i++)
             {
                 UsingChannels.Add(false);
             }

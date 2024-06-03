@@ -18,6 +18,9 @@ namespace ModBusTPU.Models.ModbusSensor
         public Chart Chart { get; }
         public ModbusSensorData SensorData { get; }
 
+        public delegate void ChannelsTypeHandler();
+        public event ChannelsTypeHandler ChannelsTypeChangedEvent;
+
         public SensorType SensorType
         {
             get => _sensorType;
@@ -112,6 +115,10 @@ namespace ModBusTPU.Models.ModbusSensor
 
         public void ChangeWindowPosition(double CurrentX) => Input.ChangeWindowPosition(CurrentX);
 
-        public void CheckNewChannelsTypes() => Input.CheckNewChannelsTypes();
+        public void CheckNewChannelsTypes()
+        {
+            Input.CheckNewChannelsTypes();
+            ChannelsTypeChangedEvent?.Invoke();
+        }
     }
 }

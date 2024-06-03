@@ -33,7 +33,7 @@ namespace ModBusTPU.Models.ModbusSensor.ModBusInputs
             int previousLastChannel = _controller.GetLastChannel();
             _controller.SetUsingChannel(Channel, true);
             if (_controller.GetUsingChannels().Count == 1 && prevVoltChannel == -1)
-                _controller.AddNewLineSerie("Мощность", ChannelColors.Colors[Channel]);
+                _controller.AddNewLineSerie("Мощность", ChannelSeriesColors.Colors[Channel]);
             ResignDataStorageLastUpdateChannel(previousLastChannel);
 
             _controller.UpdateChartAfterNewChannelAdded();

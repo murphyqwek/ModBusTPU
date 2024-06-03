@@ -26,7 +26,7 @@ namespace ModBusTPU.Models.ModbusSensor.ModBusInputs
         {
             int previousLastChannel = _controller.GetLastChannel();
             _controller.SetUsingChannel(Channel, true);
-            _controller.AddNewLineSerie($"CH_{Channel}", ChannelColors.Colors[Channel]);
+            _controller.AddNewLineSerie($"CH_{Channel}", ChannelSeriesColors.Colors[Channel]);
             ResignDataStorageLastUpdateChannel(previousLastChannel);
 
             _controller.UpdateChartAfterNewChannelAdded();

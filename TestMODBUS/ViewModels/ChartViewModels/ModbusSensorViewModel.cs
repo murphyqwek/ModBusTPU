@@ -55,7 +55,7 @@ namespace ModBusTPU.ViewModels.ChartViewModels
             }
         }
 
-        public ObservableCollection<bool> Channels { get; }
+        public ObservableCollection<ChannelViewModel> Channels { get; }
         #endregion
 
         #region Commands
@@ -69,10 +69,12 @@ namespace ModBusTPU.ViewModels.ChartViewModels
             if (!Int32.TryParse(Channel.ToString(), out int channel))
                 throw new Exception("Channel must be Interger");
 
-            if (Channels[channel])
+            if (Channels[channel].IsChosen)
                 _sensor.RemoveChannel(channel);
             else
                 _sensor.AddNewChannel(channel);
+
+            Channels[channel].IsChosen = !Channels[channel].IsChosen;
         }
 
         #endregion
@@ -90,7 +92,9 @@ namespace ModBusTPU.ViewModels.ChartViewModels
             _chart = _sensor.Chart;
             _sensorData = _sensor.SensorData;
 
-            Channels = _sensor.SensorData.UsingChannels;
+            Channels = new ObservableCollection<ChannelViewModel>();
+
+            SetUsingChannels();
             CurrentValues = _sensor.SensorData.CurrentValues;
 
             ChangeChannelListCommand = new RemoteCommandWithParameter(ChangeChannelListHandler);
@@ -108,6 +112,7 @@ namespace ModBusTPU.ViewModels.ChartViewModels
 
             _sensorData.UsingChannels.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Channels));
             _sensorData.CurrentValues.CollectionChanged += (s, e) => OnPropertyChanged(nameof(CurrentValues));
+            _sensor.ChannelsTypeChangedEvent += ChannelsTypeChangedHander;
 
             SensorTypes = new List<SensorTypeViewModel>();
             foreach (SensorType type in Enum.GetValues(typeof(SensorType)))
@@ -119,12 +124,27 @@ namespace ModBusTPU.ViewModels.ChartViewModels
             }
         }
 
+        private void ChannelsTypeChangedHander()
+        {
+            foreach (var Channel in Channels)
+                Channel.UpdateColor();
+        }
+
         private void ChangeChartInputType(SensorTypeViewModel sensorType)
         {
             if (sensorType.SensorType == _sensor.SensorType)
                 return;
 
             _sensor.SetInputMode(new ModbusSensorSimpleFactory(), sensorType.SensorType);
+        }
+
+        private void SetUsingChannels()
+        {
+            Channels.Clear();
+            for (int i = 0; i < _sensor.SensorData.UsingChannels.Count; i++)
+            {
+                Channels.Add(new ChannelViewModel(new Models.Data.ChannelModel(i, _sensor.SensorData.UsingChannels[i], $"CH_{i}")));
+            }
         }
     }
 }

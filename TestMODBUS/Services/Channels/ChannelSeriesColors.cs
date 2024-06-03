@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace ModBusTPU.Models.Services
 {
-    public static class ChannelColors
+    public static class ChannelSeriesColors
     {
         public static Dictionary<int, SolidColorBrush> Colors = new Dictionary<int, SolidColorBrush>()
         {

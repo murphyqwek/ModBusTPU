@@ -1,9 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using ModBusTPU.Models;
-using ModBusTPU.Models.Modbus;
-
-namespace TestConsole
+﻿namespace TestConsole
 {
     internal class Program
     {

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ModBusTPU.Models.Services;
 using ModBusTPU.ViewModels.Base;
 using System.Windows.Media;
+using TestMODBUS.Services.Channels;
 
 namespace ModBusTPU.ViewModels
 {
@@ -24,7 +25,19 @@ namespace ModBusTPU.ViewModels
                 OnPropertyChanged();
             }
         }
+        public Brush ForegorundColor
+        {
+            get => _foregroundColor;
+            set
+            {
+                _foregroundColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public int Channel => _channelNumber;
+
         public string CurrentChannelType
         {
             get => _currentChannelType;
@@ -32,7 +45,8 @@ namespace ModBusTPU.ViewModels
             {
                 _currentChannelType = value;
                 _channelType = ChannelTypesDictionary[_currentChannelType];
-                BackgroundColor = ChannelTypeBackgroundDictionary[_channelType];
+                BackgroundColor = ChannelTypeColors.GetBackgroundColor(ChannelType, true);
+                ForegorundColor = ChannelTypeColors.GetForegroundColor(ChannelType, true);
             }
         }
         public ChannelType ChannelType 
@@ -43,6 +57,9 @@ namespace ModBusTPU.ViewModels
                 if (_channelType == value)
                     return;
                 _channelType = value;
+
+                BackgroundColor = ChannelTypeColors.GetBackgroundColor(ChannelType, true);
+                ForegorundColor = ChannelTypeColors.GetForegroundColor(ChannelType, true);
                 OnPropertyChanged();
             }
         }
@@ -52,6 +69,7 @@ namespace ModBusTPU.ViewModels
         #region Private Fields
 
         private Brush _backgroundColor;
+        private Brush _foregroundColor;
         private int _channelNumber;
         private string _currentChannelType;
         private ChannelType _channelType;
@@ -66,18 +84,10 @@ namespace ModBusTPU.ViewModels
             {"Напряжение", ChannelType.Volt }
         };
 
-        private Dictionary<ChannelType, Brush> ChannelTypeBackgroundDictionary = new Dictionary<ChannelType, Brush>()
-        {
-            {ChannelType.Regular, new SolidColorBrush(Color.FromRgb(247, 245, 245))},
-            {ChannelType.Tok, new SolidColorBrush(Color.FromRgb(108, 139, 186))},
-            {ChannelType.Volt, new SolidColorBrush(Color.FromRgb(240, 12, 42))}
-        };
-
-
         public ChannelTypeViewModel(int Channel, ChannelType ChannelType)
         {
-            CurrentChannelType = ChannelTypesDictionary.FirstOrDefault(x => x.Value == ChannelType).Key;
             _channelNumber = Channel;
+            CurrentChannelType = ChannelTypesDictionary.FirstOrDefault(x => x.Value == ChannelType).Key;
             ChannelsType = ChannelTypesDictionary.Keys.ToList();
         }
     }

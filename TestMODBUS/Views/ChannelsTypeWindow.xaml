@@ -39,7 +39,8 @@
                         <TextBlock Grid.Row="0"
                                    Text="{Binding Channel}"
                                    TextAlignment="Center"
-                                   Background="{Binding BackgroundColor}"/> <!-- Channel Number -->
+                                   Background="{Binding BackgroundColor}"
+                                   Foreground="{Binding ForegorundColor}"/> <!-- Channel Number -->
                         <ListBox Grid.Row="1"                               
                                  ItemsSource="{Binding ChannelsType}"
                                  SelectedItem="{Binding CurrentChannelType, Mode=TwoWay}"/>

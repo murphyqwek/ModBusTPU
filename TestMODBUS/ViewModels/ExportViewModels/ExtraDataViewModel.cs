@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -40,7 +41,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<bool> Channels { get; }
+        public ObservableCollection<ChannelViewModel> Channels { get; }
         public ChartDataPreparationBase ChartDataPreparation { get => _chartDataPreparation; }
         public IFilter Filter { get => _filter; }
         public bool IsAllChosen => _status == ExtraDataFieldStatus.Filled; 
@@ -79,8 +80,8 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             if (!Int32.TryParse(Channel.ToString(), out int channel))
                 throw new Exception("Channel must be Interger");
 
-            if (Channels[channel])
-                Channels[channel] = false;
+            if (Channels[channel].IsChosen)
+                Channels[channel].IsChosen = false;
             else
                 AddNewChannel(channel);
 
@@ -113,9 +114,9 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             this.Type = Type;
             _deleteFunction = DeleteFunction;
 
-            Channels = new ObservableCollection<bool>();
+            Channels = new ObservableCollection<ChannelViewModel>();
             for (int i = 0; i < DataStorage.MaxChannelCount; i++)
-                Channels.Add(false);
+                Channels.Add(new ChannelViewModel(new ChannelModel(i, false, $"CH_{i}")));
 
             foreach (var Channel in Data.UsingChannels)
                 AddNewChannel(Channel);
@@ -133,11 +134,9 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             this.Type = Type;
             _deleteFunction = DeleteFunction;
 
-            Channels = new ObservableCollection<bool>();
-            for(int i = 0; i < DataStorage.MaxChannelCount; i++)
-            {
-                Channels.Add(false);
-            }
+            Channels = new ObservableCollection<ChannelViewModel>();
+            for (int i = 0; i < DataStorage.MaxChannelCount; i++)
+                Channels.Add(new ChannelViewModel(new ChannelModel(i, false, $"CH_{i}")));
 
             ChangeChannelListCommand = new RemoteCommandWithParameter(ChangeChannelListHandler);
             DeleteCommand = new RemoteCommand(DeleteCommandHandler);
@@ -148,7 +147,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             var UsingChannels = new List<int>();
             for (int i = 0; i < Channels.Count; i++)
             {
-                if (Channels[i])
+                if (Channels[i].IsChosen)
                     UsingChannels.Add(i);
             }
             return UsingChannels;
@@ -157,10 +156,10 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         private void SetChannels(IList<int> Channels)
         {
             for (int i = 0; i < this.Channels.Count; i++)
-                this.Channels[i] = false;
+                this.Channels[i].IsChosen = false;
 
             foreach (int Channel in Channels)
-                this.Channels[Channel] = true;
+                this.Channels[Channel].IsChosen = true;
         }
 
         private void UpdateStaus()
