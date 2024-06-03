@@ -2,23 +2,23 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.ComponentModel;
-using TestMODBUS.Commands;
-using TestMODBUS.Exceptions;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.MessageBoxes;
-using TestMODBUS.Models.Services;
-using TestMODBUS.ViewModels.Base;
+using ModBusTPU.Commands;
+using ModBusTPU.Exceptions;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.MessageBoxes;
+using ModBusTPU.Models.Services;
+using ModBusTPU.ViewModels.Base;
 using System.Windows;
-using TestMODBUS.Models.Port.Interfaces;
-using TestMODBUS.Models.ModbusSensor;
-using TestMODBUS.Models.ModbusSensor.Factories;
+using ModBusTPU.Models.Port.Interfaces;
+using ModBusTPU.Models.ModbusSensor;
+using ModBusTPU.Models.ModbusSensor.Factories;
 using System;
 using Microsoft.Win32;
-using TestMODBUS.Models;
-using TestMODBUS.Models.Services.Settings.Data;
-using TestMODBUS.Views;
+using ModBusTPU.Models;
+using ModBusTPU.Models.Services.Settings.Data;
+using ModBusTPU.Views;
 
-namespace TestMODBUS.ViewModels
+namespace ModBusTPU.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {

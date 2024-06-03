@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
-using TestMODBUS.ViewModels;
-using TestMODBUS.ViewModels.ExportViewModels;
+using ModBusTPU.Models.Data;
+using ModBusTPU.ViewModels;
+using ModBusTPU.ViewModels.ExportViewModels;
 
-namespace TestMODBUS.Services.Settings.Export
+namespace ModBusTPU.Services.Settings.Export
 {
     public class ExportSettings
     {

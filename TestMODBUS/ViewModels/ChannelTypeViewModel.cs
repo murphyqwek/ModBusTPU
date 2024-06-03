@@ -4,11 +4,11 @@ using System.Media;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Services;
-using TestMODBUS.ViewModels.Base;
+using ModBusTPU.Models.Services;
+using ModBusTPU.ViewModels.Base;
 using System.Windows.Media;
 
-namespace TestMODBUS.ViewModels
+namespace ModBusTPU.ViewModels
 {
     public class ChannelTypeViewModel : BaseViewModel
     {

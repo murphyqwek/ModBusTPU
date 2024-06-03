@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Models.MathModules
+namespace ModBusTPU.Models.MathModules
 {
     static public class EnergyMathModule
     {

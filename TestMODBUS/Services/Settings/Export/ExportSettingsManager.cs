@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.Services.Settings.Export
+namespace ModBusTPU.Services.Settings.Export
 {
     public static class ExportSettingsManager
     {

@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Navigation;
 
-namespace TestMODBUS.Converter
+namespace ModBusTPU.Converter
 {
     public class BoolToVisibilityConverter : IValueConverter
     {

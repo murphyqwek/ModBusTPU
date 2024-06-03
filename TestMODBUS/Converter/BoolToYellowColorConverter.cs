@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace TestMODBUS.Converter
+namespace ModBusTPU.Converter
 {
     internal class BoolToYellowColorConverter : IValueConverter
     {

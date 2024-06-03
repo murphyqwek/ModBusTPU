@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.ViewModels.Base
+namespace ModBusTPU.ViewModels.Base
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

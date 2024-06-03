@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.ModbusSensor.Factories;
+using ModBusTPU.Models.ModbusSensor.Factories;
 
-namespace TestMODBUS.Models.ModbusSensor
+namespace ModBusTPU.Models.ModbusSensor
 {
     public static class SensorTypeNameGetter
     {

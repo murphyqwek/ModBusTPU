@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.ViewModels.Base;
+using ModBusTPU.ViewModels.Base;
 
-namespace TestMODBUS.Models.Data
+namespace ModBusTPU.Models.Data
 {
     public class ChannelModel : BaseViewModel
     {

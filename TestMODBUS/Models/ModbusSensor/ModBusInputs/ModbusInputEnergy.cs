@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
+namespace ModBusTPU.Models.ModbusSensor.ModBusInputs
 {
     internal class ModBusInputEnergy : ModBusInputBase
     {

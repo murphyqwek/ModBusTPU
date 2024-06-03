@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.ViewModels.Base;
+using ModBusTPU.ViewModels.Base;
 
-namespace TestMODBUS.ViewModels
+namespace ModBusTPU.ViewModels
 {
     public class FileNameViewModel : BaseViewModel
     {

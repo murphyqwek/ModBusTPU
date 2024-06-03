@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Models.Port.Interfaces
+namespace ModBusTPU.Models.Port.Interfaces
 {
     public interface IPortListener
     {

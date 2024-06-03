@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Exceptions;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.INotifyPropertyBased;
-using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
-using TestMODBUS.Models.ModbusSensor.Factories;
-using TestMODBUS.Models.ModbusSensor.ModBusInputs;
+using ModBusTPU.Exceptions;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.INotifyPropertyBased;
+using ModBusTPU.Models.ModbusSensor.ChartDataPrepatations;
+using ModBusTPU.Models.ModbusSensor.Factories;
+using ModBusTPU.Models.ModbusSensor.ModBusInputs;
 
-namespace TestMODBUS.Models.ModbusSensor
+namespace ModBusTPU.Models.ModbusSensor
 {
     public class ModbusSensor : INotifyBase
     {

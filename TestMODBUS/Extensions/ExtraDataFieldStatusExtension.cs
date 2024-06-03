@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using TestMODBUS.ViewModels.ExportViewModels;
+using ModBusTPU.ViewModels.ExportViewModels;
 
-namespace TestMODBUS.Extensions
+namespace ModBusTPU.Extensions
 {
     public class ExtraDataFieldStatusExtension
     {

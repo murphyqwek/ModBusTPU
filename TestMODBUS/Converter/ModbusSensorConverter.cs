@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using TestMODBUS.Models.ModbusSensor;
-using TestMODBUS.ViewModels;
-using TestMODBUS.ViewModels.ChartViewModels;
+using ModBusTPU.Models.ModbusSensor;
+using ModBusTPU.ViewModels;
+using ModBusTPU.ViewModels.ChartViewModels;
 
-namespace TestMODBUS.Converter
+namespace ModBusTPU.Converter
 {
     public class ModbusSensorConverter : IValueConverter
     {

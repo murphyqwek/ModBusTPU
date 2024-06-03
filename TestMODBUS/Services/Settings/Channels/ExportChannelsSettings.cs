@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
-using TestMODBUS.Models.Data;
+using ModBusTPU.Models.Data;
 
-namespace TestMODBUS.Services.Settings.Channels
+namespace ModBusTPU.Services.Settings.Channels
 {
     public static class ExportChannelsSettings
     {

@@ -11,11 +11,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TestMODBUS.Models.Data;
-using TestMODBUS.ViewModels;
-using TestMODBUS.ViewModels.ExportViewModels;
+using ModBusTPU.Models.Data;
+using ModBusTPU.ViewModels;
+using ModBusTPU.ViewModels.ExportViewModels;
 
-namespace TestMODBUS
+namespace ModBusTPU
 {
     /// <summary>
     /// Логика взаимодействия для ExportWindow.xaml

@@ -7,14 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
-using TestMODBUS.ViewModels;
+using ModBusTPU.Models.Data;
+using ModBusTPU.ViewModels;
 using LiveCharts.Defaults;
 using System.Collections.ObjectModel;
 using System.Runtime.Remoting.Channels;
 using LiveCharts;
 
-namespace TestMODBUS.Models.ModbusSensor
+namespace ModBusTPU.Models.ModbusSensor
 {
     //Класс для работы с "окном"
 

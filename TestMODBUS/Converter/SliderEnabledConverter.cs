@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace TestMODBUS.Converter
+namespace ModBusTPU.Converter
 {
     public class SliderEnabledConverter : IValueConverter
     {

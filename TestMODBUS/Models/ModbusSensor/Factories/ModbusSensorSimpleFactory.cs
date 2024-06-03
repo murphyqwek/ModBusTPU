@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
-using TestMODBUS.Models.ModbusSensor.ModBusInputs;
+using ModBusTPU.Models.ModbusSensor.ChartDataPrepatations;
+using ModBusTPU.Models.ModbusSensor.ModBusInputs;
 
-namespace TestMODBUS.Models.ModbusSensor.Factories
+namespace ModBusTPU.Models.ModbusSensor.Factories
 {
     public class ModbusSensorSimpleFactory : AbstractModbusSensorFactory
     {

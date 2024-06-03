@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{747BB5A9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWPF", "TestWPF\TestWPF.csproj", "{AE0B71BE-B7D6-4551-81D3-431873FFB2D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{05D761D9-01C2-4C1B-86FD-2320F284506A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{05D761D9-01C2-4C1B-86FD-2320F284506A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMODBUS", "TestMODBUS\TestMODBUS.csproj", "{4F46A981-BA37-4F3D-BE8F-3ED4E9713890}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModBusTPU", "TestMODBUS\ModBusTPU.csproj", "{4F46A981-BA37-4F3D-BE8F-3ED4E9713890}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

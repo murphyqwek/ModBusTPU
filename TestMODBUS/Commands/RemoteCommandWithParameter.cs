@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace TestMODBUS.Commands
+namespace ModBusTPU.Commands
 {
     public class RemoteCommandWithParameter : ICommand
     {

@@ -12,12 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TestMODBUS.Models.Services;
-using TestMODBUS.Models.Services.Excel;
-using TestMODBUS.Services.Settings.Channels;
-using TestMODBUS.ViewModels;
+using ModBusTPU.Models.Services;
+using ModBusTPU.Models.Services.Excel;
+using ModBusTPU.Services.Settings.Channels;
+using ModBusTPU.ViewModels;
 
-namespace TestMODBUS
+namespace ModBusTPU
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml

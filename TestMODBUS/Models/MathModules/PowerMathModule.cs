@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
+using ModBusTPU.Models.Data;
 
-namespace TestMODBUS.Models.MathModules
+namespace ModBusTPU.Models.MathModules
 {
     static public class PowerMathModule
     {

@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.TextFormatting;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.MessageBoxes;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.MessageBoxes;
 
-namespace TestMODBUS.Models.Services.Settings.Data
+namespace ModBusTPU.Models.Services.Settings.Data
 {
     static class DataFileManager
     {

@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.ModbusSensor.ChartDataPrepatations;
 
-namespace TestMODBUS.Services.Settings.Export
+namespace ModBusTPU.Services.Settings.Export
 {
     public static class ExportReading
     {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
-using TestMODBUS.ViewModels.Base;
+using ModBusTPU.Models.Data;
+using ModBusTPU.ViewModels.Base;
 
-namespace TestMODBUS.ViewModels
+namespace ModBusTPU.ViewModels
 {
     public class ChannelViewModel : BaseViewModel
     {

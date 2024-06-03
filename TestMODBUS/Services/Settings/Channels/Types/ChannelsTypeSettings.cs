@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.Services.Settings.Channels
+namespace ModBusTPU.Services.Settings.Channels
 {
     public static class ChannelsTypeSettings
     {

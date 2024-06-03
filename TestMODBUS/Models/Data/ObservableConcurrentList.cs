@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Models.Data
+namespace ModBusTPU.Models.Data
 {
     public class ObservableConcurrentList : INotifyCollectionChanged
     {

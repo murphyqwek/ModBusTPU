@@ -8,21 +8,21 @@ using System.Windows;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TestMODBUS.Commands;
-using TestMODBUS.Models;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.MessageBoxes;
-using TestMODBUS.Services.Settings;
-using TestMODBUS.ViewModels.Base;
-using TestMODBUS.Models.Services;
-using TestMODBUS.Models.Services.Excel;
-using TestMODBUS.Services.Settings.Channels;
-using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
-using TestMODBUS.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
-using TestMODBUS.Services.Excel;
-using TestMODBUS.Services.Settings.Export;
+using ModBusTPU.Commands;
+using ModBusTPU.Models;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.MessageBoxes;
+using ModBusTPU.Services.Settings;
+using ModBusTPU.ViewModels.Base;
+using ModBusTPU.Models.Services;
+using ModBusTPU.Models.Services.Excel;
+using ModBusTPU.Services.Settings.Channels;
+using ModBusTPU.Models.ModbusSensor.ChartDataPrepatations;
+using ModBusTPU.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
+using ModBusTPU.Services.Excel;
+using ModBusTPU.Services.Settings.Export;
 
-namespace TestMODBUS.ViewModels.ExportViewModels
+namespace ModBusTPU.ViewModels.ExportViewModels
 {
     public class ExportViewModel : BaseViewModel
     {

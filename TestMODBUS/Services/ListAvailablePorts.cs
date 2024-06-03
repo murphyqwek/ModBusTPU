@@ -7,9 +7,9 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.INotifyPropertyBased;
+using ModBusTPU.Models.INotifyPropertyBased;
 
-namespace TestMODBUS.Models.Services
+namespace ModBusTPU.Models.Services
 {
     //Дата-класс для хранения и обновления списка доступных портов
     static class ListAvailablePorts

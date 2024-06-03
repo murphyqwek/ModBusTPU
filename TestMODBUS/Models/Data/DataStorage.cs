@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Models.Data
+namespace ModBusTPU.Models.Data
 {
     //Дата-класс, который хранит данные со всех каналов
     public class DataStorage

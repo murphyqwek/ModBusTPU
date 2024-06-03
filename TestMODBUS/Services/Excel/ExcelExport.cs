@@ -11,15 +11,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
-using TestMODBUS.Exceptions;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.Services;
-using TestMODBUS.Services.Excel;
+using ModBusTPU.Exceptions;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.Services;
+using ModBusTPU.Services.Excel;
 using OfficeOpenXml.Style;
 using System.Xml.Linq;
 using System.Windows.Controls;
 
-namespace TestMODBUS.Models.Services.Excel
+namespace ModBusTPU.Models.Services.Excel
 {
     public static class ExcelExport
     {
@@ -141,7 +141,7 @@ namespace TestMODBUS.Models.Services.Excel
             }
         }
 
-        private static void CreateChart(ExcelWorksheet ChartSheet, ExcelWorksheet DataSheet, int DataIndex, int ChartIndex, TestMODBUS.Services.Excel.ExcelChart ChartData)
+        private static void CreateChart(ExcelWorksheet ChartSheet, ExcelWorksheet DataSheet, int DataIndex, int ChartIndex, ModBusTPU.Services.Excel.ExcelChart ChartData)
         {
             int DataLength = ChartData.Points.Count;
 

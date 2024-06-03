@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.ModbusSensor;
-using TestMODBUS.Models.ModbusSensor.Factories;
+using ModBusTPU.Models.ModbusSensor;
+using ModBusTPU.Models.ModbusSensor.Factories;
 
-namespace TestMODBUS.ViewModels.ChartViewModels
+namespace ModBusTPU.ViewModels.ChartViewModels
 {
     public class SensorTypeViewModel
     {

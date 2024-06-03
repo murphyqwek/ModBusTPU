@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
+using ModBusTPU.Models.Data;
 
-namespace TestMODBUS.Models.Services.Settings.Data
+namespace ModBusTPU.Models.Services.Settings.Data
 {
     public static class DataReader
     {

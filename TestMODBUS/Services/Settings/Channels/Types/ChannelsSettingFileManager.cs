@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models;
-using TestMODBUS.Models.MessageBoxes;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Models;
+using ModBusTPU.Models.MessageBoxes;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.Services.Settings.Channels
+namespace ModBusTPU.Services.Settings.Channels
 {
     public static class ChannelsSettingFileManager
     {

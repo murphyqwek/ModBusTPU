@@ -5,11 +5,11 @@ using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Exceptions;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
+using ModBusTPU.Exceptions;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.ModbusSensor.ChartDataPrepatations;
 
-namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
+namespace ModBusTPU.Models.ModbusSensor.ModBusInputs
 {
     public abstract class ModBusInputBase
     {

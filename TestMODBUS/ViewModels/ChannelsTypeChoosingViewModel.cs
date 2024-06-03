@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using TestMODBUS.Commands;
-using TestMODBUS.Models.MessageBoxes;
-using TestMODBUS.Models.Services;
-using TestMODBUS.Services.Settings.Channels;
-using TestMODBUS.ViewModels.Base;
+using ModBusTPU.Commands;
+using ModBusTPU.Models.MessageBoxes;
+using ModBusTPU.Models.Services;
+using ModBusTPU.Services.Settings.Channels;
+using ModBusTPU.ViewModels.Base;
 using System.Windows;
 
-namespace TestMODBUS.ViewModels
+namespace ModBusTPU.ViewModels
 {
     public class ChannelsTypeChoosingViewModel : BaseViewModel
     {

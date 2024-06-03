@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
+using ModBusTPU.Models.Data;
 
-namespace TestMODBUS.Models.Services
+namespace ModBusTPU.Models.Services
 {
     public enum ChannelType
     {

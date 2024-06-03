@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TestMODBUS.UserControls
+namespace ModBusTPU.UserControls
 {
     /// <summary>
     /// Логика взаимодействия для CommentariesExportElement.xaml

@@ -8,12 +8,12 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.MathModules;
-using TestMODBUS.Models.Modbus;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.MathModules;
+using ModBusTPU.Models.Modbus;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
+namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
 {
     public class ChartDataPreparationEnergy : ChartDataPreparationBase
     {

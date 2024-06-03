@@ -9,10 +9,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.INotifyPropertyBased;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.INotifyPropertyBased;
 
-namespace TestMODBUS.Models.ModbusSensor
+namespace ModBusTPU.Models.ModbusSensor
 {
     public struct SerieData
     {

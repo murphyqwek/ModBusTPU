@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace TestMODBUS.Models.Services
+namespace ModBusTPU.Models.Services
 {
     public static class ChannelColors
     {

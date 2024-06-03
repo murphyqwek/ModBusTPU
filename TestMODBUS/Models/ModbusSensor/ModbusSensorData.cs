@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.Models.ModbusSensor
+namespace ModBusTPU.Models.ModbusSensor
 {
     public class ModbusSensorData
     {

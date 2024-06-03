@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
+using ModBusTPU.Models.Data;
 
-namespace TestMODBUS.Models.Modbus
+namespace ModBusTPU.Models.Modbus
 {
     public static class ModBusValueConverter
     {

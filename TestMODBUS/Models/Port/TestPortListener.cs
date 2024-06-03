@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.INotifyPropertyBased;
-using TestMODBUS.Models.Modbus;
-using TestMODBUS.Models.Port.Interfaces;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.INotifyPropertyBased;
+using ModBusTPU.Models.Modbus;
+using ModBusTPU.Models.Port.Interfaces;
 
-namespace TestMODBUS.Models.Services
+namespace ModBusTPU.Models.Services
 {
     //Тестовый класс для имитации работы настоящего прибора
     public class TestPortListener : INotifyBase, IPortListener

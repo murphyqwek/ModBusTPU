@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.Modbus;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.Modbus;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
+namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
 {
     public abstract class ChartDataPreparationBase
     {

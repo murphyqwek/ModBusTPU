@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TestMODBUS.Commands;
-using TestMODBUS.Models.INotifyPropertyBased;
-using TestMODBUS.Models.ModbusSensor;
-using TestMODBUS.Models.ModbusSensor.Factories;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Commands;
+using ModBusTPU.Models.INotifyPropertyBased;
+using ModBusTPU.Models.ModbusSensor;
+using ModBusTPU.Models.ModbusSensor.Factories;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.ViewModels.ChartViewModels
+namespace ModBusTPU.ViewModels.ChartViewModels
 {
     public class ModbusSensorViewModel : INotifyBase
     {

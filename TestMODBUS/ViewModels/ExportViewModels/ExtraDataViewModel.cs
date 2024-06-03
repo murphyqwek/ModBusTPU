@@ -7,14 +7,14 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TestMODBUS.Commands;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
-using TestMODBUS.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
-using TestMODBUS.Services.Settings.Export;
-using TestMODBUS.ViewModels.Base;
+using ModBusTPU.Commands;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.ModbusSensor.ChartDataPrepatations;
+using ModBusTPU.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
+using ModBusTPU.Services.Settings.Export;
+using ModBusTPU.ViewModels.Base;
 
-namespace TestMODBUS.ViewModels.ExportViewModels
+namespace ModBusTPU.ViewModels.ExportViewModels
 {
     public enum ExtraDataFieldStatus
     {

@@ -4,15 +4,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.Modbus;
-using TestMODBUS.Models.ModbusSensor;
-using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
-using TestMODBUS.Models.Services;
-using TestMODBUS.ViewModels;
-using TestMODBUS.ViewModels.ExportViewModels;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.Modbus;
+using ModBusTPU.Models.ModbusSensor;
+using ModBusTPU.Models.ModbusSensor.ChartDataPrepatations;
+using ModBusTPU.Models.Services;
+using ModBusTPU.ViewModels;
+using ModBusTPU.ViewModels.ExportViewModels;
 
-namespace TestMODBUS.Services.Excel
+namespace ModBusTPU.Services.Excel
 {
     public struct ExcelChart
     {

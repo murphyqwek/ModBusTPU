@@ -11,9 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TestMODBUS.ViewModels;
+using ModBusTPU.ViewModels;
 
-namespace TestMODBUS.Views
+namespace ModBusTPU.Views
 {
     /// <summary>
     /// Логика взаимодействия для ChannelsTypeWindow.xaml

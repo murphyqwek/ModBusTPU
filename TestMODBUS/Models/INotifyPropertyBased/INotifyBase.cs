@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Models.INotifyPropertyBased
+namespace ModBusTPU.Models.INotifyPropertyBased
 {
     public class INotifyBase : INotifyPropertyChanged
     {

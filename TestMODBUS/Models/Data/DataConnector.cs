@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Modbus;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Models.Modbus;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.Models.Data
+namespace ModBusTPU.Models.Data
 {
     //Используется для взаимодействия других модулей с хранилищем данных
     public class DataConnector

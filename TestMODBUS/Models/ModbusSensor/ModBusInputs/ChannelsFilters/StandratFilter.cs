@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Models.ModbusSensor.ModBusInputs.ChannelsFilters
+namespace ModBusTPU.Models.ModbusSensor.ModBusInputs.ChannelsFilters
 {
     public class StandratFilter : IFilter
     {

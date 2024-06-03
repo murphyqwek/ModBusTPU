@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Models.Modbus
+namespace ModBusTPU.Models.Modbus
 {
     //Дата-класс, хранящий команды, а также массив данных, использующийся при подсчёте контрольной суммы
     public static class ModBusCommandsList

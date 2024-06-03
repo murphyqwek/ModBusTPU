@@ -6,7 +6,7 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Services.Settings.Export
+namespace ModBusTPU.Services.Settings.Export
 {
     public struct ChannelData
     {

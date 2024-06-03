@@ -5,12 +5,12 @@ using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.MathModules;
-using TestMODBUS.Models.Modbus;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.MathModules;
+using ModBusTPU.Models.Modbus;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
+namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
 {
     internal class ChartDataPreparationPower : ChartDataPreparationBase
     {

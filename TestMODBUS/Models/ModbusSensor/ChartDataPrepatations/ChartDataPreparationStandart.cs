@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.Modbus;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.Modbus;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.Models.ModbusSensor.ChartDataPrepatations
+namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
 {
     public class ChartDataPreparationStandart : ChartDataPreparationBase
     {

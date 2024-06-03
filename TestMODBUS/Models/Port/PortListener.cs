@@ -9,13 +9,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.INotifyPropertyBased;
-using TestMODBUS.Models.MessageBoxes;
-using TestMODBUS.Models.Modbus;
-using TestMODBUS.Models.Port.Interfaces;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.INotifyPropertyBased;
+using ModBusTPU.Models.MessageBoxes;
+using ModBusTPU.Models.Modbus;
+using ModBusTPU.Models.Port.Interfaces;
 
-namespace TestMODBUS.Models.Services
+namespace ModBusTPU.Models.Services
 {
     //Класс, который считывает данные с порт и сохраняет черз DataConnector в хранилище данных новые данные
     public class PortListener : INotifyBase, IPortListener

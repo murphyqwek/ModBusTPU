@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TestMODBUS.Exceptions;
-using TestMODBUS.Models.INotifyPropertyBased;
-using TestMODBUS.Models.MessageBoxes;
+using ModBusTPU.Exceptions;
+using ModBusTPU.Models.INotifyPropertyBased;
+using ModBusTPU.Models.MessageBoxes;
 
-namespace TestMODBUS.Models.Services
+namespace ModBusTPU.Models.Services
 {
 
     //Обёртка стандартного класса SerialPort

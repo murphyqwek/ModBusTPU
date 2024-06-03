@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Services
+namespace ModBusTPU.Services
 {
     public static class RegisrtyService
     {

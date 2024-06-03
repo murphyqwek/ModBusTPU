@@ -1,5 +1,5 @@
 ﻿using LiveCharts.Wpf;
-using TestMODBUS.ViewModels.Base;
+using ModBusTPU.ViewModels.Base;
 using System.Collections.Specialized;
 using System.Linq;
 using System;
@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Windows.Threading;
 using System.Windows;
 
-namespace TestMODBUS.ViewModels.ChartViewModels
+namespace ModBusTPU.ViewModels.ChartViewModels
 {
     public class CurrentChannelValueViewModel : BaseViewModel
     {

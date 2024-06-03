@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestMODBUS.Models.Data;
-using TestMODBUS.Models.ModbusSensor.ChartDataPrepatations;
-using TestMODBUS.Models.ModbusSensor.ModBusInputs;
-using TestMODBUS.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
-using TestMODBUS.Models.Services;
+using ModBusTPU.Models.Data;
+using ModBusTPU.Models.ModbusSensor.ChartDataPrepatations;
+using ModBusTPU.Models.ModbusSensor.ModBusInputs;
+using ModBusTPU.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
+using ModBusTPU.Models.Services;
 
-namespace TestMODBUS.Models.ModbusSensor.ModBusInputs
+namespace ModBusTPU.Models.ModbusSensor.ModBusInputs
 {
     public class ModBusInputStandart : ModBusInputBase
     {

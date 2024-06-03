@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using TestMODBUS.Models;
-using TestMODBUS.Models.Modbus;
+using ModBusTPU.Models;
+using ModBusTPU.Models.Modbus;
 
 namespace TestConsole
 {

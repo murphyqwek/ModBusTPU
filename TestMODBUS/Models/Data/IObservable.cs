@@ -1,4 +1,4 @@
-﻿namespace TestMODBUS.Models.Data
+﻿namespace ModBusTPU.Models.Data
 {
     public interface IObservable
     {

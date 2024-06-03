@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestMODBUS.Exceptions
+namespace ModBusTPU.Exceptions
 {
     public class NotAllChannelsChosen : Exception
     {
