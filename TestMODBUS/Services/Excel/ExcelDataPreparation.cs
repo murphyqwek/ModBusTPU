@@ -130,7 +130,7 @@ namespace TestMODBUS.Services.Excel
             var Points = new List<Point>();
             foreach(var point in Series[0].Points)
             {
-                Points.Add(new Point(point.X, point.Y));
+                Points.Add(new Point(point.X / 1000, point.Y));
             }
 
             return Points;
@@ -174,26 +174,28 @@ namespace TestMODBUS.Services.Excel
                 foreach(var Point in DataStorage.GetChannelData(Channel.ChannelNumber))
                 {
                     var channelType = ChannelTypeList.GetChannelType(Channel.ChannelNumber);
+                    double Time = Point.X / 1000;
+                    double Value = Point.Y;
                     switch (channelType)
                     {
                         case ChannelType.Tok:
-                            Points.Add(new Point(Point.X, ModBusValueConverter.ConvertToAmperValue(Point.Y)));
+                            Value = ModBusValueConverter.ConvertToAmperValue(Value);
                             Chart.YTitle = "Сила тока, А";
                             Chart.SerieTitle = "Сила тока";
                             break;
                         case ChannelType.Volt:
-                            Points.Add(new Point(Point.X, ModBusValueConverter.ConvertToVoltValue(Point.Y)));
+                            Value = ModBusValueConverter.ConvertToVoltValue(Value);
                             Chart.YTitle = "Напряжение, В";
                             Chart.SerieTitle = "Напряжение";
                             break;
                         case ChannelType.Regular:
-                            Points.Add(new Point(Point.X, Point.Y));
                             Chart.YTitle = "";
                             Chart.SerieTitle = "";
                             break;
                         default:
                             throw new Exception("Необработанный тип каналов в ExcelDataPreparation");   
                     }
+                    Points.Add(new Point(Time, Value));
                 }
                 Chart.Title = Channel.Label;
                 Chart.XTitle = "Вермя, с";

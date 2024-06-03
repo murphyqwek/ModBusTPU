@@ -184,7 +184,7 @@ namespace TestMODBUS.Models.Services.Excel
 
             for(int i = 0; i < points.Count; i++)
             {
-                dataSheet.Cells[i + 3, column].Value = points[i].X / 1000;
+                dataSheet.Cells[i + 3, column].Value = points[i].X;
                 dataSheet.Cells[i + 3, column + 1].Value = points[i].Y;
             }
 
