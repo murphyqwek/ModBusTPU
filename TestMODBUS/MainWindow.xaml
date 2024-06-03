@@ -9,7 +9,7 @@
         xmlns:local="clr-namespace:ModBusTPU.UserControls" xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         WindowState="Maximized"
-        Title="ModBus" Height="450" Width="900">
+        Title="ModBus TPU" Height="450" Width="900">
 
     <Window.Resources>
         <conv:SliderEnabledConverter x:Key="SliderEnabledConverter" />
