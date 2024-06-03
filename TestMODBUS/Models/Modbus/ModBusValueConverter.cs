@@ -29,11 +29,6 @@ namespace TestMODBUS.Models.Modbus
             return RoundedValue;
         }
 
-        public static double ConvertHexToAmperValue(string ChannelData)
-        {
-            double Value = ConvertFromHexToDoubleFromChannelData(ChannelData);
-            return ConvertToAmperValue(Value);
-        }
 
         public static double ConvertToAmperValue(double Value) => Value * AmperKoeff;
 
@@ -60,13 +55,7 @@ namespace TestMODBUS.Models.Modbus
             return result;
         }
 
-        public static double ConvertHexToVoltValue(string ChannelData)
-        {
-            double Value = Math.Abs(ConvertFromHexToDoubleFromChannelData(ChannelData));
-            return ConvertToVoltValue(Value);
-        }
-
-        public static double ConvertToVoltValue(double Value) => (Value - HolostMove) * VoltKoeff;// / 16 * 580 * 1.022312;
+        public static double ConvertToVoltValue(double Value) => (Math.Abs(Value) - HolostMove) * VoltKoeff;// / 16 * 580 * 1.022312;
 
         public static ObservableCollection<Point> ConvertCollectionToVoltValues(ObservableCollection<Point> ValueCollection)
         {
