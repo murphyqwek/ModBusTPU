@@ -8,6 +8,7 @@
         xmlns:uc="clr-namespace:ModBusTPU.UserControls"
         mc:Ignorable="d"
         Title="Экспорт данных" Height="300" Width="600"
+        Icon="./Logo/logo.png"
         MinHeight="300" MinWidth="500">
     <Grid>
         <Grid.ColumnDefinitions>
