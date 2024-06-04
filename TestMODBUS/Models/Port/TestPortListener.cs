@@ -34,7 +34,7 @@ namespace ModBusTPU.Models.Services
         public void StopListen()
         {
             _isListenning = false;
-            while (_listenningThread.ThreadState == System.Threading.ThreadState.Running) { }
+            while (_listenningThread?.ThreadState == System.Threading.ThreadState.Running && _listenningThread != null) { }
         }
 
         private void Listen(DataConnector Connector, int delay)

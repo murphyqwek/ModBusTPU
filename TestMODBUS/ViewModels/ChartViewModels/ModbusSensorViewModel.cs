@@ -74,7 +74,7 @@ namespace ModBusTPU.ViewModels.ChartViewModels
             else
                 _sensor.AddNewChannel(channel);
 
-            Channels[channel].IsChosen = !Channels[channel].IsChosen;
+            SetChannelsIsChosenBySensorData();
         }
 
         #endregion
@@ -110,7 +110,11 @@ namespace ModBusTPU.ViewModels.ChartViewModels
                     OnPropertyChanged(nameof(CurrentTime));
             };
 
-            _sensorData.UsingChannels.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Channels));
+            _sensorData.UsingChannels.CollectionChanged += (s, e) =>
+            {
+                SetChannelsIsChosenBySensorData();
+                OnPropertyChanged(nameof(Channels));
+            };
             _sensorData.CurrentValues.CollectionChanged += (s, e) => OnPropertyChanged(nameof(CurrentValues));
             _sensor.ChannelsTypeChangedEvent += ChannelsTypeChangedHander;
 
@@ -145,6 +149,12 @@ namespace ModBusTPU.ViewModels.ChartViewModels
             {
                 Channels.Add(new ChannelViewModel(new Models.Data.ChannelModel(i, _sensor.SensorData.UsingChannels[i], $"CH_{i}")));
             }
+        }
+
+        private void SetChannelsIsChosenBySensorData()
+        {
+            for (int i = 0; i < _sensorData.UsingChannels.Count; i++)
+                Channels[i].IsChosen = _sensorData.UsingChannels[i];
         }
     }
 }
