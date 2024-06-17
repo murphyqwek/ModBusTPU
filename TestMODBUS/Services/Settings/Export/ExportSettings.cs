@@ -68,6 +68,8 @@ namespace ModBusTPU.Services.Settings.Export
 
             foreach(var ExtraData in ExtraDataCollection)
             {
+                if (!ExtraData.IsAllChosen)
+                    throw new Exception("Не удалось сохранить Мощность или Энергию: не все каналы выбраны");
                 var Data = new ExtraData();
                 Data.Label = ExtraData.Label;
                 Data.UsingChannels = ExtraData.GetUsingChannels() as List<int>;

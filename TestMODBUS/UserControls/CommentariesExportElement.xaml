@@ -15,7 +15,9 @@
         <TextBox MaxWidth="150" MinWidth="50" Width="100"
            HorizontalAlignment="Left" VerticalAlignment="Stretch"
            Grid.Column="0"
-           Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}"/>
+           Name ="Label"
+           Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}"
+           PreviewTextInput="TextBox_PreviewTextInput"/>
 
         <TextBox MaxWidth="150" MinWidth="50" Width="100"
                    HorizontalAlignment="Left" VerticalAlignment="Stretch"

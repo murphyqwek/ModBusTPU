@@ -18,6 +18,8 @@
     <DockPanel>
         <TextBox MaxWidth="150" MinWidth="50" Width="100"
                DockPanel.Dock="Left" 
+               Name="Label"
+               PreviewTextInput="Label_PreviewTextInput"
                Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}"/>
         <Ellipse Width="20" Margin="5 0" 
                  DockPanel.Dock="Left"

@@ -49,7 +49,10 @@ namespace ModBusTPU.Services.Settings.Export
             {
                 try
                 {
-                    CommentaryLables.Add(Lines[i].Trim('\n'));
+                    string Label = Lines[i];
+                    Label = Label.Trim('\n');
+                    Label = Label.Replace(ExportSaving.SPECSYMBOLFORREPLACINGBACKSPACE, ' ');
+                    CommentaryLables.Add(Label);
                     i++;
                 }
                 catch
@@ -80,7 +83,7 @@ namespace ModBusTPU.Services.Settings.Export
                     ChannelData ChannelData = new ChannelData();
                     ChannelData.Channel = ChannelNumber;
                     ChannelData.IsChosen = IsChosenBool;
-                    ChannelData.Label = Label;
+                    ChannelData.Label = Label.Replace(ExportSaving.SPECSYMBOLFORREPLACINGBACKSPACE, ' ');
 
                     ChannelsData.Add(ChannelData);
                     i++;
@@ -108,7 +111,7 @@ namespace ModBusTPU.Services.Settings.Export
                         UsingChannels.Add(Convert.ToInt32(Line[j]));
 
                     ExtraData Data = new ExtraData();
-                    Data.Label = Label;
+                    Data.Label = Label.Replace(ExportSaving.SPECSYMBOLFORREPLACINGBACKSPACE, ' ');
                     Data.UsingChannels = UsingChannels;
 
                     ChannelsData.Add(Data);

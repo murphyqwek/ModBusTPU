@@ -134,9 +134,9 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         public ICommand SaveSettingsCommand { get; }
         public void SaveSettingsCommandHandle()
         {
-            ExportSettings ExportSettings = new ExportSettings(ChannelsData, PowerExtraData, EnergyExtraData, Commentaries);
             try
             {
+                ExportSettings ExportSettings = new ExportSettings(ChannelsData, PowerExtraData, EnergyExtraData, Commentaries);
                 if (!ExportSettingsManager.SaveSettings(ExportSettings))
                     return;
 

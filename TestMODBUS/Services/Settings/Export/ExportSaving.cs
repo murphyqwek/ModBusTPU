@@ -28,6 +28,8 @@ namespace ModBusTPU.Services.Settings.Export
         public const string ENERGYHEADER = "ENERGY";
         public const string COMMENTARYHEADER = "COMMENTARY";
 
+        public const char SPECSYMBOLFORREPLACINGBACKSPACE = '&';
+
         public const string SEPARATOR = " ";
 
         public static string GetData(ExportSettings Settings)
@@ -39,19 +41,19 @@ namespace ModBusTPU.Services.Settings.Export
         {
             string Data = CHANNELHEADER + "\n";
             foreach(ChannelData Channel in ChannelsData)
-                Data += Channel.Label + " " + Channel.Channel.ToString() + " " + Convert.ToInt32(Channel.IsChosen).ToString() + "\n";
+                Data += Channel.Label.Replace(' ', SPECSYMBOLFORREPLACINGBACKSPACE) + " " + Channel.Channel.ToString() + " " + Convert.ToInt32(Channel.IsChosen).ToString() + "\n";
 
             Data += POWERHEADER + "\n";
             foreach (var ExtraData in PowerData)
-                Data += ExtraData.Label + " " + GetUsingChannelsString(ExtraData.UsingChannels) + "\n";
+                Data += ExtraData.Label.Replace(' ', SPECSYMBOLFORREPLACINGBACKSPACE) + " " + GetUsingChannelsString(ExtraData.UsingChannels) + "\n";
 
             Data += ENERGYHEADER + "\n";
             foreach (var ExtraData in EnergyData)
-                Data += ExtraData.Label + " " + GetUsingChannelsString(ExtraData.UsingChannels) + "\n";
+                Data += ExtraData.Label.Replace(' ', SPECSYMBOLFORREPLACINGBACKSPACE) + " " + GetUsingChannelsString(ExtraData.UsingChannels) + "\n";
 
             Data += COMMENTARYHEADER + "\n";
             foreach (var Label in CommenatryLabels)
-                Data += Label + "\n";
+                Data += Label.Replace(' ', SPECSYMBOLFORREPLACINGBACKSPACE) + "\n";
 
             return Data;
         }
