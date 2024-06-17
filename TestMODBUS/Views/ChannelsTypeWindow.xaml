@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ModBusTPU.Views"
         xmlns:conv="clr-namespace:ModBusTPU.Converter"
         mc:Ignorable="d"
-        Title="ChannelsTypeWindow" Height="450" Width="400"
+        Title="Настройки каналов" Height="450" Width="400"
         MaxHeight="450" MaxWidth="400"
         MinHeight="450" MinWidth="400">
     <Window.Resources>
