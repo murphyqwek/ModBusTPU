@@ -12,11 +12,13 @@ using ModBusTPU.Models.Data;
 using ModBusTPU.Models.MathModules;
 using ModBusTPU.Models.Modbus;
 using ModBusTPU.Models.Services;
+using ModBusTPU.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
 
 namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
 {
     public class ChartDataPreparationEnergy : ChartDataPreparationBase
     {
+        private IFilter Filter = new OnlyOneVoltAndSeveralTokFilter();
         public override IList<string> GetCurrentValues(IList<int> Channels, DataStorage DataStorage)
         {
             IList<string> values = new List<string>();
@@ -38,6 +40,9 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
         protected override IList<SerieData> GetPoints(IList<int> ChannelsToUpdate, DataStorage DataStorage, int left, int right)
         {
             IList<SerieData> SeriesToUpdate = new List<SerieData>();
+
+            if (!Filter.IsAllChannelsChosen(ChannelsToUpdate))
+                return SeriesToUpdate;
 
             var EnergyPoints = DataStorage.GetExtraData("energy", ChannelsToUpdate);
 
@@ -66,25 +71,33 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
             var VoltValuesUnconverted = GetVoltData(DataStorage, Channels);
             if (VoltValuesUnconverted.Count == 0)
                 return false;
-            if (EnergyPoints.Count == 0)
-            {
-                double Volt = ModBusValueConverter.ConvertToVoltValue(VoltValuesUnconverted[0].Y);
-                double Time = VoltValuesUnconverted[0].X;
-                double sumTok = SumTokByIndex(DataStorage, Channels, 0);
 
-                double Energy = EnergyMathModule.CountWithMilliseconds(sumTok, Volt, Time);
-                EnergyPoints.Add(new Point(VoltValuesUnconverted[0].X, Energy));
+            try
+            {
+                if (EnergyPoints.Count == 0)
+                {
+                    double Volt = ModBusValueConverter.ConvertToVoltValue(VoltValuesUnconverted[0].Y);
+                    double Time = VoltValuesUnconverted[0].X;
+                    double sumTok = SumTokByIndex(DataStorage, Channels, 0);
+
+                    double Energy = EnergyMathModule.CountWithMilliseconds(sumTok, Volt, Time);
+                    EnergyPoints.Add(new Point(VoltValuesUnconverted[0].X, Energy));
+                }
+
+                for (int i = EnergyPoints.Count; i < DataStorage.GetChannelLength(); i++)
+                {
+                    double Volt = ModBusValueConverter.ConvertToVoltValue(VoltValuesUnconverted[i].Y);
+                    double deltaTime = VoltValuesUnconverted[i].X - VoltValuesUnconverted[i - 1].X;
+                    double sumTok = SumTokByIndex(DataStorage, Channels, i);
+
+                    double Energy = EnergyMathModule.CountWithMilliseconds(sumTok, Volt, deltaTime);
+                    Energy += EnergyPoints[i - 1].Y;
+                    EnergyPoints.Add(new Point(VoltValuesUnconverted[i].X, Energy));
+                }
             }
-
-            for(int i = EnergyPoints.Count; i < DataStorage.GetChannelLength(); i++)
+            catch
             {
-                double Volt = ModBusValueConverter.ConvertToVoltValue(VoltValuesUnconverted[i].Y);
-                double deltaTime = VoltValuesUnconverted[i].X - VoltValuesUnconverted[i - 1].X;
-                double sumTok = SumTokByIndex(DataStorage, Channels, i);
-
-                double Energy = EnergyMathModule.CountWithMilliseconds(sumTok, Volt, deltaTime);
-                Energy += EnergyPoints[i - 1].Y;
-                EnergyPoints.Add(new Point(VoltValuesUnconverted[i].X, Energy));
+                return false;
             }
 
             return true;
