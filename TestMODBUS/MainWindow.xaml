@@ -31,7 +31,7 @@
         <Border Grid.Row="0" BorderBrush="#d3d3d3" BorderThickness="0 0 0 2">
             <Grid>
                 <Button Content="Сохранить эксперимент" Width="200" Margin="5,5,0,5" HorizontalAlignment="Left" Command="{Binding BackUpCommand}" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}" Grid.ColumnSpan="2"/>
-                <Button Content="Channels" Command="{Binding ChangeChannelsTypeCommand}" Width="100" Height="25" Margin="0 0 100 0" HorizontalAlignment="Right" Grid.Column="1"/>
+                <Button Content="Настройка каналов" Command="{Binding ChangeChannelsTypeCommand}" Width="150" Height="25" Margin="0 0 100 0" HorizontalAlignment="Right" Grid.Column="1"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 10 0"  VerticalAlignment="Center" Grid.Column="1">
                     <TextBlock Text="Test Mode" Margin="0 0 5 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <CheckBox IsChecked="{Binding Debug, Mode=TwoWay}"/>
