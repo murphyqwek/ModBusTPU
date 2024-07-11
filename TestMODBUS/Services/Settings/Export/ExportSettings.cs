@@ -15,14 +15,14 @@ namespace ModBusTPU.Services.Settings.Export
         public List<ChannelData> ChannelsData { get; }
         public List<ExtraData> PowerData { get; }
         public List<ExtraData> EnergyData { get; }
-        public List<string> CommentaryLabels { get; }
+        public List<Commentary> Commentaries { get; }
 
-        public ExportSettings(List<ChannelData> ChannelsData, List<ExtraData> PowerData, List<ExtraData> EnergyData, List<string> CommentaryLabels)
+        public ExportSettings(List<ChannelData> ChannelsData, List<ExtraData> PowerData, List<ExtraData> EnergyData, List<Commentary> Commentaries)
         {
             this.ChannelsData = ChannelsData;
             this.PowerData = PowerData;
             this.EnergyData = EnergyData;
-            this.CommentaryLabels = CommentaryLabels; 
+            this.Commentaries = Commentaries; 
         }
 
         public ExportSettings(ObservableCollection<ChannelViewModel> ChannelsData, ObservableCollection<ExtraDataViewModel> PowerExtraData, ObservableCollection<ExtraDataViewModel> EnergyExtraData, ObservableCollection<CommentaryExportElementViewModel> Commentaries)
@@ -30,19 +30,23 @@ namespace ModBusTPU.Services.Settings.Export
             this.ChannelsData = ParseChannels(ChannelsData);
             this.PowerData = ParseExtraData(PowerExtraData);
             this.EnergyData = ParseExtraData(EnergyExtraData);
-            this.CommentaryLabels = ParseCommentaries(Commentaries);
+            this.Commentaries = ParseCommentaries(Commentaries);
         }
 
-        private List<string> ParseCommentaries(ObservableCollection<CommentaryExportElementViewModel> Commentaries)
+        private List<Commentary> ParseCommentaries(ObservableCollection<CommentaryExportElementViewModel> CommentariesCollection)
         {
-            List<string> CommentaryLabels = new List<string>();
+            List<Commentary> Commentaries = new List<Commentary>();
 
-            foreach(var Commentary in Commentaries)
+            foreach(var Commentary in CommentariesCollection)
             {
-                CommentaryLabels.Add(Commentary.Label);
+                Commentary CommentaryStruct = new Commentary();
+                CommentaryStruct.Label = Commentary.Label;
+                CommentaryStruct.IsShownOnMainWindow = Commentary.IsShownOnMainWindow;
+
+                Commentaries.Add(CommentaryStruct);
             }
 
-            return CommentaryLabels;
+            return Commentaries;
         }
 
         private List<ChannelData> ParseChannels(Collection<ChannelViewModel> Channels)

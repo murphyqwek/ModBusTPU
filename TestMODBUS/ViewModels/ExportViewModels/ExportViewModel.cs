@@ -21,6 +21,7 @@ using ModBusTPU.Models.ModbusSensor.ChartDataPrepatations;
 using ModBusTPU.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
 using ModBusTPU.Services.Excel;
 using ModBusTPU.Services.Settings.Export;
+using System.Security.RightsManagement;
 
 namespace ModBusTPU.ViewModels.ExportViewModels
 {
@@ -43,10 +44,31 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                 OnPropertyChanged();
             }
         }
+
+        public bool IsSaved 
+        { 
+            get => _isSaved;
+            set
+            {
+                if(_isSaved == value) return;
+
+                _isSaved = value;
+                OnPropertyChanged();
+            } 
+        }
         #endregion
+
+        private ExportSettings _exportSettings;
 
         private DataStorage _dataStorage;
         private string _bigComment;
+
+        private bool _isSaved = true;
+        private bool _isUploading = false;
+
+        //Если комментарии были изменены и не сохранены, то при закрытии окна мы заменяем комменатрии на исходные
+        private List<CommentaryExportElementViewModel> tempCommentary = new List<CommentaryExportElementViewModel>();
+
 
         #region Commands
         #region Export Data
@@ -140,6 +162,11 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                 if (!ExportSettingsManager.SaveSettings(ExportSettings))
                     return;
 
+                _exportSettings = ExportSettings;
+
+                tempCommentary = Commentaries.ToList();
+
+                IsSaved = true;
                 SuccessMessageBox.Show("Настройки успешно сохранены");
             }
             catch(Exception ex)
@@ -194,7 +221,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         public void AddNewPowerExtraDataCommandHander()
         {
             var newExtraData = new ExtraDataViewModel(new ChartDataPreparationPower(), new OnlyOneVoltAndSeveralTokFilter(),
-                                                      "Power", DeleteExtraData);
+                                                      "Power", DeleteExtraData, FieldChanged);
             PowerExtraData.Add(newExtraData);
         }
 
@@ -207,7 +234,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         public void AddNewEnergyExtraDataCommandHandler()
         {
             var newExtraData = new ExtraDataViewModel(new ChartDataPreparationEnergy(), new OnlyOneVoltAndSeveralTokFilter(),
-                                                      "Energy", DeleteExtraData);
+                                                      "Energy", DeleteExtraData, FieldChanged);
             EnergyExtraData.Add(newExtraData);
         }
 
@@ -219,9 +246,43 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
         public void AddNewCommentaryCommandHandler()
         {
-            var NewCommentary = new CommentaryExportElementViewModel(DeleteCommentary);
+            var NewCommentary = new CommentaryExportElementViewModel(DeleteCommentary, FieldChanged);
             Commentaries.Add(NewCommentary);
         }
+
+        #endregion
+
+        #region Before Closing
+
+        public void BeforeClosing()
+        {
+            if(tempCommentary == null || tempCommentary.Count == 0)
+                tempCommentary = Commentaries.ToList();
+
+            if(!IsSaved)
+                UploadSettings(_exportSettings);
+
+            UploadCommentaries();
+            _isUploading = true;
+        }
+
+        private void UploadCommentaries()
+        {
+            _isUploading = true;
+            Commentaries.Clear();
+
+            foreach(var commentary in tempCommentary)
+                Commentaries.Add(commentary);
+
+            tempCommentary.Clear();
+            _isUploading = false;
+        }
+
+        #endregion
+
+        #region When Open
+
+        public void WhenOpen() => _isUploading = false;
 
         #endregion
 
@@ -246,29 +307,28 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             AddNewPowerExtraDataCommand = new RemoteCommand(AddNewPowerExtraDataCommandHander);
             AddNewEnergyExtraDataCommand = new RemoteCommand(AddNewEnergyExtraDataCommandHandler);
             AddNewCommentaryCommand = new RemoteCommand(AddNewCommentaryCommandHandler);
+
+            PowerExtraData.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(null); };
+            EnergyExtraData.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(null); };
+            Commentaries.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(Commentaries[0]); };
         }
 
         private void UploadStandartSettings()
         {
+            _isUploading = true;
             try
             {
-                var Settings = ExportSettingsManager.GetStandartExportSettings();
-                UploadSettings(Settings);
+                _exportSettings = ExportSettingsManager.GetStandartExportSettings();
             }
             catch
             {
-                DefalutSettings();
+                _exportSettings = ExportSettingsManager.GetStandartSettings();
             }
-        }
 
-        private void DefalutSettings()
-        {
-            ChannelsData.Clear();
-            for (int i = 0; i < DataStorage.MaxChannelCount; i++) 
-            {
-                ChannelModel channelModel = new ChannelModel(i);
-                ChannelsData.Add(new ChannelViewModel(channelModel));
-            }
+            UploadSettings(_exportSettings);
+
+            _isUploading = false;
+            IsSaved = true;
         }
 
         private void ClearChannelsExportSettings()
@@ -296,10 +356,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         private void UploadSettings(ExportSettings Settings)
         {
             if (Settings == null)
-            {
-                DefalutSettings();
-                return;
-            }
+                throw new ArgumentNullException();
 
             ChannelsData.Clear();
             foreach(var Channel in Settings.ChannelsData)
@@ -309,15 +366,36 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
             PowerExtraData.Clear();
             foreach (var ExtraData in Settings.PowerData)
-                PowerExtraData.Add(new ExtraDataViewModel(new ChartDataPreparationPower(), new OnlyOneVoltAndSeveralTokFilter(), "Power", DeleteExtraData, ExtraData));
+                PowerExtraData.Add(new ExtraDataViewModel(new ChartDataPreparationPower(), new OnlyOneVoltAndSeveralTokFilter(), "Power", DeleteExtraData, ExtraData, FieldChanged));
+
 
             EnergyExtraData.Clear();
             foreach (var ExtraData in Settings.EnergyData)
-                EnergyExtraData.Add(new ExtraDataViewModel(new ChartDataPreparationEnergy(), new OnlyOneVoltAndSeveralTokFilter(), "Energy", DeleteExtraData, ExtraData));
+                EnergyExtraData.Add(new ExtraDataViewModel(new ChartDataPreparationEnergy(), new OnlyOneVoltAndSeveralTokFilter(), "Energy", DeleteExtraData, ExtraData, FieldChanged));
+           
 
             Commentaries.Clear();
-            foreach (var Commentary in Settings.CommentaryLabels)
-                Commentaries.Add(new CommentaryExportElementViewModel(Commentary, DeleteCommentary));
+            foreach (var Commentary in Settings.Commentaries)
+                Commentaries.Add(new CommentaryExportElementViewModel(Commentary, DeleteCommentary, FieldChanged));
+        }
+
+        public void SetNewDataStorage(DataStorage Data)
+        {
+            if (Data != null)
+                this._dataStorage = Data;
+        }
+
+        public void FieldChanged(object Field)
+        {
+            if (_isUploading)
+                return;
+
+            IsSaved = false;
+            if (Field == null)
+                return;
+            if (Field.GetType() == typeof(CommentaryExportElementViewModel))
+                tempCommentary = Commentaries.ToList();
+
         }
     }
 }

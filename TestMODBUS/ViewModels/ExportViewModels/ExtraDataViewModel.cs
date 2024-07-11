@@ -38,6 +38,8 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
                 _name = value;
                 UpdateStaus();
+
+                this.FieldChangedEvent?.Invoke(this);
                 OnPropertyChanged();
             }
         }
@@ -67,6 +69,8 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         private IFilter _filter;
         private ExtraDataFieldStatus _status;
         private Action<ExtraDataViewModel> _deleteFunction;
+
+        private Action<object> FieldChangedEvent;
 
         #endregion
 
@@ -101,13 +105,17 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
         public ICommand DeleteCommand { get; }
 
-        private void DeleteCommandHandler() => _deleteFunction(this);
+        private void DeleteCommandHandler()
+        {
+            FieldChangedEvent?.Invoke(this);
+            _deleteFunction?.Invoke(this);
+        }
 
         #endregion
 
         #endregion
 
-        public ExtraDataViewModel(ChartDataPreparationBase DataPreparation, IFilter Filter, string Type, Action<ExtraDataViewModel> DeleteFunction, ExtraData Data)
+        public ExtraDataViewModel(ChartDataPreparationBase DataPreparation, IFilter Filter, string Type, Action<ExtraDataViewModel> DeleteFunction, ExtraData Data, Action<object> FieldChangedEvent = null)
         {
             _chartDataPreparation = DataPreparation;
             _filter = Filter;
@@ -125,9 +133,10 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             DeleteCommand = new RemoteCommand(DeleteCommandHandler);
 
             Label = Data.Label;
+            this.FieldChangedEvent = FieldChangedEvent;
         }
 
-        public ExtraDataViewModel(ChartDataPreparationBase DataPreparation, IFilter Filter, string Type, Action<ExtraDataViewModel> DeleteFunction)
+        public ExtraDataViewModel(ChartDataPreparationBase DataPreparation, IFilter Filter, string Type, Action<ExtraDataViewModel> DeleteFunction, Action<object> FieldChangedEvent = null)
         {
             _chartDataPreparation = DataPreparation;
             _filter = Filter;
@@ -140,6 +149,8 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
             ChangeChannelListCommand = new RemoteCommandWithParameter(ChangeChannelListHandler);
             DeleteCommand = new RemoteCommand(DeleteCommandHandler);
+
+            this.FieldChangedEvent = FieldChangedEvent;
         }
 
         public IList<int> GetUsingChannels()

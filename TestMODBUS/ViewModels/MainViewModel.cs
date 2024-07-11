@@ -17,6 +17,9 @@ using Microsoft.Win32;
 using ModBusTPU.Models;
 using ModBusTPU.Models.Services.Settings.Data;
 using ModBusTPU.Views;
+using ModBusTPU.ViewModels.ExportViewModels;
+using System.Diagnostics;
+using System.Linq;
 
 namespace ModBusTPU.ViewModels
 {
@@ -25,6 +28,8 @@ namespace ModBusTPU.ViewModels
         #region Public Attributes
         public ObservableCollection<string> Ports => ListAvailablePorts.AvailablePorts;
         public List<int> Speeds => ListAvailableSpeeds.ListPortSpeeds;
+
+        public IEnumerable<CommentaryExportElementViewModel> Commentaries => (from c in _exportViewModel.Commentaries where c.IsShownOnMainWindow select c);
 
         public DataStorage Data { get => _data; }
 
@@ -87,6 +92,8 @@ namespace ModBusTPU.ViewModels
         private ModbusSensor sensor4;
         private bool _debug = false;
         private bool _isWorking = false;
+
+        private readonly ExportViewModel _exportViewModel;
         #endregion
 
         #region Commands
@@ -217,8 +224,10 @@ namespace ModBusTPU.ViewModels
 
         private void ExportDataCommandHandler()
         {
-            ExportWindow exportWindow = new ExportWindow(_data);
-            exportWindow.ShowDialog();
+            _exportViewModel.SetNewDataStorage(_data);
+            ExportWindow _exportWindow = new ExportWindow(_exportViewModel);
+            _exportWindow.ShowDialog();
+            OnPropertyChanged(nameof(Commentaries));
         }
 
         #endregion
@@ -316,15 +325,15 @@ namespace ModBusTPU.ViewModels
 
         public MainViewModel()
         {
+            //Перехват необработанных исключений
+            Application.Current.DispatcherUnhandledException += ApplicationClosedByErrorHandler;
+
             //Инициализируем объекты
             port = new ObservablePort();
             _data = new DataStorage();
 
             var _dataConnector = new DataConnector(_data);
             _portListener = new PortListener(port, _dataConnector, OnPortErrorClosedByError);
-
-            Application.Current.DispatcherUnhandledException += ApplicationClosedByErrorHandler;
-
 
             //Инициализируем модули
             ModbusSensorSimpleFactory Factory = new ModbusSensorSimpleFactory();
@@ -348,6 +357,9 @@ namespace ModBusTPU.ViewModels
             //Подписиваем объекты на OnPropertyChanged других объектов
             ListAvailablePorts.AvailablePorts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Ports));
             port.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+
+            //Инциалзириуем окно экспорта данных
+            _exportViewModel = new ExportViewModel(_data);
         }
 
         private void ApplicationClosedByErrorHandler(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

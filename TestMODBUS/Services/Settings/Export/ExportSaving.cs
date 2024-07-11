@@ -21,6 +21,12 @@ namespace ModBusTPU.Services.Settings.Export
         public List<int> UsingChannels;
     }
 
+    public struct Commentary
+    {
+        public string Label;
+        public bool IsShownOnMainWindow;
+    }
+
     public static class ExportSaving
     {
         public const string CHANNELHEADER = "CHANNELS";
@@ -34,10 +40,10 @@ namespace ModBusTPU.Services.Settings.Export
 
         public static string GetData(ExportSettings Settings)
         {
-            return GetData(Settings.ChannelsData, Settings.PowerData, Settings.EnergyData, Settings.CommentaryLabels);
+            return GetData(Settings.ChannelsData, Settings.PowerData, Settings.EnergyData, Settings.Commentaries);
         }
 
-        public static string GetData(List<ChannelData> ChannelsData, List<ExtraData> PowerData, List<ExtraData> EnergyData, List<string> CommenatryLabels)
+        public static string GetData(List<ChannelData> ChannelsData, List<ExtraData> PowerData, List<ExtraData> EnergyData, List<Commentary> Commenatries)
         {
             string Data = CHANNELHEADER + "\n";
             foreach(ChannelData Channel in ChannelsData)
@@ -52,8 +58,8 @@ namespace ModBusTPU.Services.Settings.Export
                 Data += ExtraData.Label.Replace(' ', SPECSYMBOLFORREPLACINGBACKSPACE) + " " + GetUsingChannelsString(ExtraData.UsingChannels) + "\n";
 
             Data += COMMENTARYHEADER + "\n";
-            foreach (var Label in CommenatryLabels)
-                Data += Label.Replace(' ', SPECSYMBOLFORREPLACINGBACKSPACE) + "\n";
+            foreach (var Commentary in Commenatries)
+                Data += Commentary.Label.Replace(' ', SPECSYMBOLFORREPLACINGBACKSPACE) + $" {Convert.ToInt32(Commentary.IsShownOnMainWindow)}\n";
 
             return Data;
         }

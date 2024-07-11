@@ -27,6 +27,8 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                 if (_label == value)
                     return;
 
+                //Мы делаем копию комменатриев, потом меняем поле
+                FieldChanged?.Invoke(this);
                 _label = value;
                 OnPropertyChanged();
             }
@@ -44,6 +46,22 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                 OnPropertyChanged();
             }
         }
+        public bool IsShownOnMainWindow
+        {
+            get => _isShownOnMainWindow;
+
+            set
+            {
+                if (_isShownOnMainWindow == value)
+                    return;
+
+                //Мы делаем копию комменатриев, потом меняем поле
+                FieldChanged?.Invoke(this);
+
+                _isShownOnMainWindow = value;
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -52,6 +70,9 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         private string _label;
         private string _comment;
         private Action<CommentaryExportElementViewModel> _deleteFunction;
+        private bool _isShownOnMainWindow;
+
+        private Action<object> FieldChanged;
 
         #endregion
 
@@ -61,24 +82,42 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
         public ICommand DeleteCommand { get; }
 
-        private void DeleteCommandHandler() => _deleteFunction(this);
-
-        #endregion
-
-        #endregion
-
-        public CommentaryExportElementViewModel(Action<CommentaryExportElementViewModel> DeleteFunction)
+        private void DeleteCommandHandler()
         {
-            this.Label = "";
-            _deleteFunction = DeleteFunction;
-            DeleteCommand = new RemoteCommand(DeleteCommandHandler);
+            FieldChanged?.Invoke(this);
+            _deleteFunction(this);
         }
 
-        public CommentaryExportElementViewModel(string Label, Action<CommentaryExportElementViewModel> DeleteFunction)
+        #endregion
+
+        #endregion
+
+        public CommentaryExportElementViewModel(Action<CommentaryExportElementViewModel> DeleteFunction, Action<object> fieldChanged = null)
         {
+            Label = "";
+            IsShownOnMainWindow = false;
             _deleteFunction = DeleteFunction;
-            this.Label = Label;
             DeleteCommand = new RemoteCommand(DeleteCommandHandler);
+            FieldChanged = fieldChanged;
+        }
+
+        public CommentaryExportElementViewModel(string Label, bool IsShownOnMainWindow, Action<CommentaryExportElementViewModel> DeleteFunction, Action<object> fieldChanged = null)
+        {
+            this.Label = Label;
+            this.IsShownOnMainWindow = IsShownOnMainWindow;
+            _deleteFunction = DeleteFunction;
+            DeleteCommand = new RemoteCommand(DeleteCommandHandler);
+
+            FieldChanged = fieldChanged;
+        }
+
+        public CommentaryExportElementViewModel(Commentary Commentary, Action<CommentaryExportElementViewModel> DeleteFunction, Action<object> fieldChanged = null)
+        {
+            this.Label = Commentary.Label;
+            this.IsShownOnMainWindow = Commentary.IsShownOnMainWindow;
+            _deleteFunction = DeleteFunction;
+            DeleteCommand = new RemoteCommand(DeleteCommandHandler);
+            FieldChanged = fieldChanged;
         }
 
     }

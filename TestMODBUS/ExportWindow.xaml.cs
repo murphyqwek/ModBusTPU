@@ -22,12 +22,27 @@ namespace ModBusTPU
     /// </summary>
     public partial class ExportWindow : Window
     {
-        public ExportWindow(DataStorage Data)
+        ExportViewModel _model;
+
+        public ExportWindow(ExportViewModel Model)
         {
             InitializeComponent();
-            ExportViewModel viewModel = new ExportViewModel(Data);
 
-            this.DataContext = viewModel;
+            this.DataContext = Model;
+            _model = Model;
+
+            Closing += ExportWindow_Closing;
+            Loaded += ExportWindow_Loaded;
+        }
+
+        private void ExportWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            _model.WhenOpen();
+        }
+
+        private void ExportWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _model.BeforeClosing();
         }
     }
 }

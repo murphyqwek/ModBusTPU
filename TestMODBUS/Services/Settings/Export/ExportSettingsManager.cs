@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ModBusTPU.Models.Data;
 using ModBusTPU.Models.Services;
+using ModBusTPU.ViewModels;
 
 namespace ModBusTPU.Services.Settings.Export
 {
@@ -66,6 +68,18 @@ namespace ModBusTPU.Services.Settings.Export
                 SetField("");
                 throw ex;
             }               
+        }
+
+        public static ExportSettings GetStandartSettings()
+        {
+            List<ChannelData> channels = new List<ChannelData>();
+
+            for(int i = 0; i < DataStorage.MaxChannelCount; i++)
+            {
+                channels.Add(new ChannelData() { Channel = i, IsChosen = false, Label = $"CH_{i}" });
+            }
+
+            return new ExportSettings(channels, new List<ExtraData>(), new List<ExtraData>(), new List<Commentary>());
         }
 
         private static void SetField(string FilePath) => RegisrtyService.SetField(RegistryFolder, ExportFieldLabel, FilePath);

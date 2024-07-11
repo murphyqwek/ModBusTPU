@@ -35,24 +35,30 @@ namespace ModBusTPU.Services.Settings.Export
             List<ExtraData> EnergyData = GetExtraDataFromLine(ref i, Lines);
 
             i++;
-            List<string> CommentaryLabels = GetCommentaryLabels(ref i, Lines);
+            List<Commentary> CommentaryLabels = GetCommentaryLabels(ref i, Lines);
 
 
             return new ExportSettings(ChannelsData, PowerData, EnergyData, CommentaryLabels);
         }
 
-        private static List<string> GetCommentaryLabels(ref int i, string[] Lines)
+        private static List<Commentary> GetCommentaryLabels(ref int i, string[] Lines)
         {
-            List<string> CommentaryLables = new List<string>();
+            List<Commentary> Commentaries = new List<Commentary>();
 
             while (i < Lines.Length && !string.IsNullOrEmpty(Lines[i]))
             {
                 try
                 {
-                    string Label = Lines[i];
+                    var Temp = Lines[i].Split(' ');
+                    string Label = Temp[0];
                     Label = Label.Trim('\n');
                     Label = Label.Replace(ExportSaving.SPECSYMBOLFORREPLACINGBACKSPACE, ' ');
-                    CommentaryLables.Add(Label);
+
+                    bool IsShownOnMainWindow = false;
+                    if (Temp.Length > 1)
+                        IsShownOnMainWindow = Convert.ToBoolean(Convert.ToInt32(Temp[1]));
+
+                    Commentaries.Add(new Commentary { Label = Label, IsShownOnMainWindow = IsShownOnMainWindow });
                     i++;
                 }
                 catch
@@ -61,7 +67,7 @@ namespace ModBusTPU.Services.Settings.Export
                 }
             }
 
-            return CommentaryLables;
+            return Commentaries;
         }
 
         private static List<ChannelData> GetChannelsData(ref int i, string[] Lines)
