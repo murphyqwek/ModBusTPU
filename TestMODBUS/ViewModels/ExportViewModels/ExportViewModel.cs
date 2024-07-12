@@ -254,8 +254,15 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
         #region Before Closing
 
-        public void BeforeClosing()
+        public bool BeforeClosing()
         {
+            if (!IsSaved)
+            {
+                var result = RequestYesNoMessageBox.Show("Есть несохраненнные настройки. При закрытии окна все изменения отменяться. Продолжить?");
+                if (result != MessageBoxResult.Yes)
+                    return true;
+            }
+
             if(tempCommentary == null || tempCommentary.Count == 0)
                 tempCommentary = Commentaries.ToList();
 
@@ -264,6 +271,9 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
             UploadCommentaries();
             _isUploading = true;
+            IsSaved = true;
+
+            return false;
         }
 
         private void UploadCommentaries()
@@ -308,9 +318,9 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             AddNewEnergyExtraDataCommand = new RemoteCommand(AddNewEnergyExtraDataCommandHandler);
             AddNewCommentaryCommand = new RemoteCommand(AddNewCommentaryCommandHandler);
 
-            PowerExtraData.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(null); };
-            EnergyExtraData.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(null); };
-            Commentaries.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(Commentaries[0]); };
+            PowerExtraData.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(null, "Added"); };
+            EnergyExtraData.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(null, "Added"); };
+            Commentaries.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(Commentaries[0], "Added"); };
         }
 
         private void UploadStandartSettings()
@@ -361,7 +371,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             ChannelsData.Clear();
             foreach(var Channel in Settings.ChannelsData)
             {
-                ChannelsData.Add(new ChannelViewModel(new ChannelModel(Channel.Channel, Channel.IsChosen, Channel.Label)));
+                ChannelsData.Add(new ChannelViewModel(new ChannelModel(Channel.Channel, Channel.IsChosen, Channel.Label), FieldChanged));
             }
 
             PowerExtraData.Clear();
@@ -385,17 +395,17 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                 this._dataStorage = Data;
         }
 
-        public void FieldChanged(object Field)
+        public void FieldChanged(object Field, string ParametrName)
         {
             if (_isUploading)
                 return;
-
-            IsSaved = false;
             if (Field == null)
                 return;
-            if (Field.GetType() == typeof(CommentaryExportElementViewModel))
-                tempCommentary = Commentaries.ToList();
 
+            if (ParametrName != "Commentary")
+                IsSaved = false;
+            if (Field.GetType() == typeof(CommentaryExportElementViewModel) && IsSaved)
+                tempCommentary = Commentaries.ToList();
         }
     }
 }

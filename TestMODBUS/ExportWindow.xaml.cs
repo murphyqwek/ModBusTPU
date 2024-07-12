@@ -42,7 +42,7 @@ namespace ModBusTPU
 
         private void ExportWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _model.BeforeClosing();
+            e.Cancel = _model.BeforeClosing();
         }
     }
 }

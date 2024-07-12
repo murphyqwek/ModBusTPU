@@ -39,7 +39,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                 _name = value;
                 UpdateStaus();
 
-                this.FieldChangedEvent?.Invoke(this);
+                this.FieldChangedEvent?.Invoke(this, nameof(Label));
                 OnPropertyChanged();
             }
         }
@@ -70,7 +70,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         private ExtraDataFieldStatus _status;
         private Action<ExtraDataViewModel> _deleteFunction;
 
-        private Action<object> FieldChangedEvent;
+        private Action<object, string> FieldChangedEvent;
 
         #endregion
 
@@ -107,7 +107,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
         private void DeleteCommandHandler()
         {
-            FieldChangedEvent?.Invoke(this);
+            FieldChangedEvent?.Invoke(this, "Deleted");
             _deleteFunction?.Invoke(this);
         }
 
@@ -115,7 +115,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
         #endregion
 
-        public ExtraDataViewModel(ChartDataPreparationBase DataPreparation, IFilter Filter, string Type, Action<ExtraDataViewModel> DeleteFunction, ExtraData Data, Action<object> FieldChangedEvent = null)
+        public ExtraDataViewModel(ChartDataPreparationBase DataPreparation, IFilter Filter, string Type, Action<ExtraDataViewModel> DeleteFunction, ExtraData Data, Action<object, string> FieldChangedEvent = null)
         {
             _chartDataPreparation = DataPreparation;
             _filter = Filter;
@@ -124,7 +124,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
             Channels = new ObservableCollection<ChannelViewModel>();
             for (int i = 0; i < DataStorage.MaxChannelCount; i++)
-                Channels.Add(new ChannelViewModel(new ChannelModel(i, false, $"CH_{i}")));
+                Channels.Add(new ChannelViewModel(new ChannelModel(i, false, $"CH_{i}"), FieldChangedEvent));
 
             foreach (var Channel in Data.UsingChannels)
                 AddNewChannel(Channel);
@@ -136,7 +136,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             this.FieldChangedEvent = FieldChangedEvent;
         }
 
-        public ExtraDataViewModel(ChartDataPreparationBase DataPreparation, IFilter Filter, string Type, Action<ExtraDataViewModel> DeleteFunction, Action<object> FieldChangedEvent = null)
+        public ExtraDataViewModel(ChartDataPreparationBase DataPreparation, IFilter Filter, string Type, Action<ExtraDataViewModel> DeleteFunction, Action<object, string> FieldChangedEvent = null)
         {
             _chartDataPreparation = DataPreparation;
             _filter = Filter;
@@ -145,7 +145,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
             Channels = new ObservableCollection<ChannelViewModel>();
             for (int i = 0; i < DataStorage.MaxChannelCount; i++)
-                Channels.Add(new ChannelViewModel(new ChannelModel(i, false, $"CH_{i}")));
+                Channels.Add(new ChannelViewModel(new ChannelModel(i, false, $"CH_{i}"), FieldChangedEvent));
 
             ChangeChannelListCommand = new RemoteCommandWithParameter(ChangeChannelListHandler);
             DeleteCommand = new RemoteCommand(DeleteCommandHandler);

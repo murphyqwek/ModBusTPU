@@ -28,7 +28,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                     return;
 
                 //Мы делаем копию комменатриев, потом меняем поле
-                FieldChanged?.Invoke(this);
+                FieldChanged?.Invoke(this, nameof(Label));
                 _label = value;
                 OnPropertyChanged();
             }
@@ -42,6 +42,8 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                 if (_comment == value)
                     return;
 
+                //Мы делаем копию комменатриев, потом меняем поле
+                FieldChanged?.Invoke(this, nameof(Commentary));
                 _comment = value;
                 OnPropertyChanged();
             }
@@ -56,7 +58,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                     return;
 
                 //Мы делаем копию комменатриев, потом меняем поле
-                FieldChanged?.Invoke(this);
+                FieldChanged?.Invoke(this, nameof(IsShownOnMainWindow));
 
                 _isShownOnMainWindow = value;
                 OnPropertyChanged();
@@ -72,7 +74,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         private Action<CommentaryExportElementViewModel> _deleteFunction;
         private bool _isShownOnMainWindow;
 
-        private Action<object> FieldChanged;
+        private Action<object, string> FieldChanged;
 
         #endregion
 
@@ -84,7 +86,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
         private void DeleteCommandHandler()
         {
-            FieldChanged?.Invoke(this);
+            FieldChanged?.Invoke(this, "Deleted");
             _deleteFunction(this);
         }
 
@@ -92,7 +94,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
         #endregion
 
-        public CommentaryExportElementViewModel(Action<CommentaryExportElementViewModel> DeleteFunction, Action<object> fieldChanged = null)
+        public CommentaryExportElementViewModel(Action<CommentaryExportElementViewModel> DeleteFunction, Action<object, string> fieldChanged = null)
         {
             Label = "";
             IsShownOnMainWindow = false;
@@ -101,7 +103,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             FieldChanged = fieldChanged;
         }
 
-        public CommentaryExportElementViewModel(string Label, bool IsShownOnMainWindow, Action<CommentaryExportElementViewModel> DeleteFunction, Action<object> fieldChanged = null)
+        public CommentaryExportElementViewModel(string Label, bool IsShownOnMainWindow, Action<CommentaryExportElementViewModel> DeleteFunction, Action<object, string> fieldChanged = null)
         {
             this.Label = Label;
             this.IsShownOnMainWindow = IsShownOnMainWindow;
@@ -111,7 +113,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             FieldChanged = fieldChanged;
         }
 
-        public CommentaryExportElementViewModel(Commentary Commentary, Action<CommentaryExportElementViewModel> DeleteFunction, Action<object> fieldChanged = null)
+        public CommentaryExportElementViewModel(Commentary Commentary, Action<CommentaryExportElementViewModel> DeleteFunction, Action<object, string> fieldChanged = null)
         {
             this.Label = Commentary.Label;
             this.IsShownOnMainWindow = Commentary.IsShownOnMainWindow;

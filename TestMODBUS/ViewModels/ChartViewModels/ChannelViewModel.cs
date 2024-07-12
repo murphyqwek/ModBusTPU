@@ -21,7 +21,7 @@ namespace ModBusTPU.ViewModels
             set
             {
                 _model.IsChosen = value;
-                ChannelStateChanged?.Invoke();
+                ChannelStateChanged?.Invoke(this, nameof(IsChosen));
 
                 UpdateColor();
                 OnPropertyChanged();
@@ -33,7 +33,7 @@ namespace ModBusTPU.ViewModels
             set
             {
                 _model.Label = value;
-                ChannelStateChanged?.Invoke();
+                ChannelStateChanged?.Invoke(this, nameof(Label));
                 OnPropertyChanged();
             }
         }
@@ -44,7 +44,7 @@ namespace ModBusTPU.ViewModels
         private Brush _background;
         private Brush _foreground;
 
-        private Action ChannelStateChanged;
+        private Action<object, string> ChannelStateChanged;
 
         public ChannelViewModel(ChannelModel Channel) 
         {
@@ -53,7 +53,7 @@ namespace ModBusTPU.ViewModels
             UpdateColor();
         }
 
-        public ChannelViewModel(ChannelModel Channel, Action ChannelStateChanged)
+        public ChannelViewModel(ChannelModel Channel, Action<object, string> ChannelStateChanged)
         {
             _model = Channel;
             _model.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);

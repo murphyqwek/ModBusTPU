@@ -9,12 +9,15 @@
     <Grid>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding StringFormat=CH {0}:, Path=ChannelNumber}" Margin="0 0 10 0"/>
-            <TextBox Name="Label" Text="{Binding Label}" Width="100" Margin="0 0 10 0" PreviewTextInput="TextBox_PreviewTextInput">
+            <TextBox Name="Label" 
+                     Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}" 
+                     Width="100" Margin="0 0 10 0" 
+                     PreviewTextInput="TextBox_PreviewTextInput">
                 <TextBox.ToolTip>
                     <TextBlock/>
                 </TextBox.ToolTip>
             </TextBox>
-            <CheckBox IsChecked="{Binding Path=IsChosen}" />
+            <CheckBox IsChecked="{Binding Path=IsChosen, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
     </Grid>
 </UserControl>
