@@ -326,14 +326,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         private void UploadStandartSettings()
         {
             _isUploading = true;
-            try
-            {
-                _exportSettings = ExportSettingsManager.GetStandartExportSettings();
-            }
-            catch
-            {
-                _exportSettings = ExportSettingsManager.GetStandartSettings();
-            }
+            _exportSettings = ExportSettingsManager.UploadStandartSettingsOrGetStandart();
 
             UploadSettings(_exportSettings);
 

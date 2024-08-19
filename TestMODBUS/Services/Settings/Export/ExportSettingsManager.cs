@@ -51,6 +51,24 @@ namespace ModBusTPU.Services.Settings.Export
             return ExportReading.ReadFile(data);
         }
 
+        public static ExportSettings UploadStandartSettingsOrGetStandart()
+        {
+            ExportSettings _exportSettings;
+            try
+            {
+                _exportSettings = GetStandartExportSettings();
+            }
+            catch
+            {
+                _exportSettings = GetStandartSettings();
+            }
+
+            if (_exportSettings == null)
+                _exportSettings = GetStandartSettings();
+
+            return _exportSettings;
+        }
+
         public static ExportSettings GetStandartExportSettings()
         {
             string Path = GetField();
