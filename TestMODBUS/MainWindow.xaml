@@ -10,7 +10,9 @@
         Icon="./Logo/logo.png"
         mc:Ignorable="d"
         WindowState="Maximized"
-        Title="ModBus TPU" Height="450" Width="900">
+        Title="ModBus TPU" 
+        Height="450" Width="900"
+        MinHeight="450" MinWidth="720">
 
     <Window.Resources>
         <conv:SliderEnabledConverter x:Key="SliderEnabledConverter" />
@@ -31,21 +33,26 @@
         <!--#region Top -->
         <Border Grid.Row="0" BorderBrush="#d3d3d3" BorderThickness="0 0 0 2">
             <Grid>
-                <Button Content="Сохранить эксперимент" 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="230"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="270"/>
+                </Grid.ColumnDefinitions>
+                
+                <Button Grid.Column="0"
+                        Content="Сохранить эксперимент" 
                         Width="200" Margin="5,5,0,5" 
                         HorizontalAlignment="Left" 
                         Command="{Binding BackUpCommand}" 
                         IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}" 
                         Grid.ColumnSpan="2"/>
-                <Button Content="Настройка каналов" 
-                        Command="{Binding ChangeChannelsTypeCommand}" 
-                        Width="150" Height="25" Margin="0 0 100 0" 
-                        HorizontalAlignment="Right" 
-                        Grid.Column="1"/>
+                
                 
                 <!--#region Chosen Fields -->
-                <Border BorderBrush="LightGray" BorderThickness="2"
-                        Width="400" Margin="0 5 45 5">
+                <Border Grid.Column="1"
+                        BorderBrush="LightGray" BorderThickness="2"
+                        Margin="0 5 45 5"
+                        HorizontalAlignment="Center">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                   VerticalScrollBarVisibility="Disabled">
                         <StackPanel
@@ -81,10 +88,15 @@
                 <!--#endregion-->
                 
                 <!--#region Test Mode-->
-                <StackPanel Orientation="Horizontal" 
+                <StackPanel Grid.Column="2"
+                            Orientation="Horizontal" 
                             VerticalAlignment="Center" HorizontalAlignment="Right" 
-                            Margin="0 0 10 0"
-                            Grid.Column="1">
+                            Margin="0 0 20 0">
+                    <Button 
+                            Content="Настройка каналов" 
+                            Command="{Binding ChangeChannelsTypeCommand}" 
+                            Width="150" Height="25" Margin="0 0 20 0" 
+                            HorizontalAlignment="Right" />
                     <TextBlock Text="Test Mode" 
                                Margin="0 0 5 0" 
                                VerticalAlignment="Center" HorizontalAlignment="Right"/>
