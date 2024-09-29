@@ -155,6 +155,7 @@ namespace ModBusTPU.ViewModels
                 */
                 _isWorking = true;
                 OnPropertyChanged(nameof(IsWorking));
+                OnPropertyChanged(nameof(IsNotWorking));
             }
             catch (NoPortAvailableException ex)
             {
@@ -186,6 +187,7 @@ namespace ModBusTPU.ViewModels
             _portListener.StopListen();
             _isWorking = false;
             OnPropertyChanged(nameof(IsWorking));
+            OnPropertyChanged(nameof(IsNotWorking));
             sensor1.StopWorkingAndMoveToStart();
             sensor2.StopWorkingAndMoveToStart();
             sensor3.StopWorkingAndMoveToStart();
@@ -364,7 +366,7 @@ namespace ModBusTPU.ViewModels
 
             //Создаем класс, который будет хранить имя текущего эксперимента
             FileNameViewModel = new FileNameViewModel();
-            
+
             //Иницилизируем команды
             StartCommand = new RemoteCommand(StartCommandHandler);
             StopCommand = new RemoteCommand(StopCommandHandler);

@@ -107,7 +107,7 @@
                     <ComboBox Margin="5 0" Name="TokMode"
                               SelectedIndex="0"
                               SelectedItem="{Binding TokMode, Mode=OneWayToSource}"
-                              IsReadOnly="{Binding IsNotWorking}">
+                              IsEnabled="{Binding IsNotWorking}">
                         <sys:String>AC</sys:String>
                         <sys:String>DC</sys:String>
                     </ComboBox>
