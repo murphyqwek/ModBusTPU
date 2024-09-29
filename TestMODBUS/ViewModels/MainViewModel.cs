@@ -20,6 +20,7 @@ using ModBusTPU.Views;
 using ModBusTPU.ViewModels.ExportViewModels;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace ModBusTPU.ViewModels
 {
@@ -42,6 +43,21 @@ namespace ModBusTPU.ViewModels
 
         public FileNameViewModel FileNameViewModel { get; }
 
+        public string TokMode
+        {
+            //Поменять названия. Не забыть поменять стандартный режим тока в главном меню
+            //в выпадающем списке
+            set
+            {
+                if (value == "AC")
+                    _deviceAdress = 0x02;
+                else if (value == "DC")
+                    _deviceAdress = 0x03;
+
+                else
+                    throw new Exception("Uncatched tok mode");
+            }
+        }
         public string PortName
         {
             get => port.PortName;
@@ -60,6 +76,8 @@ namespace ModBusTPU.ViewModels
             }
         }
         public bool IsWorking => port.IsPortOpen || _isWorking;
+        public bool IsNotWorking => !IsWorking;
+
         public int MeasureDelay { get; set; } = 300;
 
         public bool Debug 
@@ -93,6 +111,8 @@ namespace ModBusTPU.ViewModels
         private bool _debug = false;
         private bool _isWorking = false;
 
+        private byte _deviceAdress = 0x02;
+
         private readonly ExportViewModel _exportViewModel;
         #endregion
 
@@ -122,7 +142,7 @@ namespace ModBusTPU.ViewModels
 
             try
             {
-                _portListener.StartListen(MeasureDelay);
+                _portListener.StartListen(MeasureDelay, _deviceAdress);
                 sensor1.StartWorking();
                 sensor2.StartWorking();
                 sensor3.StartWorking();

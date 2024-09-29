@@ -41,7 +41,7 @@ namespace ModBusTPU.Models.Services
             _connector = Connector;
         }
 
-        public void StartListen(int delay)
+        public void StartListen(int delay, byte deviceAdress)
         {
             if(_port == null)
                 throw new ArgumentNullException(nameof(Services));
@@ -51,7 +51,7 @@ namespace ModBusTPU.Models.Services
             // Проверка на модуль (пока не нужно)
 
             //Запуск потока
-            listenningThread = new Thread(() => Listen(_port, _connector, delay));
+            listenningThread = new Thread(() => Listen(_port, _connector, delay, deviceAdress));
             listenningThread.Start();
         }
 
@@ -61,7 +61,7 @@ namespace ModBusTPU.Models.Services
                 _port.Close();
         }
 
-        private void Listen(ObservablePort Port, DataConnector Connector, int delay)
+        private void Listen(ObservablePort Port, DataConnector Connector, int delay, byte deviceAdress)
         {
             const int measureTime = 200; //Это время, за котрое программа считает все данные со всех каналов. Пока подбирается вручную
             if (delay < measureTime + 100)
@@ -82,9 +82,8 @@ namespace ModBusTPU.Models.Services
                     //Чарт обновляет точки тогда, когда обновился последний канал
                     for (int channel = 0; channel < 8; channel++)
                     {
-                        byte[] sendCommand = ModBusCommandsList.GetReadChannelCommand(channel); //Получаем команду, чтобы считать данные с конкретного канала
+                        byte[] sendCommand = ModBusCommandsList.GetReadChannelCommand(channel, deviceAdress); //Получаем команду, чтобы считать данные с конкретного канала
                         Port.Send(sendCommand);
-
 
                         
                         var recieved = Port.ReadCommand();

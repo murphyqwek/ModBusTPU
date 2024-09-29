@@ -33,7 +33,7 @@ namespace ModBusTPU.Models.Modbus
             return _getModuleNameCommand;
         }
 
-        public static byte[] GetReadChannelCommand(int ChannelNumber)
+        public static byte[] GetReadChannelCommand(int ChannelNumber, byte deviceAdress)
         {
             if (ChannelNumber < 0 || ChannelNumber > 7)
             {
@@ -42,6 +42,8 @@ namespace ModBusTPU.Models.Modbus
 
             byte[] readChannelCommand = new byte[_readChannelCommandBase.Length];
             Array.Copy(_readChannelCommandBase, readChannelCommand, _readChannelCommandBase.Length);
+
+            readChannelCommand[0] = deviceAdress;
 
             readChannelCommand[3] = Convert.ToByte(ChannelNumber);
             var crc = ModBusCRC.CalculateCRC(readChannelCommand); //Получаем контрольную сумму команды

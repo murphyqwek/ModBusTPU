@@ -24,7 +24,7 @@ namespace ModBusTPU.Models.Services
             _connector = Connector;
         }
 
-        public void StartListen(int delay)
+        public void StartListen(int delay, byte deviceAdress)
         {
             _isListenning = true;
             _listenningThread = new Thread(() => Listen(_connector, delay));

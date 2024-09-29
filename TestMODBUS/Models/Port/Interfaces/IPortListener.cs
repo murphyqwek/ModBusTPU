@@ -8,7 +8,8 @@ namespace ModBusTPU.Models.Port.Interfaces
 {
     public interface IPortListener
     {
-        void StartListen(int delay);
+        void StartListen(int delay, byte deviceAdress);
+
         void StopListen();
     }
 }
