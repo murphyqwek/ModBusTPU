@@ -181,9 +181,6 @@ namespace ModBusTPU.ViewModels
 
         private void StopCommandHandler()
         {
-            //Для тестирования обработки неперехваченных исключений
-            //int i = 0;
-            //i = 0 / i;
             _portListener.StopListen();
             _isWorking = false;
             OnPropertyChanged(nameof(IsWorking));
