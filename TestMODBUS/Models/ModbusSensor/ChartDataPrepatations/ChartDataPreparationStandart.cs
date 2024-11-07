@@ -18,7 +18,7 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
             foreach(var channel in Channels)
             {
                 double Value = GetLastConvertedValue(DataStorage, channel);
-                string CurrentValue = $"CH_{channel}: ";
+                string CurrentValue = $"Канал {channel}: ";
                 string ValueType = "";
 
                 if (ChannelTypeList.GetChannelType(channel) == ChannelType.Tok)
@@ -45,7 +45,7 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
                 Points = Convert(Points, Channel);
 
                 SerieData serieData = new SerieData();
-                serieData.SerieTitle = $"CH_{Channel}";
+                serieData.SerieTitle = $"Канал {Channel}";
                 serieData.Points = Points;
 
                 SeriesToUpdate.Add(serieData);
