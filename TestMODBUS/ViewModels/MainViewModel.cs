@@ -147,12 +147,7 @@ namespace ModBusTPU.ViewModels
                 sensor2.StartWorking();
                 sensor3.StartWorking();
                 sensor4.StartWorking();
-                /*
-                chart1.StartDrawing();
-                chart2.StartDrawing();
-                chart3.StartDrawing();
-                chart4.StartDrawing();
-                */
+
                 _isWorking = true;
                 OnPropertyChanged(nameof(IsWorking));
                 OnPropertyChanged(nameof(IsNotWorking));

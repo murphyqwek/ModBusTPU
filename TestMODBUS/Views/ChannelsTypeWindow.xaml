@@ -6,76 +6,109 @@
         xmlns:local="clr-namespace:ModBusTPU.Views"
         xmlns:conv="clr-namespace:ModBusTPU.Converter"
         mc:Ignorable="d"
-        Title="Настройки каналов" Height="450" Width="400"
-        MaxHeight="450" MaxWidth="400"
-        MinHeight="450" MinWidth="400">
+        Title="Настройки" Height="450" Width="400"
+        MaxHeight="500" MaxWidth="400"
+        MinHeight="500" MinWidth="400">
     <Window.Resources>
         <conv:BoolToYellowColorConverter x:Key="BoolToYellowColorConverter" />
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80*"/>
-            <RowDefinition Height="20*"/>
-        </Grid.RowDefinitions>
+    <TabControl>
+        <TabItem Header="Настройки канала">
+            <Grid DataContext="{Binding ChannelsTypeChoosingViewModel}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80*"/>
+                    <RowDefinition Height="20*"/>
+                </Grid.RowDefinitions>
 
-        <!--#region Channels type ListBox -->
-        <ListBox Grid.Row="0"
-                 ItemsSource="{Binding Channels}"
-                 VerticalAlignment="Center" HorizontalAlignment="Center"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0"
-                                   Text="{Binding Channel}"
-                                   TextAlignment="Center"
-                                   Background="{Binding BackgroundColor}"
-                                   Foreground="{Binding ForegorundColor}"/> <!-- Channel Number -->
-                        <ListBox Grid.Row="1"                               
-                                 ItemsSource="{Binding ChannelsType}"
-                                 SelectedItem="{Binding CurrentChannelType, Mode=TwoWay}"/>
-                                                                            <!-- Channel Type -->
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <!--#endregion-->
-        
-        <!--#region Bottom menu-->
-        <Border Grid.Row="1"
-                BorderBrush="LightGray" BorderThickness="0 1 0 0"> 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="40*"/>
-                </Grid.ColumnDefinitions>
-
-                <!--#region Uploading and Saving Menu -->
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50*"/>
-                        <RowDefinition Height="50*"/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" 
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center">
-                        <Button
-                            Content="Сохранить"
+                <!--#region Channels type ListBox -->
+                <ListBox    ItemsSource="{Binding Channels}"
                             VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Width="75" Height="25"
-                            Background="{Binding IsSaved, Converter={StaticResource BoolToYellowColorConverter}, Mode=OneWay}"
-                            Command="{Binding SaveCommand}">
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                            Text="{Binding Channel}"
+                                            TextAlignment="Center"
+                                            Background="{Binding BackgroundColor}"
+                                            Foreground="{Binding ForegorundColor}"/>
+                                <!-- Channel Number -->
+                                <ListBox Grid.Row="1"                               
+                                            ItemsSource="{Binding ChannelsType}"
+                                            SelectedItem="{Binding CurrentChannelType, Mode=TwoWay}"/>
+                                <!-- Channel Type -->
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <!--#endregion-->
+
+                <!--#region Bottom menu-->
+                <Border Grid.Row="1"
+                        BorderBrush="LightGray" BorderThickness="0 1 0 0" Grid.ColumnSpan="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60*"/>
+                            <ColumnDefinition Width="40*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--#region Uploading and Saving Menu -->
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50*"/>
+                                <RowDefinition Height="50*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" 
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <Button
+                                    Content="Сохранить"
+                                    VerticalAlignment="Center" HorizontalAlignment="Center"
+                                    Width="75" Height="25"
+                                    Background="{Binding IsSaved, Converter={StaticResource BoolToYellowColorConverter}, Mode=OneWay}"
+                                    Command="{Binding SaveCommand}">
+
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="5"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </StackPanel>
+
+                            <Button Grid.Row="1"
+                                Content="Загрузить"
+                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                Width="100" Height="25"
+                                Command="{Binding UploadCommand}">
+
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </Grid>
+                        <!--#endregion-->
+
+                        <!-- Apply settings -->
+                        <Button Grid.Column="1"
+                                Content="Применить"
+                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                Width="100" Height="25"
+                                Background="{Binding IsApplied, Converter={StaticResource BoolToYellowColorConverter}}"
+                                Command="{Binding ApplyCommand}">
 
                             <Button.Resources>
                                 <Style TargetType="Border">
@@ -83,39 +116,113 @@
                                 </Style>
                             </Button.Resources>
                         </Button>
-                    </StackPanel>
-                    
-                    <Button Grid.Row="1"
-                        Content="Загрузить"
-                        VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Width="100" Height="25"
-                        Command="{Binding UploadCommand}">
-
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="5"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-                </Grid>
+                    </Grid>
+                </Border>
                 <!--#endregion-->
-                
-                <!-- Apply settings -->
-                <Button Grid.Column="1"
-                        Content="Применить"
-                        VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Width="100" Height="25"
-                        Background="{Binding IsApplied, Converter={StaticResource BoolToYellowColorConverter}}"
-                        Command="{Binding ApplyCommand}">
-
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
             </Grid>
-        </Border>
-        <!--#endregion-->
-    </Grid>
+        </TabItem>
+        <TabItem Header="Настройки профиля коэф." DataContext="{Binding CoefficientProfileSettingsViewModel}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="85*"/>
+                    <RowDefinition Height="11*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30*"/>
+                        <ColumnDefinition Width="70*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox Grid.Column="0" 
+                             SelectedItem="{Binding CurrentCoefficientProfile, Mode=OneWayToSource}"
+                             ItemsSource="{Binding CoefficientProfiles}">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PreviousName}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Grid Grid.Column="1" 
+                          DataContext="{Binding CurrentCoefficientProfile}"
+                          Visibility="{Binding DataContext.ProfileUnchosen, RelativeSource={RelativeSource AncestorType={x:Type TabItem}, AncestorLevel=1}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="90*"/>
+                            <RowDefinition Height="10*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="Holost Move" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding HolostMove}"
+                                         MinWidth="100"
+                                         IsReadOnly="True"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="0" Grid.Column="1"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="Coeff Channel" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding KoeffValueChannel}" MinWidth="100" IsReadOnly="True"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="Amper Coeff" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding AmperKoeff}" MinWidth="100" IsReadOnly="True"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="1"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="Volt Coeff" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding VoltKoeff}" MinWidth="100" IsReadOnly="True"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="Название: " VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding Name}" VerticalAlignment="Center" MinWidth="100"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30*"/>
+                        <ColumnDefinition Width="70*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <Button Content="Создать" Margin="10 3 10 0" IsEnabled="False"/>
+                        <Button Content="Обновить" Margin="10 3 10 0" IsEnabled="False"/>
+                    </StackPanel>
+
+                    <Grid Grid.Column="1">
+                        <Button Visibility="{Binding ProfileUnchosen}"
+                                HorizontalAlignment="Left"
+                                Content="Сохранить" Margin="10"
+                                IsEnabled="False"/>
+
+                        <Button Visibility="{Binding ProfileUnchosen}"
+                                HorizontalAlignment="Right"
+                                Content="Применить" 
+                                Margin="10"
+                                Command="{Binding UploadCommand}"/>
+                    </Grid>
+
+                </Grid>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>

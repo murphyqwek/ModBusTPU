@@ -94,7 +94,7 @@
                             VerticalAlignment="Center" HorizontalAlignment="Right" 
                             Margin="0 0 20 0">
                     <Button 
-                            Content="Настройка каналов" 
+                            Content="Настройки" 
                             Command="{Binding ChangeChannelsTypeCommand}" 
                             Width="125" Height="25" Margin="0 0 20 0" 
                             HorizontalAlignment="Right" />

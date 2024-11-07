@@ -11,7 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ModBusTPU.Properties;
 using ModBusTPU.ViewModels;
+using ModBusTPU.ViewModels.Settings;
 
 namespace ModBusTPU.Views
 {
@@ -23,7 +25,7 @@ namespace ModBusTPU.Views
         public ChannelsTypeWindow()
         {
             InitializeComponent();
-            var DataContext = new ChannelsTypeChoosingViewModel();
+            var DataContext = new SettingsViewModel();
             this.DataContext = DataContext;
             this.Closing += DataContext.OnWindowClosing;
         }

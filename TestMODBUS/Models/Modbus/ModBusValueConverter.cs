@@ -5,15 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ModBusTPU.Models.Data;
+using ModBusTPU.Services;
 
 namespace ModBusTPU.Models.Modbus
 {
     public static class ModBusValueConverter
     {
-        const double koeffValueChanne = 10.0 / 32768.0; //Коэффициент перевода данных в значение напряжение на выходе датчика
-        const double VoltKoeff = 37.05881; //Коэффициент напряжения(получен экспериментально)
-        const double AmperKoeff = 200; //Коэффициент перевода значения напряжение на выходе датчика в значение тока(нужно подобрать)
-        const double HolostMove = 2.039; //Значение холостого хода с датчика
+        //const double koeffValueChannel = 10.0 / 32768.0; //Коэффициент перевода данных в значение напряжение на выходе датчика
+        //const double VoltKoeff = 37.05881; //Коэффициент напряжения(получен экспериментально)
+        //const double AmperKoeff = 200; //Коэффициент перевода значения напряжение на выходе датчика в значение тока(нужно подобрать)
+        //const double HolostMove = 2.039; //Значение холостого хода с датчика
         
 
         public static double ConvertFromHexToDoubleFromChannelData(string ChannelData)
@@ -24,13 +25,13 @@ namespace ModBusTPU.Models.Modbus
                 throw new ArgumentException("Channel Data must contains only 2 bytes");
 
             short Value = Convert.ToInt16("0x" + ChannelData, 16);
-            double ConvertedValue = Value * koeffValueChanne;
+            double ConvertedValue = Value * ModBusTPU.Services.Coefficients.KoeffValueChannel;
             double RoundedValue = Math.Round(ConvertedValue, 3);
             return RoundedValue;
         }
 
 
-        public static double ConvertToAmperValue(double Value) => Value * AmperKoeff;
+        public static double ConvertToAmperValue(double Value) => Value * ModBusTPU.Services.Coefficients.AmperKoeff;
 
         public static ObservableCollection<Point> ConvertCollectionToAmperValues(ObservableCollection<Point> ValueCollection)
         {
@@ -55,7 +56,7 @@ namespace ModBusTPU.Models.Modbus
             return result;
         }
 
-        public static double ConvertToVoltValue(double Value) => (Math.Abs(Value) - HolostMove) * VoltKoeff;// / 16 * 580 * 1.022312;
+        public static double ConvertToVoltValue(double Value) => (Math.Abs(Value) - ModBusTPU.Services.Coefficients.HolostMove) * ModBusTPU.Services.Coefficients.VoltKoeff;// / 16 * 580 * 1.022312;
 
         public static ObservableCollection<Point> ConvertCollectionToVoltValues(ObservableCollection<Point> ValueCollection)
         {

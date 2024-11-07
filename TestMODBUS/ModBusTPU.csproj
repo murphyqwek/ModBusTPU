@@ -125,15 +125,20 @@
     <Compile Include="Converter\ScrollChartVisibilityConverter.cs" />
     <Compile Include="Converter\ZoomBoolConverter.cs" />
     <Compile Include="Exceptions\ChosenPortUnavailableException.cs" />
+    <Compile Include="Exceptions\FileAlreadyExist.cs" />
     <Compile Include="Exceptions\FileIsAlreadyOpenException.cs" />
     <Compile Include="Exceptions\NoPortAvailableException.cs" />
     <Compile Include="Exceptions\NotAllChannelsChosen.cs" />
+    <Compile Include="Exceptions\ProfileDoesNotExist.cs" />
+    <Compile Include="Exceptions\ProfileIsDamaged.cs" />
     <Compile Include="ExportWindow.xaml.cs">
       <DependentUpon>ExportWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ExtraDataFieldStatusExtension.cs" />
     <Compile Include="Extensions\ExtraDataFieldTooltipText.cs" />
     <Compile Include="Extensions\IsChannelSelectedExtension.cs" />
+    <Compile Include="Models\Coefficients\CoefficientProfile.cs" />
+    <Compile Include="Models\Coefficients\CoefficientProfileFileManager.cs" />
     <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\IFilter.cs" />
     <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\OnlyOneVoltAndSeveralTokFilter.cs" />
     <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\StandratFilter.cs" />
@@ -144,6 +149,7 @@
     <Compile Include="Models\Data\DataConnector.cs" />
     <Compile Include="Models\Data\Experiment.cs" />
     <Compile Include="Services\Channels\ChannelTypeColors.cs" />
+    <Compile Include="Services\Coefficients.cs" />
     <Compile Include="Services\Excel\ExcelDataPreparation.cs" />
     <Compile Include="Services\Settings\Data\DataFileManager.cs" />
     <Compile Include="Services\Settings\Data\DataLog.cs" />
@@ -204,17 +210,20 @@
     <Compile Include="UserControls\ExtraDataExportElement.xaml.cs">
       <DependentUpon>ExtraDataExportElement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ChannelsTypeChoosingViewModel.cs" />
+    <Compile Include="ViewModels\Settings\ChannelsTypeChoosingViewModel.cs" />
     <Compile Include="ViewModels\ChannelTypeViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\CurrentChannelValueViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\ModbusSensorViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\SensorTypeViewModel.cs" />
+    <Compile Include="ViewModels\Settings\CoefficientProfileViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModels\CommentaryExportElementViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModels\ExtraDataViewModel.cs" />
     <Compile Include="ViewModels\FileNameViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModels\ExportViewModel.cs" />
+    <Compile Include="ViewModels\Settings\CoefficientProfileSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
     <Compile Include="Views\ChannelsTypeWindow.xaml.cs">
       <DependentUpon>ChannelsTypeWindow.xaml</DependentUpon>
     </Compile>
