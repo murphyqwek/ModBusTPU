@@ -21,7 +21,7 @@ namespace ModBusTPU.Services.Settings.Channels
             List<ChannelType> StandartChannelType = new List<ChannelType>()
             {
                 ChannelType.Tok,     // 0
-                ChannelType.Tok,     // 1
+                ChannelType.Volt,     // 1
                 ChannelType.Tok,     // 2
                 ChannelType.Tok,     // 3
                 ChannelType.Regular, // 4

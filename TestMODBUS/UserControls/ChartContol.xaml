@@ -33,7 +33,7 @@
             <ComboBox Width="100" 
                       HorizontalAlignment="Center" 
                       ItemsSource="{Binding SensorTypes}" SelectedItem="{Binding CurrentSensorType}"
-                      >
+                      Visibility="Collapsed">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}"/>

@@ -93,16 +93,22 @@
                             Orientation="Horizontal" 
                             VerticalAlignment="Center" HorizontalAlignment="Right" 
                             Margin="0 0 20 0">
+                    <!-- Настройки - удалить -->
                     <Button 
                             Content="Настройки" 
                             Command="{Binding ChangeChannelsTypeCommand}" 
                             Width="125" Height="25" Margin="0 0 20 0" 
-                            HorizontalAlignment="Right" />
+                            HorizontalAlignment="Right" 
+                            Visibility="Collapsed"/>
+                    <!-- DM удалить -->
                     <TextBlock Text="DM" 
                                Margin="0 0 5 0" 
-                               VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Visibility="Collapsed"/>
+                    <!-- DM удалить -->
                     <CheckBox IsChecked="{Binding Debug, Mode=TwoWay}"
-                              VerticalAlignment="Center"/>
+                              VerticalAlignment="Center"
+                              Visibility="Collapsed"/>
 
                     <ComboBox Margin="5 0" Name="TokMode"
                               SelectedIndex="0"
@@ -139,8 +145,8 @@
         <Border Grid.Row="2" BorderBrush="LightGray" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50*"/>
-                    <ColumnDefinition Width="60*"/>
+                    <ColumnDefinition Width="40*"/>
+                    <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Row="1">
@@ -171,7 +177,7 @@
                                 </ComboBox>
                             </DockPanel>
 
-                            <DockPanel Grid.Column="1">
+                            <DockPanel Grid.Column="1" Visibility="Hidden">
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Скорость: " Margin="0 0 5 0" Background="White" VerticalAlignment="Center"/>
                                 <ComboBox Grid.Row="1" Style="{DynamicResource ModifiedComboBox}" Grid.Column="1" Name="SpeedComboBox" Margin="5" Background="White" ItemsSource="{Binding Speeds}" IsReadOnly="{Binding IsWorking}" SelectedItem="{Binding PortSpeed}">
                                     <ComboBox.ItemTemplate>

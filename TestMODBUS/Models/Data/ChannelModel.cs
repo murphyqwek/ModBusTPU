@@ -42,6 +42,13 @@ namespace ModBusTPU.Models.Data
             Label = $"CH_{ChannelNumber}";
         }
 
+        public ChannelModel(int ChannelNumber, bool IsChosen)
+        {
+            this.ChannelNumber = ChannelNumber;
+            this.IsChosen = IsChosen;
+            this.Label = $"CH_{ChannelNumber}";
+        }
+
         public ChannelModel(int ChannelNumber, bool IsChosen, string Label)
         {
             this.ChannelNumber = ChannelNumber;

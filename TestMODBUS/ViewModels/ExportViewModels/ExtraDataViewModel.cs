@@ -164,13 +164,20 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             return UsingChannels;
         }
 
-        private void SetChannels(IList<int> Channels)
+        public void SetChannels(IList<int> Channels)
         {
             for (int i = 0; i < this.Channels.Count; i++)
                 this.Channels[i].IsChosen = false;
 
             foreach (int Channel in Channels)
                 this.Channels[Channel].IsChosen = true;
+
+            UpdateStaus();
+        }
+
+        public void SetLabel(string Label)
+        {
+            this.Label = Label;
         }
 
         private void UpdateStaus()

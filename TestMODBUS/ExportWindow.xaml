@@ -17,8 +17,41 @@
         </Grid.ColumnDefinitions>
 
         <TabControl>
+            <!--#region Commentaries -->
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Внешние данные"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ScrollViewer>
+                        <StackPanel Orientation="Vertical" 
+                         VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                            <!--#region Extra Data StackPanel-->
+                            <ItemsControl VerticalAlignment="Center" ItemsSource="{Binding Commentaries}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <uc:CommentariesExportElement DataContext="{Binding}" Margin="5"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <!--#endregion-->
+                            <Button Content="+" 
+                         Margin="0 5 0 0"
+                         MaxWidth="150"
+                         Command="{Binding AddNewCommentaryCommand}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem.Content>
+            </TabItem>
+            <!--#endregion-->
+
             <!--#region Channels Export -->
-            <TabItem> 
+            <TabItem Visibility="Collapsed"> 
                 <TabItem.Header>
                     <TextBlock Text="Выбор каналов"/>
                 </TabItem.Header>
@@ -40,7 +73,7 @@
             <!--#endregion-->
                 
             <!--#region Power Extra Data -->
-            <TabItem>
+            <TabItem Visibility="Collapsed">
                 <TabItem.Header>
                     <TextBlock Text="Мощность"/>
                 </TabItem.Header>
@@ -73,7 +106,7 @@
             <!--#endregion-->
 
             <!--#region Energy Extra Data -->
-            <TabItem>
+            <TabItem Visibility="Collapsed">
                 <TabItem.Header>
                     <TextBlock Text="Энергия"/>
                 </TabItem.Header>
@@ -105,38 +138,7 @@
             </TabItem>
             <!--#endregion-->
             
-            <!--#region Commentaries -->
-            <TabItem>
-                <TabItem.Header>
-                    <TextBlock Text="Внешние данные"/>
-                </TabItem.Header>
-                <TabItem.Content>
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" 
-                                    VerticalAlignment="Top" HorizontalAlignment="Stretch">
-                            <!--#region Extra Data StackPanel-->
-                            <ItemsControl VerticalAlignment="Center" ItemsSource="{Binding Commentaries}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Vertical"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <uc:CommentariesExportElement DataContext="{Binding}" Margin="5"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <!--#endregion-->
-                            <Button Content="+" 
-                                    Margin="0 5 0 0"
-                                    MaxWidth="150"
-                                    Command="{Binding AddNewCommentaryCommand}"/>
-                        </StackPanel>
-                    </ScrollViewer>
-                </TabItem.Content>
-            </TabItem>
-            <!--#endregion-->
+           
         </TabControl>
 
         <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10 0 10 5">

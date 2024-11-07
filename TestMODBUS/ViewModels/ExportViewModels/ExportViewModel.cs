@@ -76,6 +76,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
         private void ExportDataHandle()
         {
+            /*
             if(!ChannelsData.Any(channel => channel.IsChosen))
             {
                 ErrorMessageBox.Show("Нужно выбрать как минимум один канал");
@@ -87,6 +88,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                 ErrorMessageBox.Show("Не все поля заполены корректно");
                 return;
             }
+            */
 
             if (Commentaries.Any(commentary => string.IsNullOrEmpty(commentary.Commentary)))
             {
@@ -221,7 +223,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         public void AddNewPowerExtraDataCommandHander()
         {
             var newExtraData = new ExtraDataViewModel(new ChartDataPreparationPower(), new OnlyOneVoltAndSeveralTokFilter(),
-                                                      "Power", DeleteExtraData, FieldChanged);
+                                                      "Power", DeleteExtraData);
             PowerExtraData.Add(newExtraData);
         }
 
@@ -234,7 +236,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         public void AddNewEnergyExtraDataCommandHandler()
         {
             var newExtraData = new ExtraDataViewModel(new ChartDataPreparationEnergy(), new OnlyOneVoltAndSeveralTokFilter(),
-                                                      "Energy", DeleteExtraData, FieldChanged);
+                                                      "Energy", DeleteExtraData);
             EnergyExtraData.Add(newExtraData);
         }
 
@@ -302,7 +304,9 @@ namespace ModBusTPU.ViewModels.ExportViewModels
         {
             _dataStorage = DataStorage;
 
-            ChannelsData = new ObservableCollection<ChannelViewModel>();
+
+            ChannelsData = new ObservableCollection<ChannelViewModel>() { new ChannelViewModel(new ChannelModel(0, true)),
+                                                                          new ChannelViewModel(new ChannelModel(1, true))};
 
             PowerExtraData = new ObservableCollection<ExtraDataViewModel>();
             EnergyExtraData = new ObservableCollection<ExtraDataViewModel>();
@@ -318,9 +322,22 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             AddNewEnergyExtraDataCommand = new RemoteCommand(AddNewEnergyExtraDataCommandHandler);
             AddNewCommentaryCommand = new RemoteCommand(AddNewCommentaryCommandHandler);
 
-            PowerExtraData.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(null, "Added"); };
-            EnergyExtraData.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(null, "Added"); };
+            //PowerExtraData.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(null, "Added"); };
+            //EnergyExtraData.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(null, "Added"); };
             Commentaries.CollectionChanged += (s, e) => { if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) FieldChanged(Commentaries[0], "Added"); };
+
+            var EnergyData = new ExtraDataViewModel(new ChartDataPreparationEnergy(), new OnlyOneVoltAndSeveralTokFilter(),
+                                                      "Energy", DeleteExtraData);
+            EnergyData.SetChannels(new List<int>() { 0, 1 });
+            EnergyData.Label = "Энергия";
+
+            var PowerData = new ExtraDataViewModel(new ChartDataPreparationPower(), new OnlyOneVoltAndSeveralTokFilter(),
+                                                      "Power", DeleteExtraData);
+            PowerData.SetChannels(new List<int>() { 0, 1 });
+            PowerData.SetLabel("Мощность");
+
+            EnergyExtraData.Add(EnergyData);
+            PowerExtraData.Add(PowerData);
         }
 
         private void UploadStandartSettings()
@@ -370,6 +387,13 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             if (Settings == null)
                 throw new ArgumentNullException();
 
+
+            Commentaries.Clear();
+            foreach (var Commentary in Settings.Commentaries)
+                Commentaries.Add(new CommentaryExportElementViewModel(Commentary, DeleteCommentary, FieldChanged));
+
+            return;
+
             ChannelsData.Clear();
             foreach(var Channel in Settings.ChannelsData)
             {
@@ -385,11 +409,7 @@ namespace ModBusTPU.ViewModels.ExportViewModels
             foreach (var ExtraData in Settings.EnergyData)
                 EnergyExtraData.Add(new ExtraDataViewModel(new ChartDataPreparationEnergy(), new OnlyOneVoltAndSeveralTokFilter(), "Energy", DeleteExtraData, ExtraData, FieldChanged));
            
-
-            Commentaries.Clear();
-            foreach (var Commentary in Settings.Commentaries)
-                Commentaries.Add(new CommentaryExportElementViewModel(Commentary, DeleteCommentary, FieldChanged));
-        }
+}
 
         public void SetNewDataStorage(DataStorage Data)
         {

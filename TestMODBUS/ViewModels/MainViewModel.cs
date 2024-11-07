@@ -351,10 +351,10 @@ namespace ModBusTPU.ViewModels
 
             //Инициализируем модули
             ModbusSensorSimpleFactory Factory = new ModbusSensorSimpleFactory();
-            sensor1 = new ModbusSensor(new Chart(), _data, Factory, SensorType.Standart, new int[] { 0, 5 });
-            sensor2 = new ModbusSensor(new Chart(), _data, Factory, SensorType.Standart, new int[] { 0, 5 });
-            sensor3 = new ModbusSensor(new Chart(), _data, Factory, SensorType.Standart, new int[] { 0, 5 });
-            sensor4 = new ModbusSensor(new Chart(), _data, Factory, SensorType.Standart, new int[] { 0, 5 });
+            sensor1 = new ModbusSensor(new Chart("Канал 0"), _data, Factory, SensorType.Standart, new int[] { 0 });
+            sensor2 = new ModbusSensor(new Chart("Канал 1"), _data, Factory, SensorType.Standart, new int[] { 1 });
+            sensor3 = new ModbusSensor(new Chart("Энергия"), _data, Factory, SensorType.Energy, new int[] { 0, 1 });
+            sensor4 = new ModbusSensor(new Chart("Мощность"), _data, Factory, SensorType.Power, new int[] { 0, 1 });
 
             //Создаем класс, который будет хранить имя текущего эксперимента
             FileNameViewModel = new FileNameViewModel();
