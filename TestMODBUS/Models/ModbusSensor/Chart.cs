@@ -27,7 +27,7 @@ namespace ModBusTPU.Models.ModbusSensor
         private const double YMaxStandart = 220.0;
         private const double YMinStandart = -10.0;
 
-        public const double MaxWindowWidth = 5000;
+        public const double MaxWindowWidth = 5;
 
         #endregion
 
@@ -121,7 +121,7 @@ namespace ModBusTPU.Models.ModbusSensor
             get => _maxWindowX;
             set
             {
-                _maxWindowX = value;
+                _maxWindowX = value / 1000;
                 OnPropertyChanged();
             }
         }
@@ -210,8 +210,8 @@ namespace ModBusTPU.Models.ModbusSensor
 
             //YMax = newYMax;
             //YMin = newYMin;
-            YMax = Math.Max(newYMax, YMax);
-            YMin = Math.Min(newYMin, YMin);
+            YMax = Math.Max(newYMax + 25, YMax);
+            YMin = Math.Min(newYMin - 25, YMin);
         }
 
         public void ChangeWindowPosition(double RightEdge)

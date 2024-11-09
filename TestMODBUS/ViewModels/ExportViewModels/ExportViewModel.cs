@@ -306,7 +306,13 @@ namespace ModBusTPU.ViewModels.ExportViewModels
 
 
             ChannelsData = new ObservableCollection<ChannelViewModel>() { new ChannelViewModel(new ChannelModel(0, true)),
-                                                                          new ChannelViewModel(new ChannelModel(1, true))};
+                                                                          new ChannelViewModel(new ChannelModel(1, true)),
+                                                                          new ChannelViewModel(new ChannelModel(2, false)),
+                                                                          new ChannelViewModel(new ChannelModel(3, false)),
+                                                                          new ChannelViewModel(new ChannelModel(4, false)),
+                                                                          new ChannelViewModel(new ChannelModel(5, false)),
+                                                                          new ChannelViewModel(new ChannelModel(6, false)),
+                                                                          new ChannelViewModel(new ChannelModel(7, false)),};
 
             PowerExtraData = new ObservableCollection<ExtraDataViewModel>();
             EnergyExtraData = new ObservableCollection<ExtraDataViewModel>();

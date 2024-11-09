@@ -61,7 +61,7 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
 
             SerieData serieData = new SerieData();
             serieData.SerieTitle = $"Мощность";
-            serieData.Points = PowerPoints.ToArray();
+            serieData.Points = ConvertMillisecondsToSeconds(PowerPoints.ToArray());
 
             SeriesToUpdate.Add(serieData);
 

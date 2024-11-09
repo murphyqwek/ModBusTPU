@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using ModBusTPU.Models.Data;
 using ModBusTPU.Models.Modbus;
 using ModBusTPU.Models.Services;
+using System.Collections.ObjectModel;
 
 namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
 {
@@ -15,7 +16,7 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
     {
         public virtual double GetNewCurrentPosition(DataStorage DataStorage)
         {
-            return DataStorage.GetLastTime();
+            return DataStorage.GetLastTime() / 1000;
         }
 
         public virtual IList<SerieData> GetNewPoints(IList<int> ChannelsToUpdate, DataStorage DataStorage)
@@ -28,9 +29,12 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
 
         public virtual IList<SerieData> GetPointsByCurrentX(IList<int> ChannelsToUpdate, DataStorage DataStorage, double CurrentX)
         {
+            CurrentX *= 1000;
             int LastChannel = ChannelsToUpdate.Last();
             (int, int) WindowDataEdges;
-            WindowDataEdges = WindowingDataHelper.GetDataWindowIndex(CurrentX, CurrentX + Chart.MaxWindowWidth, DataStorage.GetChannelData(LastChannel));
+            if (DataStorage.GetLastTime() - CurrentX < 5000)
+                CurrentX = DataStorage.GetLastTime() - 5000;
+            WindowDataEdges = WindowingDataHelper.GetDataWindowIndex(CurrentX, CurrentX + Chart.MaxWindowWidth * 1000, DataStorage.GetChannelData(LastChannel));
             int leftEdge = WindowDataEdges.Item1, rightEdge = WindowDataEdges.Item2;
             return GetPoints(ChannelsToUpdate, DataStorage, leftEdge, rightEdge);
         }
@@ -44,6 +48,21 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
         protected abstract IList<SerieData> GetPoints(IList<int> ChannelsToUpdate, DataStorage DataStorage, int left, int right);
 
         public abstract IList<string> GetCurrentValues(IList<int> Channels, DataStorage DataStorage);
+
+        protected ObservablePoint[] ConvertTimeByCoeff(ObservablePoint[] Points, int coeff)
+        {
+            int PointsLength = Points.Length;
+            ObservablePoint[] newPoints = new ObservablePoint[PointsLength];
+            for(int i = 0; i < PointsLength; i++)
+            {
+                var point = Points[i];
+                newPoints[i] = new ObservablePoint(point.X / coeff, point.Y);
+            }
+
+            return newPoints;
+        }
+
+        protected ObservablePoint[] ConvertMillisecondsToSeconds(ObservablePoint[] Points) => ConvertTimeByCoeff(Points, 1000);
 
         protected ObservablePoint[] Convert(ObservablePoint[] Points, int Channel)
         {

@@ -70,7 +70,7 @@ namespace ModBusTPU.Models.ModbusSensor
 
         public static (int, int) GetDataWindowIndex(double EndTime, Collection<Point> channelData)
         {
-            return GetDataWindowIndex(EndTime - Chart.MaxWindowWidth, EndTime, channelData);
+            return GetDataWindowIndex(EndTime - Chart.MaxWindowWidth * 1000, EndTime, channelData);
         }
 
         public static (int, int) GetDataWindowIndex(double StartTime, double EndTime, Collection<Point> channelData)

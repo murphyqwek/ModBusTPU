@@ -76,7 +76,11 @@
                        SnapsToDevicePixels="False" />
             </lvc:CartesianChart.CacheMode>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Время, мс" FontSize="15" Unit="1" MinValue="{Binding XMin, Mode=OneWay}" MaxValue="{Binding XMax, Mode=OneWay}"/>
+                <lvc:Axis Title="Время, с" FontSize="15" Unit="1" MinValue="{Binding XMin, Mode=OneWay}" MaxValue="{Binding XMax, Mode=OneWay}">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Step="0.5" />
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis MaxValue="{Binding YMax}" MinValue="{Binding YMin}" FontSize="15" Unit="1"/>

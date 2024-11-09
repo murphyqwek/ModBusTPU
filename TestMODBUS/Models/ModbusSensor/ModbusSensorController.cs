@@ -163,7 +163,7 @@ namespace ModBusTPU.Models.ModbusSensor
             if(ChannelsToUpdate.Count == 0) return;
 
             var NewSeriesPoints = _dataPreparation.GetPointsByCurrentX(ChannelsToUpdate, _dataStorage, StartPoint);
-            _chart.ChangeWindowStartPoint(StartPoint, _dataStorage.GetLastTime());
+            _chart.ChangeWindowStartPoint(StartPoint, _dataStorage.GetLastTime() / 1000);
             _chart.UpdateAllSeriesPoints(NewSeriesPoints);
         }
 

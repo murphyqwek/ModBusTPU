@@ -43,9 +43,24 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
                 var Points = WindowingDataHelper.GetWindowData(left, right, DataStorage.GetChannelData(Channel));
 
                 Points = Convert(Points, Channel);
+                Points = ConvertMillisecondsToSeconds(Points);
 
                 SerieData serieData = new SerieData();
-                serieData.SerieTitle = $"Канал {Channel}";
+
+                var ChannelType = ChannelTypeList.GetChannelType(Channel);
+
+                string label = "";
+                switch(ChannelType)
+                {
+                    case ChannelType.Tok:
+                        label = "Ток";
+                        break;
+                    case ChannelType.Volt:
+                        label = "Напряжение";
+                        break;
+                }
+
+                serieData.SerieTitle = label;
                 serieData.Points = Points;
 
                 SeriesToUpdate.Add(serieData);

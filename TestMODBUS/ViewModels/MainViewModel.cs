@@ -49,9 +49,9 @@ namespace ModBusTPU.ViewModels
             //в выпадающем списке
             set
             {
-                if (value == "AC")
+                if (value == "Переменный ток")
                     _deviceAdress = 0x02;
-                else if (value == "DC")
+                else if (value == "Постоянный ток")
                     _deviceAdress = 0x03;
 
                 else
@@ -136,7 +136,7 @@ namespace ModBusTPU.ViewModels
 
             if(_data.GetChannelLength() > 0)
             {
-                if (RequestYesNoMessageBox.Show("Перед запуском проверьте, что сохранилы предыдущие данные") != MessageBoxResult.Yes)
+                if (RequestYesNoMessageBox.Show("Перед запуском проверьте, что сохранили предыдущие данные") != MessageBoxResult.Yes)
                     return;
             }
 
