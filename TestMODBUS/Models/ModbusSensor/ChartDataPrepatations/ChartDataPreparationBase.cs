@@ -97,6 +97,8 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
                 Value = ModBusValueConverter.ConvertToVoltValue(Value);
             }
 
+            Value = Math.Round(Value, 2);
+
             return Value;
         }
 

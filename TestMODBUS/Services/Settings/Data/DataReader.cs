@@ -42,7 +42,8 @@ namespace ModBusTPU.Models.Services.Settings.Data
                 }
                 */
                 var Name = temp[0].Trim().Remove(temp[0].Length - 1);
-                ExtraPoints.Add(Name, ParsePoints(temp[1]));
+                temp[0] = "";
+                ExtraPoints.Add(Name, ParsePoints(String.Join(" ", temp)));
                 index++;
             }
 
@@ -65,7 +66,8 @@ namespace ModBusTPU.Models.Services.Settings.Data
                     break;
                 }
 
-                ChannelsPoints.Add(ParsePoints(temp[1]));
+                temp[0] = "";
+                ChannelsPoints.Add(ParsePoints(String.Join(" ", temp)));
                 index++;
             }
 

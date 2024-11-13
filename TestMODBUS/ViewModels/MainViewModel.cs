@@ -140,6 +140,9 @@ namespace ModBusTPU.ViewModels
                     return;
             }
 
+            _data.Clear();
+
+
             try
             {
                 _portListener.StartListen(MeasureDelay, _deviceAdress);

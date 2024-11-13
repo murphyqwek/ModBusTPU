@@ -43,7 +43,7 @@ namespace ModBusTPU.ViewModels.ChartViewModels
         public bool IsScrollVisible => !_chart.IsDrawing && _chart.MaxWindowTime > 0;
         public bool IsDrawing => _chart.IsDrawing;
 
-        public double CurrentTime => _chart.CurrentX / 1000;
+        public double CurrentTime => _chart.CurrentX;
 
         public int MaxWindowTime => _chart.MaxWindowTime;
 

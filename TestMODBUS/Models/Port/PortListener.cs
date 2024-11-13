@@ -46,7 +46,10 @@ namespace ModBusTPU.Models.Services
             if(_port == null)
                 throw new ArgumentNullException(nameof(Services));
 
-            _port.Open();
+            bool isOpen = _port.Open();
+
+            if (!isOpen)
+                return;
 
             // Проверка на модуль (пока не нужно)
 
