@@ -73,7 +73,7 @@ namespace ModBusTPU.Models.Data
                 if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Tok)
                     y = (double)rand.Next(270, 290) / 200;
                 else if (ChannelTypeList.GetChannelType(Channel) == ChannelType.Volt)
-                    y = (double)rand.Next(30, 45) / 37.05881 + 2.039;
+                    y = (double)rand.Next(30, 45) / 37.05881234123 + 2.0391233421323;
                 else
                     y = (double)rand.Next(30, 45) / 37.05881 + 2.039;
 

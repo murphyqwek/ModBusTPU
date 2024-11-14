@@ -18,13 +18,19 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
             foreach(var channel in Channels)
             {
                 double Value = GetLastConvertedValue(DataStorage, channel);
-                string CurrentValue = $"Канал {channel}: ";
+                string CurrentValue = "";
                 string ValueType = "";
 
                 if (ChannelTypeList.GetChannelType(channel) == ChannelType.Tok)
+                {
+                    CurrentValue = "Ток: ";
                     ValueType += " А";
+                }
                 else if (ChannelTypeList.GetChannelType(channel) == ChannelType.Volt)
+                {
+                    CurrentValue = "Напр.: ";
                     ValueType += " В";
+                }
 
                 CurrentValue += Value.ToString() + ValueType;
 
