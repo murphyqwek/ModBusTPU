@@ -20,7 +20,8 @@
             <!--#region Commentaries -->
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Text="Внешние данные"/>
+                    <TextBlock Text="Внешние данные"
+                               FontSize="{StaticResource BigFontSize}"/>
                 </TabItem.Header>
                 <TabItem.Content>
                     <ScrollViewer>
@@ -40,10 +41,10 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                             <!--#endregion-->
-                            <Button Content="+" 
-                         Margin="0 5 0 0"
-                         MaxWidth="150"
-                         Command="{Binding AddNewCommentaryCommand}"/>
+                            <Button Content="+" FontSize="{StaticResource BigFontSize}"
+                                 Margin="0 5 0 0"
+                                 MaxWidth="150"
+                                 Command="{Binding AddNewCommentaryCommand}"/>
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem.Content>
@@ -144,8 +145,9 @@
         <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10 0 10 5">
 
             <StackPanel Orientation="Vertical" Margin="0 0 0 50">
-                <TextBlock Text="Комментарии"/>
-                <TextBox Text="{Binding BigComment}" Height="100" TextWrapping="Wrap"/>
+                <TextBlock Text="Комментарии" FontSize="{StaticResource BigFontSize}"/>
+                <TextBox Text="{Binding BigComment}" FontSize="{StaticResource BigFontSize}"
+                         Height="100" TextWrapping="Wrap"/>
             </StackPanel>
             <Grid Margin="0 0 0 5">
                 <Grid.ColumnDefinitions>
@@ -153,7 +155,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Width="90" Command="{Binding SaveSettingsCommand}">
-                    <TextBlock Text="Сохранить настройки" TextAlignment="Center" TextWrapping="Wrap" FontSize="10.0"/>
+                    <TextBlock Text="Сохранить настройки" TextAlignment="Center" TextWrapping="Wrap" FontSize="{StaticResource BigFontSize}"/>
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -173,7 +175,7 @@
                     </Button.Style>
                 </Button>
                 <Button Grid.Column="1" Width="90" Margin="2 0" Command="{Binding UploadSettingsCommand}">
-                    <TextBlock Text="Загрузить настройки" TextAlignment="Center" TextWrapping="Wrap" FontSize="10.0"/>
+                    <TextBlock Text="Загрузить настройки" TextAlignment="Center" TextWrapping="Wrap" FontSize="{StaticResource BigFontSize}"/>
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -182,7 +184,7 @@
                 </Button>
             </Grid>
             <Button
-                Content="Выгрузить данные" 
+                Content="Выгрузить данные" FontSize="{StaticResource BigFontSize}"
                 Height="50" 
                 HorizontalAlignment="Stretch" 
                 Command="{Binding ExportDataCommand}">

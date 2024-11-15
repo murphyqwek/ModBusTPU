@@ -26,9 +26,9 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition MinHeight="60" MaxHeight="70"/>
+            <RowDefinition MinHeight="60" MaxHeight="80"/>
             <RowDefinition />
-            <RowDefinition Height="120" />
+            <RowDefinition Height="140" />
         </Grid.RowDefinitions>
         
         <!--#region Top -->
@@ -42,7 +42,7 @@
 
                 <StackPanel Orientation="Vertical">
                     <Button
-                            Content="Сохранить эксперимент" 
+                            Content="Сохранить эксперимент" FontSize="{StaticResource BigFontSize}"
                             Margin="5 5 5 10"
                             Command="{Binding BackUpCommand}" 
                             IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}" >
@@ -52,7 +52,7 @@
                             </Style>
                         </Button.Resources>
                     </Button>
-                    <Button Content="Загрузить эксперимент" 
+                    <Button Content="Загрузить эксперимент" FontSize="{StaticResource BigFontSize}"
                             Command="{Binding UploadDataStorageCommand}" Margin="5">
                         <Button.Resources>
                             <Style TargetType="Border">
@@ -84,10 +84,10 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" DataContext="{Binding}" Margin="5 0 5 0">
-                                            <TextBlock Text="{Binding Label}"
+                                            <TextBlock Text="{Binding Label}" FontSize="{StaticResource BigFontSize}"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Center"/>
-                                            <TextBox Text="{Binding Commentary, UpdateSourceTrigger=PropertyChanged}" 
+                                            <TextBox Text="{Binding Commentary, UpdateSourceTrigger=PropertyChanged}" FontSize="{StaticResource BigFontSize}"
                                                      Margin="5 0"
                                                      MaxWidth="200"
                                                      Width="100"
@@ -127,7 +127,8 @@
                     <ComboBox Margin="5 0" Name="TokMode"
                               SelectedIndex="0"
                               SelectedItem="{Binding TokMode, Mode=OneWayToSource}"
-                              IsEnabled="{Binding IsNotWorking}">
+                              IsEnabled="{Binding IsNotWorking}"
+                              FontSize="{StaticResource BigFontSize}">
                         <sys:String>Переменный ток</sys:String>
                         <sys:String>Постоянный ток</sys:String>
                     </ComboBox>
@@ -167,7 +168,9 @@
 
                 </Grid>
 
-                <GroupBox Grid.Column="0" Header="Порт" Margin="5">
+                <GroupBox Grid.Column="0" 
+                          Header="Порт" FontSize="{StaticResource BigFontSize}"
+                          Margin="5">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50*"/>
@@ -181,11 +184,21 @@
                             </Grid.ColumnDefinitions>
 
                             <DockPanel Grid.Column="0">
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Порт: " Margin="5 0 5 0" VerticalAlignment="Center"/>
-                                <ComboBox Grid.Row="0" Style="{StaticResource ModifiedComboBox}" Grid.Column="1" Name="PortComboBox" Margin="5" ItemsSource="{Binding Ports}" IsReadOnly="{Binding IsWorking}" SelectedItem="{Binding PortName}" PreviewMouseLeftButtonDown="PortComboBox_PreviewMouseLeftButtonDown">
+                                <TextBlock Grid.Row="0" Grid.Column="0" 
+                                           Text="Порт: " FontSize="{StaticResource BigFontSize}"
+                                           Margin="5 0 5 0" 
+                                           VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ModifiedComboBox}" 
+                                          Name="PortComboBox" Margin="5" 
+                                          ItemsSource="{Binding Ports}" 
+                                          IsReadOnly="{Binding IsWorking}" 
+                                          SelectedItem="{Binding PortName}" 
+                                          FontSize="{StaticResource BigFontSize}"
+                                          PreviewMouseLeftButtonDown="PortComboBox_PreviewMouseLeftButtonDown">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" FontSize="9" />
+                                            <TextBlock Text="{Binding}" 
+                                                       FontSize="{StaticResource BigFontSize}"/>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
@@ -204,14 +217,18 @@
                         </Grid>
 
                         <StackPanel Grid.Row="1" Orientation="Vertical">
-                            <TextBlock Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat='Промежуток между измерениями: {0} мс.'}" Margin="5"/>
+                            <TextBlock Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat='Промежуток между измерениями: {0} мс.'}" 
+                                       Margin="5"
+                                       FontSize="{StaticResource ResourceKey=BigFontSize}"/>
                             <Slider Name="DelaySlider" Margin="5 0" Value="{Binding MeasureDelay}" Minimum="300" Maximum="1500" IsSnapToTickEnabled="True" TickFrequency="100" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}"/>
                         </StackPanel>
 
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Column="1" Header="Данные с датчика" Margin="5">
+                <GroupBox Grid.Column="1" 
+                          Header="Данные с датчика" FontSize="{StaticResource BigFontSize}"
+                          Margin="5">
                     <Grid Margin="0 20">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>

@@ -18,9 +18,9 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -28,62 +28,53 @@
             <ColumnDefinition Width="17*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0" Grid.Column="0">
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <TextBlock Text="{Binding Title}" 
                        HorizontalAlignment="Left" VerticalAlignment="Center" 
                        Margin="25 0"
                        Visibility="Collapsed"/>
-            <ComboBox Width="100" 
-                      HorizontalAlignment="Center" 
-                      ItemsSource="{Binding SensorTypes}" SelectedItem="{Binding CurrentSensorType}"
-                      Visibility="Collapsed">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <ItemsControl ItemsSource="{Binding Channels}" 
-                          HorizontalAlignment="Right" VerticalAlignment="Center" 
-                          Margin="0 0 5 0"
-                          Visibility="Collapsed">
+
+            <ItemsControl ItemsSource="{Binding CurrentValues}"
+                          Grid.Column="0" Grid.Row="0"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center">
                 <ItemsControl.ItemsPanel>
+                    <!-- Указываем, что элементы будут расположены в StackPanel -->
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
+                        <StackPanel Orientation="Vertical" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
+                    <!-- Определяем, как будет выглядеть каждый элемент -->
                     <DataTemplate>
-                        <Button Background="{Binding Background}"
-                                Foreground="{Binding Foreground}"
-                                Content="{Binding ChannelNumber}"
-                                Tag="{Binding ChannelNumber}"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ChangeChannelListCommand}"
-                                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Tag}"
-                                />
+                        <TextBlock Text="{Binding }" FontSize="{StaticResource ExtraBigFontSize}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
 
-        <lvc:CartesianChart Grid.Row="1" Grid.Column="0"
+        <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                             DisableAnimations="True" Hoverable="False" 
                             DataTooltip="{x:Null}" Series="{Binding Series}" 
-                            Zoom="{Binding IsDrawing, Converter={StaticResource SliderEnabledConverter}}" LegendLocation="Top">
+                            Zoom="{Binding IsDrawing, Converter={StaticResource SliderEnabledConverter}}" LegendLocation="Top"
+                            FontSize="{StaticResource ExtraBigFontSize}">
             <lvc:CartesianChart.CacheMode>
                 <BitmapCache EnableClearType="False" 
                        RenderAtScale="1"
                        SnapsToDevicePixels="False" />
             </lvc:CartesianChart.CacheMode>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Время, с" FontSize="15" Unit="1" MinValue="{Binding XMin, Mode=OneWay}" MaxValue="{Binding XMax, Mode=OneWay}">
+                <lvc:Axis Title="Время, с" 
+                          FontSize="{StaticResource ExtraBigFontSize}" 
+                          Unit="1" 
+                          MinValue="{Binding XMin, Mode=OneWay}" MaxValue="{Binding XMax, Mode=OneWay}">
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="0.5" />
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis MaxValue="{Binding YMax}" MinValue="{Binding YMin}" FontSize="15" Unit="1"/>
+                <lvc:Axis MaxValue="{Binding YMax}" MinValue="{Binding YMin}" FontSize="{StaticResource ExtraBigFontSize}" Unit="1"/>
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
 
@@ -107,26 +98,12 @@
             </Slider.Style>
         </Slider>
 
-        <ListBox 
-            Grid.Row="1" Grid.Column="1"
-            Background="Transparent"
-            ItemsSource="{Binding CurrentValues}"
-            Visibility="{Binding IsDrawing, Converter={StaticResource SliderVisibility}}"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical" 
-                                VerticalAlignment="Center" HorizontalAlignment="Center"
-                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            
-        </ListBox>
+  
 
         <TextBlock Grid.Row="2" Grid.Column="1" 
                    VerticalAlignment="Center" HorizontalAlignment="Center"
-                   Margin="0 0 0 5">
+                   Margin="0 0 0 5"
+                   FontSize="{StaticResource ExtraBigFontSize}">
             <Run Text="Время: " FontWeight="Bold"/>
             <Run Text="{Binding CurrentTime, Mode=OneWay, Converter={StaticResource DoubleConverter}}"/>
             <Run Text=" с"/>

@@ -20,8 +20,8 @@ namespace ModBusTPU.Services
 
 
         private static double _holostMove = 0.623;
-        private static double _amperKoeff = 200;
-        private static double _voltKoeff = 124.5;
+        private static double _amperKoeff = 800;
+        private static double _voltKoeff = 123.62;
         private static double _koeffValueChannel = 0.00030517578125;
 
 

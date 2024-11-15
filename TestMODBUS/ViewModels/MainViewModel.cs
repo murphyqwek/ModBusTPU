@@ -21,6 +21,7 @@ using ModBusTPU.ViewModels.ExportViewModels;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Controls;
+using ModBusTPU.Services;
 
 namespace ModBusTPU.ViewModels
 {
@@ -50,9 +51,16 @@ namespace ModBusTPU.ViewModels
             set
             {
                 if (value == "Переменный ток")
-                    _deviceAdress = 0x02;
-                else if (value == "Постоянный ток")
+                {
                     _deviceAdress = 0x03;
+                    Coefficients.SetCoefficients(0.623, 800, 123.62, 0.00030517578125);
+
+                }
+                else if (value == "Постоянный ток")
+                {
+                    _deviceAdress = 0x02;
+                    Coefficients.SetCoefficients(2.039, 200, 37.058, 0.00030517578125);
+                }
 
                 else
                     throw new Exception("Uncatched tok mode");
