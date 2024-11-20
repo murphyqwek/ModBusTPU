@@ -160,8 +160,9 @@
         <Border Grid.Row="2" BorderBrush="LightGray" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40*"/>
-                    <ColumnDefinition Width="70*"/>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="60*"/>
+                    <ColumnDefinition Width="30*"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Row="1">
@@ -204,6 +205,21 @@
                                 </ComboBox>
                             </DockPanel>
 
+                            <StackPanel Grid.Column="1"
+                                         Orientation="Horizontal"
+                                         HorizontalAlignment="Center">
+                                <!-- DM удалить -->
+                                <TextBlock Text="DM" 
+                                           FontSize="{StaticResource ExtraBigFontSize}"
+                                            Margin="0 0 5 0" 
+                                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <!-- DM удалить -->
+                                <CheckBox IsChecked="{Binding Debug, Mode=TwoWay}"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+
                             <DockPanel Grid.Column="1" Visibility="Hidden">
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Скорость: " Margin="0 0 5 0" Background="White" VerticalAlignment="Center"/>
                                 <ComboBox Grid.Row="1" Style="{DynamicResource ModifiedComboBox}" Grid.Column="1" Name="SpeedComboBox" Margin="5" Background="White" ItemsSource="{Binding Speeds}" IsReadOnly="{Binding IsWorking}" SelectedItem="{Binding PortSpeed}">
@@ -226,7 +242,57 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Column="1" 
+                <GroupBox Grid.Column="1"
+                          Header="Данные регистрации" FontSize="{StaticResource BigFontSize}"
+                          Margin="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0"
+                                Style="{StaticResource DataBorder}">
+                            <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
+                                    <Run Text="Сила тока:"/>
+                                    <LineBreak/>
+                                    <Run Text="{Binding Tok, Mode=OneWay}"/>
+                            </TextBlock>
+                        </Border>
+
+                        <Border Grid.Column="1"
+                                Style="{StaticResource DataBorder}">
+                            <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
+                                <Run Text="Напряжение:"/>
+                                <LineBreak/>
+                                <Run Text="{Binding Volt, Mode=OneWay}"/>
+                            </TextBlock>
+                        </Border>
+
+                        <Border Grid.Column="2"
+                                Style="{StaticResource DataBorder}">
+                            <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
+                                    <Run Text="Мощность:"/>
+                                     <LineBreak/>
+                                    <Run Text="{Binding Power, Mode=OneWay}"/>
+                            </TextBlock>
+                        </Border>
+
+                        <Border Grid.Column="3"
+                                Style="{StaticResource DataBorder}">
+                            <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
+                                       <Run Text="Энергия:"/>
+                                       <LineBreak/>
+                                       <Run Text="{Binding Energy, Mode=OneWay}"/>
+                            </TextBlock>
+                        </Border>
+
+                    </Grid>
+                </GroupBox>
+                
+                <GroupBox Grid.Column="2" 
                           Header="Данные с датчика" FontSize="{StaticResource BigFontSize}"
                           Margin="5">
                     <Grid Margin="0 20">

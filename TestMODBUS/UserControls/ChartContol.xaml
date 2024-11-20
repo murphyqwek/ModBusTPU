@@ -37,7 +37,8 @@
             <ItemsControl ItemsSource="{Binding CurrentValues}"
                           Grid.Column="0" Grid.Row="0"
                           HorizontalAlignment="Center"
-                          VerticalAlignment="Center">
+                          VerticalAlignment="Center"
+                          Visibility="Collapsed">
                 <ItemsControl.ItemsPanel>
                     <!-- Указываем, что элементы будут расположены в StackPanel -->
                     <ItemsPanelTemplate>

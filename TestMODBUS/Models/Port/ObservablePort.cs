@@ -126,6 +126,10 @@ namespace ModBusTPU.Models.Services
                     Thread.Sleep(5);
                     bytes = _port.BytesToRead;
                     whileBreakerCount++;
+                    if(bytes < 7)
+                    {
+                        whileBreakerCount++;
+                    }
                 }
                 catch
                 {

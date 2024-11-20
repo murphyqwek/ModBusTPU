@@ -105,6 +105,11 @@ namespace ModBusTPU.ViewModels
             } 
         }
 
+        public string Tok => Sensor1?.SensorData?.CurrentValues.Count > 0 && IsWorking ? Sensor1?.SensorData?.CurrentValues[0] : "";
+        public string Volt => Sensor2?.SensorData?.CurrentValues.Count > 0 && IsWorking ? Sensor2?.SensorData?.CurrentValues[0] : "";
+        public string Energy => Sensor3?.SensorData?.CurrentValues.Count > 0 && IsWorking ? Sensor3?.SensorData?.CurrentValues[0] : "";
+        public string Power => Sensor4?.SensorData?.CurrentValues.Count > 0 && IsWorking ? Sensor4?.SensorData?.CurrentValues[0] : "";
+
         #endregion
 
         #region Private Fields
@@ -189,8 +194,15 @@ namespace ModBusTPU.ViewModels
         {
             _portListener.StopListen();
             _isWorking = false;
+
             OnPropertyChanged(nameof(IsWorking));
             OnPropertyChanged(nameof(IsNotWorking));
+
+            OnPropertyChanged(nameof(Tok));
+            OnPropertyChanged(nameof(Volt));
+            OnPropertyChanged(nameof(Energy));
+            OnPropertyChanged(nameof(Power));
+
             sensor1.StopWorkingAndMoveToStart();
             sensor2.StopWorkingAndMoveToStart();
             sensor3.StopWorkingAndMoveToStart();
@@ -381,6 +393,12 @@ namespace ModBusTPU.ViewModels
 
             //Подписиваем объекты на OnPropertyChanged других объектов
             ListAvailablePorts.AvailablePorts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Ports));
+
+            Sensor1.SensorData.CurrentValues.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Tok));
+            Sensor2.SensorData.CurrentValues.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Volt));
+            Sensor3.SensorData.CurrentValues.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Energy));
+            Sensor4.SensorData.CurrentValues.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Power));
+
             port.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
 
             //Инциалзириуем окно экспорта данных

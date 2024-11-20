@@ -166,14 +166,14 @@ namespace ModBusTPU.Services.Excel
             ExcelPage Page = new ExcelPage();
             List<ExcelChart> Charts = new List<ExcelChart>();
 
-            foreach(var Channel in Channels)
+            foreach(var Channel in new int[] { 0, 1 })
             {
                 ExcelChart Chart = new ExcelChart();
                 var Points = new List<Point>();
 
-                foreach(var Point in DataStorage.GetChannelData(Channel.ChannelNumber))
+                foreach(var Point in DataStorage.GetChannelData(Channel))
                 {
-                    var channelType = ChannelTypeList.GetChannelType(Channel.ChannelNumber);
+                    var channelType = ChannelTypeList.GetChannelType(Channel);
                     double Time = Point.X / 1000;
                     double Value = Point.Y;
                     switch (channelType)
@@ -182,11 +182,13 @@ namespace ModBusTPU.Services.Excel
                             Value = ModBusValueConverter.ConvertToAmperValue(Value);
                             Chart.YTitle = "Сила тока, А";
                             Chart.SerieTitle = "Сила тока";
+                            Chart.Title = "Сила тока";
                             break;
                         case ChannelType.Volt:
                             Value = ModBusValueConverter.ConvertToVoltValue(Value);
                             Chart.YTitle = "Напряжение, В";
                             Chart.SerieTitle = "Напряжение";
+                            Chart.Title = "Напряжение";
                             break;
                         case ChannelType.Regular:
                             Chart.YTitle = "";
@@ -197,7 +199,6 @@ namespace ModBusTPU.Services.Excel
                     }
                     Points.Add(new Point(Time, Value));
                 }
-                Chart.Title = Channel.Label;
                 Chart.XTitle = "Вермя, с";
                 Chart.Points = Points;
 

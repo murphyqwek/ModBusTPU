@@ -70,8 +70,8 @@ namespace ModBusTPU.Models.Services.Excel
                     }
                 }
 
-                //Заполняем сырые данные
-                FillDataSheet(ExcelPackage, RawDataPage, RawDataPage.Title);
+                //Заполняем сырые данные (не нужны)
+                //FillDataSheet(ExcelPackage, RawDataPage, RawDataPage.Title);
 
 
                 //Сохраняем файл
