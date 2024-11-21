@@ -23,12 +23,12 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
 
                 if (ChannelTypeList.GetChannelType(channel) == ChannelType.Tok)
                 {
-                    CurrentValue = "Ток: ";
+                    //CurrentValue = "Ток: ";
                     ValueType += " А";
                 }
                 else if (ChannelTypeList.GetChannelType(channel) == ChannelType.Volt)
                 {
-                    CurrentValue = "Напр.: ";
+                    //CurrentValue = "Напр.: ";
                     ValueType += " В";
                 }
 

@@ -251,12 +251,13 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <Border Grid.Column="0"
                                 Style="{StaticResource DataBorder}">
                             <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
-                                    <Run Text="Сила тока:"/>
+                                    <Run Text="Сила тока:" FontWeight="Bold"/>
                                     <LineBreak/>
                                     <Run Text="{Binding Tok, Mode=OneWay}"/>
                             </TextBlock>
@@ -265,7 +266,7 @@
                         <Border Grid.Column="1"
                                 Style="{StaticResource DataBorder}">
                             <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
-                                <Run Text="Напряжение:"/>
+                                <Run Text="Напряжение:" FontWeight="Bold"/>
                                 <LineBreak/>
                                 <Run Text="{Binding Volt, Mode=OneWay}"/>
                             </TextBlock>
@@ -274,7 +275,7 @@
                         <Border Grid.Column="2"
                                 Style="{StaticResource DataBorder}">
                             <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
-                                    <Run Text="Мощность:"/>
+                                    <Run Text="Мощность:" FontWeight="Bold"/>
                                      <LineBreak/>
                                     <Run Text="{Binding Power, Mode=OneWay}"/>
                             </TextBlock>
@@ -283,9 +284,18 @@
                         <Border Grid.Column="3"
                                 Style="{StaticResource DataBorder}">
                             <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
-                                       <Run Text="Энергия:"/>
+                                       <Run Text="Энергия:" FontWeight="Bold"/>
                                        <LineBreak/>
                                        <Run Text="{Binding Energy, Mode=OneWay}"/>
+                            </TextBlock>
+                        </Border>
+
+                        <Border Grid.Column="4"
+                                Style="{StaticResource DataBorder}">
+                             <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
+                                    <Run Text="Время:" FontWeight="Bold"/>
+                                    <LineBreak/>
+                                    <Run Text="{Binding Time, Mode=OneWay}"/>
                             </TextBlock>
                         </Border>
 
@@ -293,7 +303,7 @@
                 </GroupBox>
                 
                 <GroupBox Grid.Column="2" 
-                          Header="Данные с датчика" FontSize="{StaticResource BigFontSize}"
+                          Header="Регистрация данных" FontSize="{StaticResource BigFontSize}"
                           Margin="5">
                     <Grid Margin="0 20">
                         <Grid.ColumnDefinitions>

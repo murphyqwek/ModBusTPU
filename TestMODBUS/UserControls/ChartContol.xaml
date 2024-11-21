@@ -79,7 +79,7 @@
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
 
-        <Slider Grid.Row="2" Grid.Column="0"
+        <Slider Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                 Visibility="{Binding IsScrollVisible, Converter={StaticResource SliderVisibility}}" 
                 Minimum="0" Maximum="{Binding MaxWindowTime}" 
                 Value="{Binding StartPoint, Mode=OneWayToSource}" 
@@ -104,7 +104,8 @@
         <TextBlock Grid.Row="2" Grid.Column="1" 
                    VerticalAlignment="Center" HorizontalAlignment="Center"
                    Margin="0 0 0 5"
-                   FontSize="{StaticResource ExtraBigFontSize}">
+                   FontSize="{StaticResource ExtraBigFontSize}"
+                   Visibility="Collapsed">
             <Run Text="Время: " FontWeight="Bold"/>
             <Run Text="{Binding CurrentTime, Mode=OneWay, Converter={StaticResource DoubleConverter}}"/>
             <Run Text=" с"/>

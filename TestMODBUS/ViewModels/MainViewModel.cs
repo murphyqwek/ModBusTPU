@@ -110,6 +110,8 @@ namespace ModBusTPU.ViewModels
         public string Energy => Sensor3?.SensorData?.CurrentValues.Count > 0 && IsWorking ? Sensor3?.SensorData?.CurrentValues[0] : "";
         public string Power => Sensor4?.SensorData?.CurrentValues.Count > 0 && IsWorking ? Sensor4?.SensorData?.CurrentValues[0] : "";
 
+        public string Time => Sensor1?.Chart?.CurrentX > 0 && IsWorking ? Sensor1?.Chart?.CurrentX.ToString() + " с" : "";
+
         #endregion
 
         #region Private Fields
@@ -202,6 +204,7 @@ namespace ModBusTPU.ViewModels
             OnPropertyChanged(nameof(Volt));
             OnPropertyChanged(nameof(Energy));
             OnPropertyChanged(nameof(Power));
+            OnPropertyChanged(nameof(Time));
 
             sensor1.StopWorkingAndMoveToStart();
             sensor2.StopWorkingAndMoveToStart();
@@ -394,6 +397,7 @@ namespace ModBusTPU.ViewModels
             //Подписиваем объекты на OnPropertyChanged других объектов
             ListAvailablePorts.AvailablePorts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Ports));
 
+            Sensor1.SensorData.CurrentValues.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Time));
             Sensor1.SensorData.CurrentValues.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Tok));
             Sensor2.SensorData.CurrentValues.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Volt));
             Sensor3.SensorData.CurrentValues.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Energy));
