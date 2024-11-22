@@ -33,7 +33,7 @@
                             <Setter Property="ToolTip">
                                 <Setter.Value>
                                     <ToolTip>
-                                        <TextBlock Text="Не все нужные каналы выбраны"/>
+                                        <TextBlock Text="Не все нужные каналы выбраны"  FontSize="{StaticResource ExtraExtraBigFontSize}"/>
                                     </ToolTip>
                                 </Setter.Value>
                             </Setter>
@@ -43,7 +43,7 @@
                             <Setter Property="ToolTip">
                                 <Setter.Value>
                                     <ToolTip>
-                                        <TextBlock Text="Введите заголовок графика"/>
+                                        <TextBlock Text="Введите заголовок графика" FontSize="{StaticResource ExtraExtraBigFontSize}"/>
                                     </ToolTip>
                                 </Setter.Value>
                             </Setter>
@@ -54,7 +54,7 @@
                             <Setter Property="ToolTip">
                                 <Setter.Value>
                                     <ToolTip>
-                                        <TextBlock Text="Поле полностью заполнено"/>
+                                        <TextBlock Text="Поле полностью заполнено" FontSize="{StaticResource ExtraExtraBigFontSize}"/>
                                     </ToolTip>
                                 </Setter.Value>
                             </Setter>
@@ -79,6 +79,7 @@
                                 Foreground="{Binding Foreground}"
                                 Content="{Binding ChannelNumber}"
                                 Tag="{Binding ChannelNumber}"
+                                 FontSize="{StaticResource ExtraExtraBigFontSize}"
                                 Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ChangeChannelListCommand}"
                                      CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Content}"
                     />
@@ -88,6 +89,7 @@
             <Button Content="-" 
                     Width="25" 
                     Background="#eb101f"
+                     FontSize="{StaticResource ExtraExtraBigFontSize}"
                     Command="{Binding DeleteCommand}"/>
         </StackPanel>
     </DockPanel>

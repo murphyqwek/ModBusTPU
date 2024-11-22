@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using ModBusTPU.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
 using ModBusTPU.Models.Services;
 
@@ -33,7 +34,7 @@ namespace ModBusTPU.Models.ModbusSensor.ModBusInputs
             int previousLastChannel = _controller.GetLastChannel();
             _controller.SetUsingChannel(Channel, true);
             if (_controller.GetUsingChannels().Count == 1 && prevVoltChannel == -1)
-                _controller.AddNewLineSerie("Мощность", ChannelSeriesColors.Colors[Channel]);
+                _controller.AddNewLineSerie("Мощность", new SolidColorBrush(Color.FromRgb(12, 235, 15)));
             ResignDataStorageLastUpdateChannel(previousLastChannel);
 
             _controller.UpdateChartAfterNewChannelAdded();

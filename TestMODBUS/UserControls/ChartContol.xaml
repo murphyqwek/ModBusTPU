@@ -48,7 +48,7 @@
                 <ItemsControl.ItemTemplate>
                     <!-- Определяем, как будет выглядеть каждый элемент -->
                     <DataTemplate>
-                        <TextBlock Text="{Binding }" FontSize="{StaticResource ExtraBigFontSize}"/>
+                        <TextBlock Text="{Binding }" FontSize="{StaticResource ExtraExtraBigFontSize}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -58,7 +58,7 @@
                             DisableAnimations="True" Hoverable="False" 
                             DataTooltip="{x:Null}" Series="{Binding Series}" 
                             Zoom="{Binding IsDrawing, Converter={StaticResource SliderEnabledConverter}}" LegendLocation="Top"
-                            FontSize="{StaticResource ExtraBigFontSize}">
+                            FontSize="{StaticResource ExtraExtraBigFontSize}">
             <lvc:CartesianChart.CacheMode>
                 <BitmapCache EnableClearType="False" 
                        RenderAtScale="1"
@@ -66,7 +66,7 @@
             </lvc:CartesianChart.CacheMode>
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Title="Время, с" 
-                          FontSize="{StaticResource ExtraBigFontSize}" 
+                          FontSize="{StaticResource ExtraExtraBigFontSize}" 
                           Unit="1" 
                           Foreground="{StaticResource AxisColor}"
                           MinValue="{Binding XMin, Mode=OneWay}" MaxValue="{Binding XMax, Mode=OneWay}">
@@ -77,7 +77,7 @@
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis MaxValue="{Binding YMax}" MinValue="{Binding YMin}" 
-                          FontSize="{StaticResource ExtraBigFontSize}" 
+                          FontSize="{StaticResource ExtraExtraBigFontSize}" 
                           Unit="1"
                           Foreground="{StaticResource AxisColor}"/>
             </lvc:CartesianChart.AxisY>
@@ -108,7 +108,7 @@
         <TextBlock Grid.Row="2" Grid.Column="1" 
                    VerticalAlignment="Center" HorizontalAlignment="Center"
                    Margin="0 0 0 5"
-                   FontSize="{StaticResource ExtraBigFontSize}"
+                   FontSize="{StaticResource ExtraExtraBigFontSize}"
                    Visibility="Collapsed">
             <Run Text="Время: " FontWeight="Bold"/>
             <Run Text="{Binding CurrentTime, Mode=OneWay, Converter={StaticResource DoubleConverter}}"/>

@@ -12,8 +12,8 @@ namespace ModBusTPU.Models.Services
     {
         public static Dictionary<int, SolidColorBrush> Colors = new Dictionary<int, SolidColorBrush>()
         {
-            {0, new SolidColorBrush(Color.FromRgb(245, 202, 12)) },
-            {1, new SolidColorBrush(Color.FromRgb(241, 81, 67)) },
+            {0, new SolidColorBrush(Color.FromRgb(15, 82, 217)) },
+            {1, new SolidColorBrush(Color.FromRgb(230, 39, 14)) },
             {2, new SolidColorBrush(Color.FromRgb(119, 182, 68)) },
             {3, new SolidColorBrush(Color.FromRgb(240, 144, 58)) },
             {4, new SolidColorBrush(Color.FromRgb(52, 74, 150)) },

@@ -17,24 +17,28 @@
            HorizontalAlignment="Left" VerticalAlignment="Stretch"
            Grid.Column="0"
            Name ="Label"
+           FontSize="{StaticResource ExtraExtraBigFontSize}"
            Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}"
            PreviewTextInput="TextBox_PreviewTextInput"/>
 
         <TextBox MaxWidth="150" MinWidth="50" Width="100"
                    HorizontalAlignment="Left" VerticalAlignment="Stretch"
                    Grid.Column="1"
+                   FontSize="{StaticResource ExtraExtraBigFontSize}"
                    Text="{Binding Commentary, UpdateSourceTrigger=PropertyChanged}"/>
 
         <CheckBox Width="25" MinWidth="25" MaxWidth="50"
                   Grid.Column="2"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
+                   FontSize="{StaticResource ExtraExtraBigFontSize}"
                   IsChecked="{Binding IsShownOnMainWindow, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Button Content ="-"
                 HorizontalAlignment="Right"
                 Width="25"
                 Background="#eb101f"
+                FontSize="{StaticResource ExtraExtraBigFontSize}"
                 Command="{Binding DeleteCommand}"
                 Grid.Column="3"/>
     </Grid>

@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:Double x:Key="ExtraBigFontSize">18</sys:Double>
-    <sys:Double x:Key="BigFontSize">16</sys:Double>
+    <sys:Double x:Key="ExtraExtraBigFontSize">18</sys:Double>
+    <sys:Double x:Key="ExtraBigFontSize">16</sys:Double>
     <sys:Double x:Key="MiddleFontSize">14</sys:Double>
     <sys:Double x:Key="SmallFontSize">12</sys:Double>
 

@@ -8,8 +8,9 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding StringFormat=CH {0}:, Path=ChannelNumber}" Margin="0 0 10 0"/>
+            <TextBlock Text="{Binding StringFormat=CH {0}:, Path=ChannelNumber}" Margin="0 0 10 0" FontSize="{StaticResource ExtraExtraBigFontSize}"/>
             <TextBox Name="Label" 
+                     FontSize="{StaticResource ExtraExtraBigFontSize}"
                      Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}" 
                      Width="100" Margin="0 0 10 0" 
                      PreviewTextInput="TextBox_PreviewTextInput">
@@ -17,7 +18,7 @@
                     <TextBlock/>
                 </TextBox.ToolTip>
             </TextBox>
-            <CheckBox IsChecked="{Binding Path=IsChosen, UpdateSourceTrigger=PropertyChanged}" />
+            <CheckBox IsChecked="{Binding Path=IsChosen, UpdateSourceTrigger=PropertyChanged}" FontSize="{StaticResource ExtraExtraBigFontSize}"/>
         </StackPanel>
     </Grid>
 </UserControl>

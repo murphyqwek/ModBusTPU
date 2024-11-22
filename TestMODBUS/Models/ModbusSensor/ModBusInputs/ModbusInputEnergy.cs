@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using ModBusTPU.Models.ModbusSensor.ModBusInputs.ChannelsFilters;
 using ModBusTPU.Models.Services;
 
@@ -32,7 +33,7 @@ namespace ModBusTPU.Models.ModbusSensor.ModBusInputs
             _controller.SetUsingChannel(Channel, true);
 
             if (_controller.GetUsingChannels().Count == 1 && prevVoltChannel == -1)
-                _controller.AddNewLineSerie("Энергия", ChannelSeriesColors.Colors[Channel]);
+                _controller.AddNewLineSerie("Энергия", new SolidColorBrush(Color.FromRgb(241, 245, 7)));
             ResignDataStorageLastUpdateChannel(previousLastChannel);
 
             _controller.UpdateChartAfterNewChannelAdded();

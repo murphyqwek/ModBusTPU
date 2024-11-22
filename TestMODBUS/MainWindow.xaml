@@ -42,7 +42,7 @@
 
                 <StackPanel Orientation="Vertical">
                     <Button
-                            Content="Сохранить эксперимент" FontSize="{StaticResource BigFontSize}"
+                            Content="Сохранить эксперимент" FontSize="{StaticResource ExtraBigFontSize}"
                             Margin="5 5 5 10"
                             Command="{Binding BackUpCommand}" 
                             IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}" >
@@ -52,7 +52,7 @@
                             </Style>
                         </Button.Resources>
                     </Button>
-                    <Button Content="Загрузить эксперимент" FontSize="{StaticResource BigFontSize}"
+                    <Button Content="Загрузить эксперимент" FontSize="{StaticResource ExtraBigFontSize}"
                             Command="{Binding UploadDataStorageCommand}" Margin="5">
                         <Button.Resources>
                             <Style TargetType="Border">
@@ -84,10 +84,10 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" DataContext="{Binding}" Margin="5 0 5 0">
-                                            <TextBlock Text="{Binding Label}" FontSize="{StaticResource BigFontSize}"
+                                            <TextBlock Text="{Binding Label}" FontSize="{StaticResource ExtraBigFontSize}"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Center"/>
-                                            <TextBox Text="{Binding Commentary, UpdateSourceTrigger=PropertyChanged}" FontSize="{StaticResource BigFontSize}"
+                                            <TextBox Text="{Binding Commentary, UpdateSourceTrigger=PropertyChanged}" FontSize="{StaticResource ExtraBigFontSize}"
                                                      Margin="5 0"
                                                      MaxWidth="200"
                                                      Width="100"
@@ -114,21 +114,12 @@
                             Width="125" Height="25" Margin="0 0 20 0" 
                             HorizontalAlignment="Right" 
                             Visibility="Collapsed"/>
-                    <!-- DM удалить -->
-                    <TextBlock Text="DM" 
-                               Margin="0 0 5 0" 
-                               VerticalAlignment="Center" HorizontalAlignment="Right"
-                               Visibility="Collapsed"/>
-                    <!-- DM удалить -->
-                    <CheckBox IsChecked="{Binding Debug, Mode=TwoWay}"
-                              VerticalAlignment="Center"
-                              />
 
                     <ComboBox Margin="5 0" Name="TokMode"
                               SelectedIndex="0"
                               SelectedItem="{Binding TokMode, Mode=OneWayToSource}"
                               IsEnabled="{Binding IsNotWorking}"
-                              FontSize="{StaticResource BigFontSize}">
+                              FontSize="{StaticResource ExtraBigFontSize}">
                         <sys:String>Переменный ток</sys:String>
                         <sys:String>Постоянный ток</sys:String>
                     </ComboBox>
@@ -170,7 +161,7 @@
                 </Grid>
 
                 <GroupBox Grid.Column="0" 
-                          Header="Порт" FontSize="{StaticResource BigFontSize}"
+                          Header="Порт" FontSize="{StaticResource ExtraBigFontSize}"
                           Margin="5">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -186,7 +177,7 @@
 
                             <DockPanel Grid.Column="0">
                                 <TextBlock Grid.Row="0" Grid.Column="0" 
-                                           Text="Порт: " FontSize="{StaticResource BigFontSize}"
+                                           Text="Порт: " FontSize="{StaticResource ExtraBigFontSize}"
                                            Margin="5 0 5 0" 
                                            VerticalAlignment="Center"/>
                                 <ComboBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ModifiedComboBox}" 
@@ -194,12 +185,12 @@
                                           ItemsSource="{Binding Ports}" 
                                           IsReadOnly="{Binding IsWorking}" 
                                           SelectedItem="{Binding PortName}" 
-                                          FontSize="{StaticResource BigFontSize}"
+                                          FontSize="{StaticResource ExtraBigFontSize}"
                                           PreviewMouseLeftButtonDown="PortComboBox_PreviewMouseLeftButtonDown">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding}" 
-                                                       FontSize="{StaticResource BigFontSize}"/>
+                                                       FontSize="{StaticResource ExtraBigFontSize}"/>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
@@ -210,7 +201,7 @@
                                          HorizontalAlignment="Center">
                                 <!-- DM удалить -->
                                 <TextBlock Text="DM" 
-                                           FontSize="{StaticResource ExtraBigFontSize}"
+                                           FontSize="{StaticResource ExtraExtraBigFontSize}"
                                             Margin="0 0 5 0" 
                                             VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 <!-- DM удалить -->
@@ -235,7 +226,7 @@
                         <StackPanel Grid.Row="1" Orientation="Vertical">
                             <TextBlock Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat='Промежуток между измерениями: {0} мс.'}" 
                                        Margin="5"
-                                       FontSize="{StaticResource ResourceKey=BigFontSize}"/>
+                                       FontSize="{StaticResource ResourceKey=ExtraBigFontSize}"/>
                             <Slider Name="DelaySlider" Margin="5 0" Value="{Binding MeasureDelay}" Minimum="300" Maximum="1500" IsSnapToTickEnabled="True" TickFrequency="100" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}"/>
                         </StackPanel>
 
@@ -243,7 +234,7 @@
                 </GroupBox>
 
                 <GroupBox Grid.Column="1"
-                          Header="Данные регистрации" FontSize="{StaticResource BigFontSize}"
+                          Header="Данные регистрации" FontSize="{StaticResource ExtraBigFontSize}"
                           Margin="5">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -338,7 +329,7 @@
                 </GroupBox>
                 
                 <GroupBox Grid.Column="2" 
-                          Header="Регистрация данных" FontSize="{StaticResource BigFontSize}"
+                          Header="Регистрация данных" FontSize="{StaticResource ExtraBigFontSize}"
                           Margin="5">
                     <Grid Margin="0 20">
                         <Grid.ColumnDefinitions>
