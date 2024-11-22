@@ -110,7 +110,7 @@ namespace ModBusTPU.ViewModels
         public string Energy => Sensor3?.SensorData?.CurrentValues.Count > 0 && IsWorking ? Sensor3?.SensorData?.CurrentValues[0] : "";
         public string Power => Sensor4?.SensorData?.CurrentValues.Count > 0 && IsWorking ? Sensor4?.SensorData?.CurrentValues[0] : "";
 
-        public string Time => Sensor1?.Chart?.CurrentX > 0 && IsWorking ? Sensor1?.Chart?.CurrentX.ToString() + " с" : "";
+        public string Time => Sensor1?.Chart?.CurrentX > 0 && IsWorking ? Math.Round(Sensor1.Chart.CurrentX, 1).ToString() + " с" : "";
 
         #endregion
 

@@ -30,7 +30,7 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
                 return values;
 
             double value = EnergyPoints.Last().Y;
-            value = Math.Round(value, 2);
+            value = Math.Round(value, 1);
 
             values.Add($"{value} кВт*ч");
 

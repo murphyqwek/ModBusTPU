@@ -27,7 +27,7 @@ namespace ModBusTPU.Models.ModbusSensor
         private const double YMaxStandart = 220.0;
         private const double YMinStandart = -10.0;
 
-        public const double MaxWindowWidth = 5;
+        public const double MaxWindowWidth = 10;
 
         #endregion
 

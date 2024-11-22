@@ -29,7 +29,7 @@ namespace ModBusTPU.Models.ModbusSensor.ChartDataPrepatations
             }
 
             double PowerValue = PowerMathModule.CountKV(Tok, Volt);
-            PowerValue = Math.Round(PowerValue, 2);
+            PowerValue = Math.Round(PowerValue, 1);
 
             values.Add($"{PowerValue} кВт");
             return values;

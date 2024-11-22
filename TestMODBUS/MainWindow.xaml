@@ -256,47 +256,82 @@
 
                         <Border Grid.Column="0"
                                 Style="{StaticResource DataBorder}">
-                            <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
-                                    <Run Text="Сила тока:" FontWeight="Bold"/>
-                                    <LineBreak/>
-                                    <Run Text="{Binding Tok, Mode=OneWay}"/>
-                            </TextBlock>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Style="{StaticResource TileBorder}">
+                                    <TextBlock Text="Сила тока:" Style="{StaticResource Title}"/>
+                                </Border>
+                                <Border Grid.Row="1" Style="{StaticResource ValueBorder}">
+                                    <TextBlock Text="{Binding Tok, Mode=OneWay}" Style="{StaticResource Value}"/>
+                                </Border>
+                            </Grid>
                         </Border>
 
                         <Border Grid.Column="1"
                                 Style="{StaticResource DataBorder}">
-                            <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
-                                <Run Text="Напряжение:" FontWeight="Bold"/>
-                                <LineBreak/>
-                                <Run Text="{Binding Volt, Mode=OneWay}"/>
-                            </TextBlock>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Style="{StaticResource TileBorder}">
+                                    <TextBlock Text="Напряжение:" Style="{StaticResource Title}"/>
+                                </Border>
+                                <Border Grid.Row="1" Style="{StaticResource ValueBorder}">
+                                    <TextBlock Text="{Binding Volt, Mode=OneWay}" Style="{StaticResource Value}"/>
+                                </Border>
+                            </Grid>
                         </Border>
 
                         <Border Grid.Column="2"
                                 Style="{StaticResource DataBorder}">
-                            <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
-                                    <Run Text="Мощность:" FontWeight="Bold"/>
-                                     <LineBreak/>
-                                    <Run Text="{Binding Power, Mode=OneWay}"/>
-                            </TextBlock>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Style="{StaticResource TileBorder}">
+                                    <TextBlock Text="Мощность:" Style="{StaticResource Title}"/>
+                                </Border>
+                                <Border Grid.Row="1" Style="{StaticResource ValueBorder}">
+                                    <TextBlock Text="{Binding Power, Mode=OneWay}" Style="{StaticResource Value}"/>
+                                </Border>
+                            </Grid>
                         </Border>
 
                         <Border Grid.Column="3"
                                 Style="{StaticResource DataBorder}">
-                            <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
-                                       <Run Text="Энергия:" FontWeight="Bold"/>
-                                       <LineBreak/>
-                                       <Run Text="{Binding Energy, Mode=OneWay}"/>
-                            </TextBlock>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Style="{StaticResource TileBorder}">
+                                    <TextBlock Text="Энергия:" Style="{StaticResource Title}"/>
+                                </Border>
+                                <Border Grid.Row="1" Style="{StaticResource ValueBorder}">
+                                    <TextBlock Text="{Binding Energy, Mode=OneWay}" Style="{StaticResource Value}"/>
+                                </Border>
+                            </Grid>
                         </Border>
 
                         <Border Grid.Column="4"
                                 Style="{StaticResource DataBorder}">
-                             <TextBlock TextWrapping="Wrap" FontSize="{StaticResource ExtraBigFontSize}">
-                                    <Run Text="Время:" FontWeight="Bold"/>
-                                    <LineBreak/>
-                                    <Run Text="{Binding Time, Mode=OneWay}"/>
-                            </TextBlock>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Style="{StaticResource TileBorder}">
+                                    <TextBlock Text="Время:" Style="{StaticResource Title}"/>
+                                </Border>
+                                <Border Grid.Row="1" Style="{StaticResource ValueBorder}">
+                                    <TextBlock Text="{Binding Time, Mode=OneWay}" Style="{StaticResource Value}"/>
+                                </Border>
+                            </Grid>
                         </Border>
 
                     </Grid>
@@ -308,7 +343,7 @@
                     <Grid Margin="0 20">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="3*"/>
                         </Grid.ColumnDefinitions>
 
                         <Button Grid.Row="0" Grid.Column="0" 

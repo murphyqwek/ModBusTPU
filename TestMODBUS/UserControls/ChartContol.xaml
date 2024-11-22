@@ -68,6 +68,7 @@
                 <lvc:Axis Title="Время, с" 
                           FontSize="{StaticResource ExtraBigFontSize}" 
                           Unit="1" 
+                          Foreground="{StaticResource AxisColor}"
                           MinValue="{Binding XMin, Mode=OneWay}" MaxValue="{Binding XMax, Mode=OneWay}">
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="0.5" />
@@ -75,7 +76,10 @@
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis MaxValue="{Binding YMax}" MinValue="{Binding YMin}" FontSize="{StaticResource ExtraBigFontSize}" Unit="1"/>
+                <lvc:Axis MaxValue="{Binding YMax}" MinValue="{Binding YMin}" 
+                          FontSize="{StaticResource ExtraBigFontSize}" 
+                          Unit="1"
+                          Foreground="{StaticResource AxisColor}"/>
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
 
