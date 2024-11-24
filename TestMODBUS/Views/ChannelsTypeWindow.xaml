@@ -8,12 +8,13 @@
         mc:Ignorable="d"
         Title="Настройки" Height="450" Width="400"
         MaxHeight="500" MaxWidth="400"
-        MinHeight="500" MinWidth="400">
+        MinHeight="500" MinWidth="400"
+        Icon="../Logo/logo.png">
     <Window.Resources>
         <conv:BoolToYellowColorConverter x:Key="BoolToYellowColorConverter" />
     </Window.Resources>
     <TabControl>
-        <TabItem Header="Настройки канала">
+        <TabItem Header="Настройки каналов">
             <Grid DataContext="{Binding ChannelsTypeChoosingViewModel}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80*"/>
@@ -121,7 +122,7 @@
                 <!--#endregion-->
             </Grid>
         </TabItem>
-        <TabItem Header="Настройки профиля коэф." DataContext="{Binding CoefficientProfileSettingsViewModel}">
+        <TabItem Header="Настройки профиля коэф." DataContext="{Binding CoefficientProfileSettingsViewModel}" Visibility="Collapsed">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="85*"/>

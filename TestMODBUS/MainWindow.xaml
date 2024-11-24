@@ -37,18 +37,35 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="230"/>
                     <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="270"/>
+                    <ColumnDefinition Width="180"/>
                 </Grid.ColumnDefinitions>
-                
-                <Button Grid.Column="0"
-                        Content="Сохранить эксперимент" 
-                        Width="200" Margin="5,5,0,5" 
-                        HorizontalAlignment="Left" 
+
+                <StackPanel Orientation="Vertical" Grid.Column="0">
+                    <Button Content="Сохранить эксперимент" 
+                        HorizontalAlignment="Stretch" 
+                        Margin="10"
                         Command="{Binding BackUpCommand}" 
-                        IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}" 
-                        Grid.ColumnSpan="2"/>
-                
-                
+                        IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                    <Button Content="Загрузить эксперимент" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Center"
+                            Command="{Binding UploadDataStorageCommand}"
+                            Margin="10 0 10 0">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+
+
                 <!--#region Chosen Fields -->
                 <Border Grid.Column="1"
                         BorderBrush="LightGray" BorderThickness="2"
@@ -100,14 +117,17 @@
                             HorizontalAlignment="Right" />
                     <TextBlock Text="DM" 
                                Margin="0 0 5 0" 
-                               VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Visibility="Collapsed"/>
                     <CheckBox IsChecked="{Binding Debug, Mode=TwoWay}"
-                              VerticalAlignment="Center"/>
+                              VerticalAlignment="Center"
+                              Visibility="Collapsed"/>
 
                     <ComboBox Margin="5 0" Name="TokMode"
                               SelectedIndex="0"
                               SelectedItem="{Binding TokMode, Mode=OneWayToSource}"
-                              IsEnabled="{Binding IsNotWorking}">
+                              IsEnabled="{Binding IsNotWorking}"
+                              Visibility="Collapsed">
                         <sys:String>AC</sys:String>
                         <sys:String>DC</sys:String>
                     </ComboBox>
@@ -195,7 +215,7 @@
                     <Grid Margin="0 20">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="35*"/>
-                            <ColumnDefinition Width="70*"/>
+                            <ColumnDefinition Width="40*"/>
                         </Grid.ColumnDefinitions>
 
                         <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="5 5" Width="100" IsCancel="{Binding IsWorking}">
@@ -232,14 +252,8 @@
                                     </Style>
                                 </Button.Resources>
                             </Button>
-                            <Button Grid.Row="0" Grid.Column="0" Content="Загрузить" HorizontalAlignment="Right" Command="{Binding UploadDataStorageCommand}" Margin="5">
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="5"/>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-                            <Button Grid.Row="0" Grid.Column="0" Content="Сохранить график" HorizontalAlignment="Right" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}" Command="{Binding ExportDataCommand}">
+                            
+                            <Button Grid.Row="0" Grid.Column="0" Content="Экспортировать график" HorizontalAlignment="Right" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}" Command="{Binding ExportDataCommand}">
                                 <Button.Resources>
                                     <Style TargetType="Border">
                                         <Setter Property="CornerRadius" Value="5"/>
