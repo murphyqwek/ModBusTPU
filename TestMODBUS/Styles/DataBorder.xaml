@@ -19,7 +19,8 @@
 
     <Style x:Key="ValueBorder" TargetType="Border">
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="MinWidth" Value="130"/>
+        <Setter Property="BorderBrush" Value="Black"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Background" Value="Transparent"/>
