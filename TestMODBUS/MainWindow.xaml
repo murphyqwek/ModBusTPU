@@ -35,7 +35,7 @@
         <Border Grid.Row="0" BorderBrush="#d3d3d3" BorderThickness="0 0 0 2">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="180"/>
                 </Grid.ColumnDefinitions>
