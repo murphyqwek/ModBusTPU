@@ -53,13 +53,13 @@ namespace ModBusTPU.ViewModels
                 if (value == "Переменный ток")
                 {
                     _deviceAdress = 0x03;
-                    Coefficients.SetCoefficients(0.623, 800, 123.62, 0.00030517578125);
+                    Coefficients.SetCoefficients(0.002, 400, 197.938, 0.00030517578125);
 
                 }
                 else if (value == "Постоянный ток")
                 {
                     _deviceAdress = 0x02;
-                    Coefficients.SetCoefficients(2.039, 200, 37.058, 0.00030517578125);
+                    Coefficients.SetCoefficients(0.037, 100, 60, 0.00030517578125);
                 }
 
                 else
