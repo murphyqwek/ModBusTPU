@@ -24,7 +24,7 @@ namespace ModBusTPU.Models.Modbus
 
         static SerialPort serialPort;
         static ModbusSerialMaster master;
-        static double currentThreshold = 200; // Уставка по току
+        static double currentThreshold = 150; // Уставка по току
         static double voltageThreshold = 40; // Уставка по напряжению
 
         const double highCurrentThresholdBound = 5;
@@ -36,7 +36,7 @@ namespace ModBusTPU.Models.Modbus
         const int WRITEDELAY = 200;
         const int ITERATIONDELAY = 100;
         const int REVERSDELAY = 3000;
-        const int SPEED = 500;
+        const int SPEED = 200;
 
         public Motor(DataStorage dataStorage)
         {
