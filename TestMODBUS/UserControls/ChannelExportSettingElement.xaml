@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="ModBusTPU.UserControls.ChannelExportSettingElement"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ModBusTPU.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding StringFormat=CH {0}:, Path=ChannelNumber}" Margin="0 0 10 0"/>
+            <TextBox Name="Label" 
+                     Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}" 
+                     Width="100" Margin="0 0 10 0" 
+                     PreviewTextInput="TextBox_PreviewTextInput">
+                <TextBox.ToolTip>
+                    <TextBlock/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <CheckBox IsChecked="{Binding Path=IsChosen, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

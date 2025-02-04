@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4F46A981-BA37-4F3D-BE8F-3ED4E9713890}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ModBusTPU</RootNamespace>
+    <AssemblyName>ModBusTPU</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>D:\Projects\Published\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>66EC604C402EC910B421B27744C7A27E4E4A17DF</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>TestMODBUS_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EPPlus, Version=7.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.7.0.4\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=6.1.1.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.Interfaces.6.1.1\lib\net462\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing, Version=6.1.1.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.System.Drawing.6.1.1\lib\net462\EPPlus.System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=1.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.1.4.1\lib\net46\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="NModbus, Version=3.0.81.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NModbus.3.0.81\lib\net46\NModbus.dll</HintPath>
+    </Reference>
+    <Reference Include="NModbus4, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NModbus4.2.1.0\lib\net40\NModbus4.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Text.Json, Version=7.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
+    <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Commands\RemoteCommand.cs" />
+    <Compile Include="Commands\RemoteCommandWithParameter.cs" />
+    <Compile Include="Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converter\BoolToYellowColorConverter.cs" />
+    <Compile Include="Converter\DoubleConverter.cs" />
+    <Compile Include="Converter\ModbusSensorConverter.cs" />
+    <Compile Include="Converter\SliderEnabledConverter.cs" />
+    <Compile Include="Converter\StartButtonColorConverter.cs" />
+    <Compile Include="Converter\ScrollChartVisibilityConverter.cs" />
+    <Compile Include="Converter\ZoomBoolConverter.cs" />
+    <Compile Include="Exceptions\ChosenPortUnavailableException.cs" />
+    <Compile Include="Exceptions\FileAlreadyExist.cs" />
+    <Compile Include="Exceptions\FileIsAlreadyOpenException.cs" />
+    <Compile Include="Exceptions\NoPortAvailableException.cs" />
+    <Compile Include="Exceptions\NotAllChannelsChosen.cs" />
+    <Compile Include="Exceptions\ProfileDoesNotExist.cs" />
+    <Compile Include="Exceptions\ProfileIsDamaged.cs" />
+    <Compile Include="ExportWindow.xaml.cs">
+      <DependentUpon>ExportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\ExtraDataFieldStatusExtension.cs" />
+    <Compile Include="Extensions\ExtraDataFieldTooltipText.cs" />
+    <Compile Include="Extensions\IsChannelSelectedExtension.cs" />
+    <Compile Include="Models\Coefficients\CoefficientProfile.cs" />
+    <Compile Include="Models\Coefficients\CoefficientProfileFileManager.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\IFilter.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\OnlyOneVoltAndSeveralTokFilter.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\StandratFilter.cs" />
+    <Compile Include="Models\ModbusSensor\WindowingDataHelper.cs" />
+    <Compile Include="Models\Modbus\Motor.cs" />
+    <Compile Include="Services\Channels\ChannelSeriesColors.cs" />
+    <Compile Include="Models\Data\ChannelModel.cs" />
+    <Compile Include="Models\Data\DataStorage.cs" />
+    <Compile Include="Models\Data\DataConnector.cs" />
+    <Compile Include="Models\Data\Experiment.cs" />
+    <Compile Include="Services\Channels\ChannelTypeColors.cs" />
+    <Compile Include="Services\Coefficients.cs" />
+    <Compile Include="Services\Excel\ExcelDataPreparation.cs" />
+    <Compile Include="Services\Settings\Data\DataFileManager.cs" />
+    <Compile Include="Services\Settings\Data\DataLog.cs" />
+    <Compile Include="Services\Settings\Data\DataReader.cs" />
+    <Compile Include="Services\Settings\Data\DataSaver.cs" />
+    <Compile Include="Models\Data\IObservable.cs" />
+    <Compile Include="Models\Data\ObservableConcurrentList.cs" />
+    <Compile Include="Models\Data\Point.cs" />
+    <Compile Include="Services\Excel\ExcelExport.cs" />
+    <Compile Include="Models\MathModules\EnergyMathModule.cs" />
+    <Compile Include="Models\MathModules\PowerMathModule.cs" />
+    <Compile Include="Models\MessageBoxes\ErrorMessageBox.cs" />
+    <Compile Include="Models\MessageBoxes\RequestYesNoMessageBox.cs" />
+    <Compile Include="Models\MessageBoxes\SuccessMessageBox.cs" />
+    <Compile Include="Models\ModbusSensor\Chart.cs" />
+    <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPreparationEnergy.cs" />
+    <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPreparationPower.cs" />
+    <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPreparationStandart.cs" />
+    <Compile Include="Models\ModbusSensor\ChartDataPrepatations\ChartDataPreparationBase.cs" />
+    <Compile Include="Models\ModbusSensor\Factories\AbstractModbusSensorFactory.cs" />
+    <Compile Include="Models\ModbusSensor\Factories\ModbusSensorSimpleFactory.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ModbusInputEnergy.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ModBusInputPower.cs" />
+    <Compile Include="Models\ModbusSensor\ModbusSensor.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ModBusInputBase.cs" />
+    <Compile Include="Models\ModbusSensor\ModBusInputs\ModBusInputStandart.cs" />
+    <Compile Include="Models\ModbusSensor\ModbusSensorController.cs" />
+    <Compile Include="Models\ModbusSensor\ModbusSensorData.cs" />
+    <Compile Include="Models\ModbusSensor\SensorTypeNameGetter.cs" />
+    <Compile Include="Models\Modbus\ModBusCommandsList.cs" />
+    <Compile Include="Models\Modbus\ModBusCRC.cs" />
+    <Compile Include="Models\Modbus\ModBusValueConverter.cs" />
+    <Compile Include="Services\FileHelper.cs" />
+    <Compile Include="Models\Port\Interfaces\IPortListener.cs" />
+    <Compile Include="Services\ListAvailableSpeeds.cs" />
+    <Compile Include="Models\Port\ObservablePort.cs" />
+    <Compile Include="Models\Port\PortListener.cs" />
+    <Compile Include="Services\Channels\ChannelTypeList.cs" />
+    <Compile Include="Models\Port\TestPortListener.cs" />
+    <Compile Include="Services\RegisrtyService.cs" />
+    <Compile Include="Services\Settings\Channels\Types\ChannelsSettingFileManager.cs" />
+    <Compile Include="Services\Settings\Channels\Types\ChannelsTypeSettings.cs" />
+    <Compile Include="Services\Settings\Channels\ExportChannelsSettings.cs" />
+    <Compile Include="Services\Settings\Export\ExportReading.cs" />
+    <Compile Include="Services\Settings\Export\ExportSaving.cs" />
+    <Compile Include="Services\Settings\Export\ExportSettings.cs" />
+    <Compile Include="Services\Settings\Export\ExportSettingsManager.cs" />
+    <Compile Include="Services\Settings\ForbiddenSymbols.cs" />
+    <Compile Include="UserControls\ChannelExportSettingElement.xaml.cs">
+      <DependentUpon>ChannelExportSettingElement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ChartContol.xaml.cs">
+      <DependentUpon>ChartContol.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CommentariesExportElement.xaml.cs">
+      <DependentUpon>CommentariesExportElement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ExtraDataExportElement.xaml.cs">
+      <DependentUpon>ExtraDataExportElement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Settings\ChannelsTypeChoosingViewModel.cs" />
+    <Compile Include="ViewModels\ChannelTypeViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModels\ChannelViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModels\CurrentChannelValueViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModels\ModbusSensorViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModels\SensorTypeViewModel.cs" />
+    <Compile Include="ViewModels\Settings\CoefficientProfileViewModel.cs" />
+    <Compile Include="ViewModels\ExportViewModels\CommentaryExportElementViewModel.cs" />
+    <Compile Include="ViewModels\ExportViewModels\ExtraDataViewModel.cs" />
+    <Compile Include="ViewModels\FileNameViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ExportViewModels\ExportViewModel.cs" />
+    <Compile Include="ViewModels\Settings\CoefficientProfileSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
+    <Compile Include="Views\ChannelsTypeWindow.xaml.cs">
+      <DependentUpon>ChannelsTypeWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="ExportWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\INotifyPropertyBased\INotifyBase.cs" />
+    <Compile Include="Services\ListAvailablePorts.cs" />
+    <Compile Include="ViewModels\Base\BaseViewModel.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Styles\Buttons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ChannelExportSettingElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ChartContol.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CommentariesExportElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ExtraDataExportElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChannelsTypeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="TestMODBUS_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logo\logo.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

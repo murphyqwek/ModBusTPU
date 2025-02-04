@@ -1,0 +1,271 @@
+﻿<Window x:Class="ModBusTPU.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:vm="clr-namespace:ModBusTPU.ViewModels"
+        xmlns:conv="clr-namespace:ModBusTPU.Converter"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:ModBusTPU.UserControls" xmlns:system="clr-namespace:System;assembly=mscorlib"
+        Icon="./Logo/logo.png"
+        mc:Ignorable="d"
+        WindowState="Maximized"
+        Title="ModBus TPU" 
+        Height="450" Width="900"
+        MinHeight="450" MinWidth="720">
+
+    <Window.Resources>
+        <conv:SliderEnabledConverter x:Key="SliderEnabledConverter" />
+        <conv:ZoomBoolConverter x:Key="ZoomBoolConverter" />
+        <conv:ScrollChartVisibilityConverter x:Key="SliderVisibility" />
+        <conv:ModbusSensorConverter x:Key="ModbusSensorConverter"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11.0"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="60" MaxHeight="70"/>
+            <RowDefinition />
+            <RowDefinition Height="120" />
+        </Grid.RowDefinitions>
+        
+        <!--#region Top -->
+        <Border Grid.Row="0" BorderBrush="#d3d3d3" BorderThickness="0 0 0 2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="230"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="180"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Vertical" Grid.Column="0">
+                    <Button Content="Сохранить эксперимент" 
+                        HorizontalAlignment="Stretch" 
+                        Margin="10"
+                        Command="{Binding BackUpCommand}" 
+                        IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                    <Button Content="Загрузить эксперимент" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Center"
+                            Command="{Binding UploadDataStorageCommand}"
+                            Margin="10 0 10 0">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+
+
+                <!--#region Chosen Fields -->
+                <Border Grid.Column="1"
+                        BorderBrush="LightGray" BorderThickness="2"
+                        Margin="0 5 45 5"
+                        HorizontalAlignment="Center">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Disabled">
+                        <StackPanel
+                            Orientation="Horizontal">
+
+                            <ItemsControl VerticalAlignment="Center" 
+                                          ItemsSource="{Binding Commentaries}">
+                            
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" DataContext="{Binding}" Margin="5 0 5 0">
+                                            <TextBlock Text="{Binding Label}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"/>
+                                            <TextBox Text="{Binding Commentary, UpdateSourceTrigger=PropertyChanged}" 
+                                                     Margin="5 0"
+                                                     MaxWidth="200"
+                                                     Width="100"
+                                                     VerticalAlignment="Center"
+                                                     HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+                <!--#endregion-->
+                
+                <!--#region Test Mode-->
+                <StackPanel Grid.Column="2"
+                            Orientation="Horizontal" 
+                            VerticalAlignment="Center" HorizontalAlignment="Right" 
+                            Margin="0 0 20 0">
+                    <Button 
+                            Content="Настройки" 
+                            Command="{Binding ChangeChannelsTypeCommand}" 
+                            Width="125" Height="25" Margin="0 0 20 0" 
+                            HorizontalAlignment="Right" />
+                    <TextBlock Text="DM" 
+                               Margin="0 0 5 0" 
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Visibility="Visible"/>
+                    <CheckBox IsChecked="{Binding Debug, Mode=TwoWay}"
+                              VerticalAlignment="Center"
+                              Visibility="Visible"/>
+
+                    <ComboBox Margin="5 0" Name="TokMode"
+                              SelectedIndex="0"
+                              SelectedItem="{Binding TokMode, Mode=OneWayToSource}"
+                              IsEnabled="{Binding IsNotWorking}"
+                              Visibility="Collapsed">
+                        <sys:String>AC</sys:String>
+                        <sys:String>DC</sys:String>
+                    </ComboBox>
+
+                </StackPanel>
+                <!--#endregion-->
+            </Grid>
+        </Border>
+        <!--#endregion-->
+        
+        <!--#region Charts -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <local:ChartContol Grid.Row="0" Grid.Column="0" DataContext="{Binding Sensor1, Converter={StaticResource ModbusSensorConverter}}" />
+            <local:ChartContol Grid.Row="1" Grid.Column="0" DataContext="{Binding Sensor2, Converter={StaticResource ModbusSensorConverter}}" />
+            <local:ChartContol Grid.Row="0" Grid.Column="1" DataContext="{Binding Sensor3, Converter={StaticResource ModbusSensorConverter}}"/>
+            <local:ChartContol Grid.Row="1" Grid.Column="1" DataContext="{Binding Sensor4, Converter={StaticResource ModbusSensorConverter}}" />
+        </Grid>
+        <!--#endregion-->
+        
+        <!--#region Bottom Control Panel -->
+        <Border Grid.Row="2" BorderBrush="LightGray" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*"/>
+                    <ColumnDefinition Width="60*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="1">
+
+                </Grid>
+
+                <GroupBox Grid.Column="0" Header="Порт" Margin="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*"/>
+                            <RowDefinition Height="60*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <DockPanel Grid.Column="0">
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Порт: " Margin="5 0 5 0" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="0" Style="{StaticResource ModifiedComboBox}" Grid.Column="1" Name="PortComboBox" Margin="5" ItemsSource="{Binding Ports}" IsReadOnly="{Binding IsWorking}" SelectedItem="{Binding PortName}" PreviewMouseLeftButtonDown="PortComboBox_PreviewMouseLeftButtonDown">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontSize="9" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
+
+                            <DockPanel Grid.Column="1">
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Скорость: " Margin="0 0 5 0" Background="White" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="1" Style="{DynamicResource ModifiedComboBox}" Grid.Column="1" Name="SpeedComboBox" Margin="5" Background="White" ItemsSource="{Binding Speeds}" IsReadOnly="{Binding IsWorking}" SelectedItem="{Binding PortSpeed}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontSize="9" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
+                        </Grid>
+
+                        <StackPanel Grid.Row="1" Orientation="Vertical">
+                            <TextBlock Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat='Промежуток между измерениями: {0} мс.'}" Margin="5"/>
+                            <Slider Name="DelaySlider" Margin="5 0" Value="{Binding MeasureDelay}" Minimum="300" Maximum="1500" IsSnapToTickEnabled="True" TickFrequency="100" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}"/>
+                        </StackPanel>
+
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1" Header="Данные с датчика" Margin="5">
+                    <Grid Margin="0 20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="35*"/>
+                            <ColumnDefinition Width="40*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="5 5" Width="100" IsCancel="{Binding IsWorking}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsCancel" Value="True">
+                                            <Setter Property="Background" Value="#eb1535"/>
+                                            <Setter Property="BorderBrush" Value="#a8021b"/>
+                                            <Setter Property="Content" Value="Стоп"/>
+                                            <Setter Property="Command" Value="{Binding StopCommand}" />
+                                        </Trigger>
+                                        <Trigger Property="IsCancel" Value="False">
+                                            <Setter Property="Background" Value="YellowGreen"/>
+                                            <Setter Property="BorderBrush" Value="Green"/>
+                                            <Setter Property="Content" Value="Старт"/>
+                                            <Setter Property="Command" Value="{Binding StartCommand}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 5 5 5">
+                            <Button Grid.Row="0" Grid.Column="0" Content="Очистить график" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}" Command="{Binding ClearCommand}">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            
+                            <Button Grid.Row="0" Grid.Column="0" Content="Экспортировать график" HorizontalAlignment="Right" IsEnabled="{Binding IsWorking, Converter={StaticResource SliderEnabledConverter}}" Command="{Binding ExportDataCommand}">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+
+                        </DockPanel>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Border>
+        <!--#endregion-->
+    </Grid>
+</Window>

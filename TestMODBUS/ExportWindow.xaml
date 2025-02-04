@@ -1,0 +1,195 @@
+﻿<Window x:Class="ModBusTPU.ExportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModBusTPU"
+        xmlns:el="clr-namespace:ModBusTPU.UserControls"
+        xmlns:uc="clr-namespace:ModBusTPU.UserControls"
+        mc:Ignorable="d"
+        Title="Экспорт данных" Height="300" Width="600"
+        Icon="./Logo/logo.png"
+        MinHeight="300" MinWidth="500">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="30*"/>
+        </Grid.ColumnDefinitions>
+
+        <TabControl>
+            <!--#region Channels Export -->
+            <TabItem> 
+                <TabItem.Header>
+                    <TextBlock Text="Выбор каналов"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ItemsControl Grid.Column="0" ItemsSource="{Binding ChannelsData}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <uc:ChannelExportSettingElement Margin="5"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem.Content>
+            </TabItem>
+            <!--#endregion-->
+                
+            <!--#region Power Extra Data -->
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Мощность"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ScrollViewer>
+                        <StackPanel Orientation="Vertical" 
+                                    VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                            <!--#region Extra Data StackPanel-->
+                            <ItemsControl VerticalAlignment="Center" ItemsSource="{Binding PowerExtraData}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <uc:ExtraDataExportElement DataContext="{Binding}" Margin="5"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <!--#endregion-->
+                            <Button Content="+" 
+                                    Margin="0 5 0 0"
+                                    MaxWidth="150"
+                                    Command="{Binding AddNewPowerExtraDataCommand}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem.Content>
+            </TabItem>
+            <!--#endregion-->
+
+            <!--#region Energy Extra Data -->
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Энергия"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ScrollViewer>
+                        <StackPanel Orientation="Vertical" 
+                        VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                            <!--#region Extra Data StackPanel-->
+                            <ItemsControl VerticalAlignment="Center" ItemsSource="{Binding EnergyExtraData}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <uc:ExtraDataExportElement DataContext="{Binding}" Margin="5"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <!--#endregion-->
+                            <Button Content="+" 
+                        Margin="0 5 0 0"
+                        MaxWidth="150"
+                        Command="{Binding AddNewEnergyExtraDataCommand}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem.Content>
+            </TabItem>
+            <!--#endregion-->
+            
+            <!--#region Commentaries -->
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Внешние данные"/>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ScrollViewer>
+                        <StackPanel Orientation="Vertical" 
+                                    VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                            <!--#region Extra Data StackPanel-->
+                            <ItemsControl VerticalAlignment="Center" ItemsSource="{Binding Commentaries}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <uc:CommentariesExportElement DataContext="{Binding}" Margin="5"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <!--#endregion-->
+                            <Button Content="+" 
+                                    Margin="0 5 0 0"
+                                    MaxWidth="150"
+                                    Command="{Binding AddNewCommentaryCommand}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem.Content>
+            </TabItem>
+            <!--#endregion-->
+        </TabControl>
+
+        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10 0 10 5">
+
+            <StackPanel Orientation="Vertical" Margin="0 0 0 50">
+                <TextBlock Text="Комментарии"/>
+                <TextBox Text="{Binding BigComment}" Height="100" TextWrapping="Wrap"/>
+            </StackPanel>
+            <Grid Margin="0 0 0 5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Width="90" Command="{Binding SaveSettingsCommand}">
+                    <TextBlock Text="Сохранить настройки" TextAlignment="Center" TextWrapping="Wrap" FontSize="10.0"/>
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSaved}" Value="False">
+                                    <Setter Property="Background" Value="#FFFAD72B"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsSaved}" Value="True">
+                                    <Setter Property="Background" Value="YellowGreen"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Grid.Column="1" Width="90" Margin="2 0" Command="{Binding UploadSettingsCommand}">
+                    <TextBlock Text="Загрузить настройки" TextAlignment="Center" TextWrapping="Wrap" FontSize="10.0"/>
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </Grid>
+            <Button
+                Content="Выгрузить данные" 
+                Height="50" 
+                HorizontalAlignment="Stretch" 
+                Command="{Binding ExportDataCommand}">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
