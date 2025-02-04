@@ -9,7 +9,7 @@ using System.Threading;
 using ModBusTPU.Models.Data;
 using System.Windows.Media.TextFormatting;
 using OfficeOpenXml.ConditionalFormatting;
-
+using System.ComponentModel;
 
 namespace ModBusTPU.Models.Modbus
 {
@@ -27,16 +27,16 @@ namespace ModBusTPU.Models.Modbus
         static double currentThreshold = 125; // Уставка по току
         static double voltageThreshold = 40; // Уставка по напряжению
 
-        const double highCurrentThresholdBound = 1;
-        const double lowCurrentThresholdBound = 1;
+        const double highCurrentThresholdBound = 15;
+        const double lowCurrentThresholdBound = 5;
 
         const double highVoltageThresholdBound = 5;
         const double lowVoltageThresholdBound = 5;
 
         const int KZDELAY = 5000;
 
-        const int WRITEDELAY = 5;
-        const int ITERATIONDELAY = 3;
+        const int WRITEDELAY = 20;
+        const int ITERATIONDELAY = 30;
         const int REVERSDELAY = 3000;
         const int REVERSESPEED = 500;
         const int SPEED = 100;
@@ -66,6 +66,28 @@ namespace ModBusTPU.Models.Modbus
             {
                 return null;
             }
+        }
+
+        private double GetCurrent3()
+        {
+            if(dataStorage.GetChannelLength() < 5)
+            {
+                return 125;
+            }
+
+            double current3 = 0;
+            lock (this)
+            {
+                for(int i = 0; i < 5; i++)
+                {
+                    double raw = dataStorage.GetChannelData(0)[dataStorage.GetChannelLength() - 1 - i].Y;
+                    current3 += ModBusValueConverter.ConvertToAmperValue(raw);
+                }
+            }
+
+            current3 = current3 / 5;
+
+            return current3;
         }
 
         public void ControlMotor()
@@ -98,12 +120,7 @@ namespace ModBusTPU.Models.Modbus
             Console.WriteLine("KZDELAY прошел");
             while (working)
             {
-                lock (this) {
-                    current = dataStorage.GetChannelData(0).Last().Y;
-                    voltage = dataStorage.GetChannelData(5).Last().Y;
-                }
-
-                current = ModBusValueConverter.ConvertToAmperValue(current);
+                current = GetCurrent3();
                 voltage = ModBusValueConverter.ConvertToVoltValue(voltage);
 
                 if (current < currentThreshold - lowCurrentThresholdBound)
