@@ -35,6 +35,8 @@ namespace ModBusTPU.Models.Modbus
 
         const int WRITEDELAY = 200;
         const int ITERATIONDELAY = 100;
+        const int REVERSDELAY = 3000;
+        const int SPEED = 500;
 
         public Motor(DataStorage dataStorage)
         {
@@ -81,37 +83,42 @@ namespace ModBusTPU.Models.Modbus
 
                 if (current < currentThreshold - lowCurrentThresholdBound)
                 {
-                    WriteRegister(0x0105, 1000);
-                    WriteRegister(0x0100, 1);
+                    WriteRegister(0x0105, SPEED);
+                    WriteRegister(0x0100, 0);
                 }
                 else if (current > currentThreshold + highCurrentThresholdBound)
                 {
-                    WriteRegister(0x0105, 1000);
-                    WriteRegister(0x0100, 0);
+                    WriteRegister(0x0105, SPEED);
+                    WriteRegister(0x0100, 1);
                 }
                 else
                 {
-                    WriteRegister(0x0105, 1000);
+                    WriteRegister(0x0105, SPEED);
                     WriteRegister(0x0100, 3);
                 }
 
                 /*if (voltage < voltageThreshold-2)
                 {
-                    WriteRegister(0x0105, 1000);
+                    WriteRegister(0x0105, SPEED);
                     WriteRegister(0x0100, 0);
                 }
                 else if (voltage > voltageThreshold+2)
                 {
-                    WriteRegister(0x0105, 1000);
+                    WriteRegister(0x0105, SPEED);
                     WriteRegister(0x0100, 1);
                 }
                 else
                 {
-                    WriteRegister(0x0105, 1000);
+                    WriteRegister(0x0105, SPEED);
                     WriteRegister(0x0100, 3);
                 }*/
                 Thread.Sleep(ITERATIONDELAY);
             }
+            WriteRegister(0x0105, SPEED);
+            WriteRegister(0x0100, 1);
+            Thread.Sleep(REVERSDELAY);
+            WriteRegister(0x0100, 3);
+
             WriteRegister(0x000F, 0);
             serialPort.Close();
         }
