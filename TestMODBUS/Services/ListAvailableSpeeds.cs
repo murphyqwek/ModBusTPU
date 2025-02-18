@@ -28,7 +28,7 @@ namespace ModBusTPU.Models.Services
 
         public static int GetStandartSpeed()
         {
-            return 9600;
+            return 115200;
         }
     }
 }

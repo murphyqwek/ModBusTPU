@@ -63,8 +63,8 @@ namespace ModBusTPU.Models.Services
 
         private void Listen(ObservablePort Port, DataConnector Connector, int delay, byte deviceAdress)
         {
-            const int measureTime = 200; //Это время, за котрое программа считает все данные со всех каналов. Пока подбирается вручную
-            if (delay < measureTime + 100)
+            const int measureTime = 0; //Это время, за котрое программа считает все данные со всех каналов. Пока подбирается вручную
+            if (delay < measureTime + 30)
                 throw new ArgumentException("Delay is too short");
 
             Stopwatch timer = new Stopwatch();

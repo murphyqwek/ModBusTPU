@@ -79,7 +79,7 @@ namespace ModBusTPU.ViewModels
         public bool IsWorking => port.IsPortOpen || _isWorking;
         public bool IsNotWorking => !IsWorking;
 
-        public int MeasureDelay { get; set; } = 300;
+        public int MeasureDelay { get; set; } = 50;
 
         public bool Debug 
         { 
