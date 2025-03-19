@@ -11,7 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ModBusTPU.Models.Services;
 using ModBusTPU.Properties;
+using ModBusTPU.Services.Settings.MotorSettings;
 using ModBusTPU.ViewModels;
 using ModBusTPU.ViewModels.Settings;
 
@@ -22,12 +24,17 @@ namespace ModBusTPU.Views
     /// </summary>
     public partial class ChannelsTypeWindow : Window
     {
-        public ChannelsTypeWindow()
+        public ChannelsTypeWindow(MotorSettingsContainer motorSettingsContainer)
         {
             InitializeComponent();
-            var DataContext = new SettingsViewModel();
+            var DataContext = new SettingsViewModel(motorSettingsContainer);
             this.DataContext = DataContext;
             this.Closing += DataContext.OnWindowClosing;
+        }
+
+        private void PortComboBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ListAvailablePorts.UpdateAvailablePortList();
         }
     }
 }

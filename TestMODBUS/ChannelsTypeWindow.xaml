@@ -9,9 +9,17 @@
         Title="Настройки" Height="450" Width="400"
         MaxHeight="500" MaxWidth="400"
         MinHeight="500" MinWidth="400"
-        Icon="../Logo/logo.png">
+        Icon="./Logo/logo.png">
     <Window.Resources>
-        <conv:BoolToYellowColorConverter x:Key="BoolToYellowColorConverter" />
+        <ResourceDictionary>
+            <!-- Локальные ресурсы -->
+            <conv:BoolToYellowColorConverter x:Key="BoolToYellowColorConverter" />
+
+            <!-- Объединение словарей ресурсов -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="MotorResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
     <TabControl>
         <TabItem Header="Настройки каналов">
@@ -225,31 +233,35 @@
                 </Grid>
             </Grid>
         </TabItem>
-        <TabItem Header="Настройки мотора">
+        <TabItem Header="Настройки мотора" DataContext="{Binding MotorSettingsViewModel}">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="75*"/>
-                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="80*"/>
+                    <RowDefinition Height="20*"/>
                 </Grid.RowDefinitions>
+                <ItemsControl Grid.Row="0" ItemsSource="{Binding Fields}" ItemTemplateSelector="{StaticResource FieldTemplateSelector}" />
+                <Grid Grid.Row="1" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Orientation="Vertical"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Center">
-                    <TextBlock Text="Порог по току"/>
-                    <TextBlock Text="Порог по напряжению"/>
-                    <TextBlock Text="В" Margin="0 10 0 0"/>
-                </StackPanel>
-                <StackPanel Grid.Column="2" Orientation="Vertical"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Center">
-                    <TextBox MinWidth="150" Text="123" TextAlignment="Center"/>
-                    <TextBox MinWidth="150" Text="123" TextAlignment="Center"/>
-                </StackPanel>
+                    <DockPanel Grid.Row="0">
+                        <TextBlock Text="Порт: " Margin="5 0 5 0" VerticalAlignment="Center"/>
+                        <ComboBox Style="{StaticResource ModifiedComboBox}" Grid.Column="1" Name="PortComboBox" Margin="5" ItemsSource="{Binding Ports}" SelectedItem="{Binding PORT}" PreviewMouseLeftButtonDown="PortComboBox_PreviewMouseLeftButtonDown" MaxHeight="100">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontSize="9" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </DockPanel>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10">
+                        <Button Content="Загрузить настройки" Margin="0 0 0 10" Command="{Binding UploadCommand}"/>
+                        <Button Content="Сохранить настройки" Command="{Binding SaveCommand}"/>
+                    </StackPanel>
+                </Grid>
             </Grid>
 
         </TabItem>

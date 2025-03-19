@@ -215,18 +215,24 @@
     <Compile Include="Services\Settings\SettingsContainer\GlobalSettings\ExportSettings\ExportSettingsContainer.cs" />
     <Compile Include="Services\Settings\SettingsContainer\GlobalSettings\GlobalSettingsContainer.cs" />
     <Compile Include="Services\Settings\SettingsManager.cs" />
-    <Compile Include="UserControls\ChannelExportSettingElement.xaml.cs">
+    <Compile Include="ChannelExportSettingElement.xaml.cs">
       <DependentUpon>ChannelExportSettingElement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ChartContol.xaml.cs">
+    <Compile Include="ChartContol.xaml.cs">
       <DependentUpon>ChartContol.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CommentariesExportElement.xaml.cs">
+    <Compile Include="CommentariesExportElement.xaml.cs">
       <DependentUpon>CommentariesExportElement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ExtraDataExportElement.xaml.cs">
+    <Compile Include="ExtraDataExportElement.xaml.cs">
       <DependentUpon>ExtraDataExportElement.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Field\Field.cs" />
+    <Compile Include="ViewModels\Field\FieldTemplateSelector.cs" />
+    <Compile Include="ViewModels\Field\ValidationRules\ByteValidationRule.cs" />
+    <Compile Include="ViewModels\Field\ValidationRules\DoubleValidationRule.cs" />
+    <Compile Include="ViewModels\Field\ValidationRules\IntValidateRule.cs" />
+    <Compile Include="ViewModels\Field\ValidationRules\UshortValidationRule.cs" />
     <Compile Include="ViewModels\Settings\ChannelsTypeChoosingViewModel.cs" />
     <Compile Include="ViewModels\ChannelTypeViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\ChannelViewModel.cs" />
@@ -240,8 +246,9 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModels\ExportViewModel.cs" />
     <Compile Include="ViewModels\Settings\CoefficientProfileSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\MotorSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
-    <Compile Include="Views\ChannelsTypeWindow.xaml.cs">
+    <Compile Include="ChannelsTypeWindow.xaml.cs">
       <DependentUpon>ChannelsTypeWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="ExportWindow.xaml">
@@ -263,27 +270,31 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MotorResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Buttons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ChannelExportSettingElement.xaml">
+    <Page Include="ChannelExportSettingElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ChartContol.xaml">
+    <Page Include="ChartContol.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\CommentariesExportElement.xaml">
+    <Page Include="CommentariesExportElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ExtraDataExportElement.xaml">
+    <Page Include="ExtraDataExportElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChannelsTypeWindow.xaml">
+    <Page Include="ChannelsTypeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -316,7 +327,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="UserControls\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>

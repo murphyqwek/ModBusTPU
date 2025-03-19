@@ -27,11 +27,16 @@ namespace ModBusTPU.Services.Settings.MotorSettings
         {
             var result = new SettingsManager<MotorSettingsContainer>(path, new JsonSerializator<MotorSettingsContainer>()).Upload();
 
+            if(result.exceptionTest == string.Empty)
+            {
+                RegisrtyService.SetField("Motor", "SettingsPath", path);
+            }
+
             return result;
         }
 
 
-        public static void SaveDefault(MotorSettingsContainer motorSettings, string filePath)
+        public static void Save(MotorSettingsContainer motorSettings, string filePath)
         {
             new SettingsManager<MotorSettingsContainer>(filePath, new JsonSerializator<MotorSettingsContainer>()).Save(motorSettings);
         }

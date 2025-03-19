@@ -87,7 +87,13 @@ namespace ModBusTPU.Services.Settings
         public void Save(T settings)
         {
             string json = _serializator.Serialize(settings);
-            File.WriteAllText(json, ConfigPath);
+
+            if(!File.Exists(ConfigPath))
+            {
+                File.Create(ConfigPath).Close();
+            }
+
+            File.WriteAllText(ConfigPath, json);
         }
 
         /// <summary>

@@ -298,7 +298,7 @@ namespace ModBusTPU.ViewModels
             Types.CopyTo(temp);
 
 
-            var ChannelsTypesWindow = new ChannelsTypeWindow();
+            var ChannelsTypesWindow = new ChannelsTypeWindow(motorSettings);
             ChannelsTypesWindow.ShowDialog();
 
             for (int i = 0; i < ChannelTypeList.ChannelCounts; i++)

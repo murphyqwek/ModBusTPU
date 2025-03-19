@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ModBusTPU.Services.Settings.MotorSettings
 {
-    internal class MotorSettingsContainer : BaseSettingsContainer
+    public class MotorSettingsContainer : BaseSettingsContainer
     {
         public string PORT { get; set; } = "COM9";
         public int BAUDRATE { get; set; } = 9600;
