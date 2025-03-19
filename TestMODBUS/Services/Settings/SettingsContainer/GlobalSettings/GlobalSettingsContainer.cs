@@ -14,6 +14,10 @@ namespace ModBusTPU.Services.Settings.SetingsContainer.GlobalSettings
         
         }
 
+        public override void EnsureDefualt()
+        {
+            throw new NotImplementedException();
+        }
 
         public override void SetDefaultSettingsContainer()
         {

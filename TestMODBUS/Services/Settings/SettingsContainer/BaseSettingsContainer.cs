@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ModBusTPU.Services.Settings.SettingsContainer
 {
+    /// <summary>
+    /// Базовый класс для контейнеров, которые содержат настройки
+    /// </summary>
     internal abstract class BaseSettingsContainer
     {
         public BaseSettingsContainer() 
