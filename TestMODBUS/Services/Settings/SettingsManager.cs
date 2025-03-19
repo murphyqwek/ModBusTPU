@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace ModBusTPU.Services.Settings
 {
+    /// <summary>
+    /// Класс для загрузки и сохранения настроек
+    /// </summary>
     internal class SettingsManager
     {
         private string _configPath;
