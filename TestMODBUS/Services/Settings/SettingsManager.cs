@@ -1,5 +1,6 @@
 ﻿using ModBusTPU.Services.Settings.Serialization;
 using ModBusTPU.Services.Settings.SetingsContainer;
+using ModBusTPU.Services.Settings.SettingsContainer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,15 +14,15 @@ namespace ModBusTPU.Services.Settings
     /// <summary>
     /// Класс для загрузки и сохранения настроек
     /// </summary>
-    internal class SettingsManager
+    internal class SettingsManager<T> where T : BaseSettingsContainer, new()
     {
         private string _configPath;
 
-        private ISerializator<SettingsContainer> _serializator;
+        private ISerializator<T> _serializator;
 
         public string ConfigPath { get { return _configPath; } }
 
-        public SettingsManager(string configPath, ISerializator<SettingsContainer> serializator)
+        public SettingsManager(string configPath, ISerializator<T> serializator)
         {
             _configPath = configPath;
             _serializator = serializator;
@@ -30,14 +31,14 @@ namespace ModBusTPU.Services.Settings
         /// <summary>
         /// Метод для загрузки файла настроек
         /// </summary>
-        /// <returns>Возвращает SettingsContainer и текст ошибки, если она произошла. Если файл загружен успено, текст ошибки будет равен string.Empty. Если не удалось загрузить файл, то SettingsContainer будет иметь стандартные настройки</returns>
-        public (SettingsContainer settings, string exceptionTest) Upload()
+        /// <returns>Возвращает контейнер с настройками и текст ошибки, если она произошла. Если файл загружен успено, текст ошибки будет равен string.Empty. Если не удалось загрузить файл, то SettingsContainer будет иметь стандартные настройки</returns>
+        public (T settings, string exceptionTest) Upload()
         {
             if(!File.Exists(ConfigPath))
             {
                 try
                 {
-                    var Settings = new SettingsContainer();
+                    var Settings = GetDefaultSettings();
                     Save(Settings);
                 }
                 catch (IOException)
@@ -76,7 +77,7 @@ namespace ModBusTPU.Services.Settings
         /// Метод для сохранения настроек
         /// </summary>
         /// <param name="settings"> Контейнер с настройками </param>
-        public void Save(SettingsContainer settings)
+        public void Save(T settings)
         {
             string json = _serializator.Serialize(settings);
             File.WriteAllText(json, ConfigPath);
@@ -85,9 +86,9 @@ namespace ModBusTPU.Services.Settings
         /// <summary>
         /// Метод для получения стандартных настроек
         /// </summary>
-        private SettingsContainer GetDefaultSettings()
+        private T GetDefaultSettings()
         {
-            return new SettingsContainer();
+            return new T();
         }
     }
 }
