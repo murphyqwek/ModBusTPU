@@ -40,6 +40,7 @@ namespace ModBusTPU.Services.Settings
                 {
                     var Settings = GetDefaultSettings();
                     Save(Settings);
+                    return (Settings, string.Empty);
                 }
                 catch (IOException)
                 {
@@ -62,6 +63,10 @@ namespace ModBusTPU.Services.Settings
                 }
 
                 settings.EnsureDefualt();
+
+                if(!settings.isValid()) {
+                    return (GetDefaultSettings(), "Файл содержит невалидные значения.");
+                }
 
                 return (settings, string.Empty);
             }

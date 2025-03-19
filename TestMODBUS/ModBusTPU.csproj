@@ -206,9 +206,12 @@
     <Compile Include="Services\Settings\Export\ExportSettings.cs" />
     <Compile Include="Services\Settings\Export\ExportSettingsManager.cs" />
     <Compile Include="Services\Settings\ForbiddenSymbols.cs" />
+    <Compile Include="Services\Settings\MotorSettings\MotorSettingsContainer.cs" />
     <Compile Include="Services\Settings\Serialization\ISerializator.cs" />
     <Compile Include="Services\Settings\Serialization\JsonSerializator.cs" />
     <Compile Include="Services\Settings\SettingsContainer\BaseSettingsContainer.cs" />
+    <Compile Include="Services\Settings\SettingsContainer\GlobalSettings\ChannelsTypeSettings.cs" />
+    <Compile Include="Services\Settings\SettingsContainer\GlobalSettings\ExportSettings\ExportSettingsContainer.cs" />
     <Compile Include="Services\Settings\SettingsContainer\GlobalSettings\GlobalSettingsContainer.cs" />
     <Compile Include="Services\Settings\SettingsManager.cs" />
     <Compile Include="UserControls\ChannelExportSettingElement.xaml.cs">

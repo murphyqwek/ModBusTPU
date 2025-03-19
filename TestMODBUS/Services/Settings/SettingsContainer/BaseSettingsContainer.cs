@@ -25,5 +25,11 @@ namespace ModBusTPU.Services.Settings.SettingsContainer
         /// Метод, который устанавливает неустановленные настройки в стандартные значения
         /// </summary>
         public abstract void EnsureDefualt();
+
+        /// <summary>
+        /// Метод для проверки валидности данных
+        /// </summary>
+        /// <returns>true, если данные валидны, false, если данные невалидны</returns>
+        public abstract bool isValid();
     }
 }
