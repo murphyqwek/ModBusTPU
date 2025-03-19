@@ -28,8 +28,8 @@ namespace ModBusTPU.Services.Settings.MotorSettings
         public int WRITEDELAY { get; set; } = 20;
         public int ITERATIONDELAY { get; set; } = 30;
         public int REVERSDELAY { get; set; } = 3000;
-        public int REVERSESPEED { get; set; } = 500;
-        public int SPEED { get; set; } = 100;
+        public ushort REVERSESPEED { get; set; } = 500;
+        public ushort SPEED { get; set; } = 100;
 
         public override void EnsureDefualt()
         {

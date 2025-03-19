@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Controls;
 using ModBusTPU.Models.Modbus;
+using ModBusTPU.Services.Settings.MotorSettings;
 
 namespace ModBusTPU.ViewModels
 {
@@ -118,6 +119,7 @@ namespace ModBusTPU.ViewModels
         private byte _deviceAdress = 0x02;
 
         private readonly ExportViewModel _exportViewModel;
+        private MotorSettingsContainer motorSettings;
         #endregion
 
         #region Commands
@@ -363,7 +365,8 @@ namespace ModBusTPU.ViewModels
             sensor3 = new ModbusSensor(new Chart(), _data, Factory, SensorType.Standart, new int[] { 0, 5 });
             sensor4 = new ModbusSensor(new Chart(), _data, Factory, SensorType.Standart, new int[] { 0, 5 });
 
-            motor = new Motor(_data);
+            motorSettings = MotorSettingsUploader.UploadDefulat(true).motorSettings;
+            motor = new Motor(_data, motorSettings);
 
             //Создаем класс, который будет хранить имя текущего эксперимента
             FileNameViewModel = new FileNameViewModel();

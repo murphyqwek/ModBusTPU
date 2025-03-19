@@ -10,6 +10,7 @@ using ModBusTPU.Models.Data;
 using System.Windows.Media.TextFormatting;
 using OfficeOpenXml.ConditionalFormatting;
 using System.ComponentModel;
+using ModBusTPU.Services.Settings.MotorSettings;
 
 namespace ModBusTPU.Models.Modbus
 {
@@ -18,49 +19,31 @@ namespace ModBusTPU.Models.Modbus
         private DataStorage dataStorage;
         private bool working = false;
 
-        static string PORT = "COM9";
-        static int BAUDRATE = 9600;
-        static byte ADDRESS = 1;
+        MotorSettingsContainer settings;
 
         static SerialPort serialPort;
         static ModbusSerialMaster master;
-        static double currentThreshold = 125; // Уставка по току
-        static double voltageThreshold = 40; // Уставка по напряжению
 
-        const double highCurrentThresholdBound = 15;
-        const double lowCurrentThresholdBound = 5;
-
-        const double highVoltageThresholdBound = 5;
-        const double lowVoltageThresholdBound = 5;
-
-        const int KZDELAY = 5000;
-
-        const int WRITEDELAY = 20;
-        const int ITERATIONDELAY = 30;
-        const int REVERSDELAY = 3000;
-        const int REVERSESPEED = 500;
-        const int SPEED = 100;
-
-        public Motor(DataStorage dataStorage)
+        public Motor(DataStorage dataStorage, MotorSettingsContainer settings)
         {
-            serialPort = new SerialPort(PORT, BAUDRATE, Parity.None, 8, StopBits.One);
+            this.dataStorage = dataStorage;
+            this.settings = settings;
+            serialPort = new SerialPort(settings.PORT, settings.BAUDRATE, Parity.None, 8, StopBits.One);
             serialPort.ReadTimeout = 500;
             serialPort.WriteTimeout = 500;
-
-            this.dataStorage = dataStorage;
         }
 
         public void WriteRegister(ushort register, ushort value)
         {
-            master.WriteSingleRegister(ADDRESS, register, value);
-            Thread.Sleep(WRITEDELAY);
+            master.WriteSingleRegister(settings.ADDRESS, register, value);
+            Thread.Sleep(settings.WRITEDELAY);
         }
 
         public ushort? ReadRegister(ushort register)
         {
             try
             {
-                return master.ReadHoldingRegisters(ADDRESS, register, 1)[0];
+                return master.ReadHoldingRegisters(settings.ADDRESS, register, 1)[0];
             }
             catch
             {
@@ -101,7 +84,7 @@ namespace ModBusTPU.Models.Modbus
             Console.WriteLine("Вниз до кз");
             while (current < 145 && working)
             {
-                WriteRegister(0x0105, SPEED);
+                WriteRegister(0x0105, settings.SPEED);
                 WriteRegister(0x0100, 1);
 
                 lock (this)
@@ -116,26 +99,26 @@ namespace ModBusTPU.Models.Modbus
             }
             Console.WriteLine("КЗ!!!!");
             WriteRegister(0x0100, 3);
-            Thread.Sleep(KZDELAY);
+            Thread.Sleep(settings.KZDELAY);
             Console.WriteLine("KZDELAY прошел");
             while (working)
             {
                 current = GetCurrent3();
                 voltage = ModBusValueConverter.ConvertToVoltValue(voltage);
 
-                if (current < currentThreshold - lowCurrentThresholdBound)
+                if (current < settings.currentThreshold - settings.lowCurrentThresholdBound)
                 {
-                    WriteRegister(0x0105, SPEED);
+                    WriteRegister(0x0105,settings.SPEED);
                     WriteRegister(0x0100, 1);
                 }
-                else if (current > currentThreshold + highCurrentThresholdBound)
+                else if (current > settings.currentThreshold + settings.highCurrentThresholdBound)
                 {
-                    WriteRegister(0x0105, SPEED);
+                    WriteRegister(0x0105, settings.SPEED);
                     WriteRegister(0x0100, 0);
                 }
                 else
                 {
-                    WriteRegister(0x0105, SPEED);
+                    WriteRegister(0x0105, settings.SPEED);
                     WriteRegister(0x0100, 3);
                 }
 
@@ -154,13 +137,13 @@ namespace ModBusTPU.Models.Modbus
                     WriteRegister(0x0105, SPEED);
                     WriteRegister(0x0100, 3);
                 }*/
-                Thread.Sleep(ITERATIONDELAY);
+                Thread.Sleep(settings.ITERATIONDELAY);
             }
 
             WriteRegister(0x0103, 10000);
-            WriteRegister(0x0105, REVERSESPEED);
+            WriteRegister(0x0105, settings.REVERSESPEED);
             WriteRegister(0x0100, 0);
-            Thread.Sleep(REVERSDELAY);
+            Thread.Sleep(settings.REVERSDELAY);
             WriteRegister(0x0100, 3);
 
             WriteRegister(0x000F, 0);
