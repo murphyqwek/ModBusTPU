@@ -158,6 +158,7 @@
     <Compile Include="Services\Channels\ChannelTypeColors.cs" />
     <Compile Include="Services\Coefficients.cs" />
     <Compile Include="Services\Excel\ExcelDataPreparation.cs" />
+    <Compile Include="Services\Result.cs" />
     <Compile Include="Services\Settings\Data\DataFileManager.cs" />
     <Compile Include="Services\Settings\Data\DataLog.cs" />
     <Compile Include="Services\Settings\Data\DataReader.cs" />
