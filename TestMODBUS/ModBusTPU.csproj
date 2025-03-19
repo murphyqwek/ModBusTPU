@@ -205,6 +205,7 @@
     <Compile Include="Services\Settings\Export\ExportSettings.cs" />
     <Compile Include="Services\Settings\Export\ExportSettingsManager.cs" />
     <Compile Include="Services\Settings\ForbiddenSymbols.cs" />
+    <Compile Include="Services\Settings\SettingsContainer.cs" />
     <Compile Include="Services\Settings\SettingsManager.cs" />
     <Compile Include="UserControls\ChannelExportSettingElement.xaml.cs">
       <DependentUpon>ChannelExportSettingElement.xaml</DependentUpon>
