@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModBusTPU.Services.Settings.SetingsContainer
+namespace ModBusTPU.Services.Settings.SetingsContainer.GlobalSettings
 {
     internal class GlobalSettingsContainer : BaseSettingsContainer
     {

@@ -13,6 +13,14 @@ namespace ModBusTPU.Services.Settings.SettingsContainer
             SetDefaultSettingsContainer();    
         }
 
+        /// <summary>
+        /// Метод для установки стандартных настроек
+        /// </summary>
         public abstract void SetDefaultSettingsContainer();
+
+        /// <summary>
+        /// Метод, который устанавливает неустановленные настройки в стандартные значения
+        /// </summary>
+        public abstract void EnsureDefualt();
     }
 }

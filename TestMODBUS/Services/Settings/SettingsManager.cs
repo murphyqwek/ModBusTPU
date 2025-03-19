@@ -61,6 +61,8 @@ namespace ModBusTPU.Services.Settings
                     return (GetDefaultSettings(), "Не удалось десериализовать настройки. Возвращены дефолтные значения.");
                 }
 
+                settings.EnsureDefualt();
+
                 return (settings, string.Empty);
             }
             catch (IOException)

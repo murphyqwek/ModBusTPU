@@ -209,7 +209,7 @@
     <Compile Include="Services\Settings\Serialization\ISerializator.cs" />
     <Compile Include="Services\Settings\Serialization\JsonSerializator.cs" />
     <Compile Include="Services\Settings\SettingsContainer\BaseSettingsContainer.cs" />
-    <Compile Include="Services\Settings\SettingsContainer\GlobalSettingsContainer.cs" />
+    <Compile Include="Services\Settings\SettingsContainer\GlobalSettings\GlobalSettingsContainer.cs" />
     <Compile Include="Services\Settings\SettingsManager.cs" />
     <Compile Include="UserControls\ChannelExportSettingElement.xaml.cs">
       <DependentUpon>ChannelExportSettingElement.xaml</DependentUpon>
