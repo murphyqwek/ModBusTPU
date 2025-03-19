@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModBusTPU.Services.Settings.Serialization;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,18 +13,14 @@ namespace ModBusTPU.Services.Settings
     {
         private string _configPath;
 
-        private static JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions()
-        {
-            WriteIndented = true, //Красивый формат
-            PropertyNameCaseInsensitive = true, // Позволяет игнорировать регистр полей
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull // Игнорирует null-поля
-        };
+        private ISerializator<SettingsContainer> _serializator;
 
         public string ConfigPath { get { return _configPath; } }
 
-        public SettingsManager(string configPath)
+        public SettingsManager(string configPath, ISerializator<SettingsContainer> serializator)
         {
             _configPath = configPath;
+            _serializator = serializator;
         }
 
         /// <summary>
@@ -52,7 +49,7 @@ namespace ModBusTPU.Services.Settings
             try
             {
                 string json = File.ReadAllText(ConfigPath);
-                var settings = Deserialize(json);
+                var settings = _serializator.Deserialize(json);
 
                 if (settings == null)
                 {
@@ -77,7 +74,7 @@ namespace ModBusTPU.Services.Settings
         /// <param name="settings"> Контейнер с настройками </param>
         public void Save(SettingsContainer settings)
         {
-            string json = Serialize(settings);
+            string json = _serializator.Serialize(settings);
             File.WriteAllText(json, ConfigPath);
         }
 
@@ -87,18 +84,6 @@ namespace ModBusTPU.Services.Settings
         private SettingsContainer GetDefaultSettings()
         {
             return new SettingsContainer();
-        }
-
-        private SettingsContainer Deserialize(string serializedSettings)
-        {
-            var settings = JsonSerializer.Deserialize<SettingsContainer>(serializedSettings, JsonSerializerOptions);
-            return settings;
-        }
-
-        private string Serialize(SettingsContainer settings)
-        {
-            string json = JsonSerializer.Serialize(settings, JsonSerializerOptions);
-            return json;
         }
     }
 }
