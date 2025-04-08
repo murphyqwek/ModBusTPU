@@ -413,7 +413,7 @@ namespace ModBusTPU.Models.Modbus
                 {
                     WriteRegister(0x0105, SPEED);
                     WriteRegister(0x0100, 3);
-                }*/
+                }
                 Thread.Sleep(ITERATIONDELAY);
             }
 
