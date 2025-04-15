@@ -97,7 +97,7 @@ namespace ModBusTPU.Models.Modbus
 
         public Motor(DataStorage dataStorage, MotorSettingsContainer container)
         {
-            serialPort = new SerialPort(PORT, BAUDRATE, Parity.None, 8, StopBits.One);
+            serialPort = new SerialPort(container.PORT, BAUDRATE, Parity.None, 8, StopBits.One);
             serialPort.ReadTimeout = 500;
             serialPort.WriteTimeout = 500;
 
@@ -202,6 +202,8 @@ namespace ModBusTPU.Models.Modbus
 
         public void RunMotor()
         {
+            serialPort.PortName = settingsContainer.PORT;
+
             string command = "SET " + SYNTHTIME.ToString() + " " + KZDELAY.ToString() 
                 + " " + currentThreshold.ToString() + " " + lowCurrentThresholdBound.ToString() 
                 + " " + highCurrentThresholdBound.ToString();
