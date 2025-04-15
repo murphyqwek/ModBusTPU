@@ -1,4 +1,5 @@
 ﻿using ModBusTPU.Models.Data;
+using ModBusTPU.Services.Settings.MotorSettings;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -14,6 +15,8 @@ namespace ModBusTPU.Models.Modbus
         private bool working = false;
         private bool contact = false;
         private bool boundariesSet = false;  // Флаг, что границы рассчитаны
+
+        private MotorSettingsContainer settingsContainer;
 
 
         static string PORT = "COM13"; // Замените на ваш порт
@@ -92,12 +95,13 @@ namespace ModBusTPU.Models.Modbus
 
 
 
-        public Motor(DataStorage dataStorage)
+        public Motor(DataStorage dataStorage, MotorSettingsContainer container)
         {
             serialPort = new SerialPort(PORT, BAUDRATE, Parity.None, 8, StopBits.One);
             serialPort.ReadTimeout = 500;
             serialPort.WriteTimeout = 500;
 
+            this.settingsContainer = container;
             this.dataStorage = dataStorage;
         }
 
