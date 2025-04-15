@@ -1,4 +1,4 @@
-﻿using ModBusTPU.Models.Data;
+﻿/*using ModBusTPU.Models.Data;
 using ModBusTPU.Services.Settings.MotorSettings;
 using System;
 using System.Collections.Generic;
@@ -160,7 +160,7 @@ namespace ModBusTPU.Models.Modbus
             lowCurrentThresholdBound = (stableMax * 0.89);  // 89% от максимального тока
             highCurrentThresholdBound = (stableMax * 0.95);  // 91% от максимального тока
             currentThreshold = (stableMax * 0.999);
-        }*/
+        }
         public void CalculateBoundaries(double stableMax)
         {
             var (lowCoef, highCoef, thresholdCoef) = GetCoefficients(stableMax);
@@ -270,22 +270,17 @@ namespace ModBusTPU.Models.Modbus
         }
         
     }
-}
+}*/
 
 
-/*using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO.Ports;
-using Modbus.Device;
-using System.Threading;
 using ModBusTPU.Models.Data;
-using System.Windows.Media.TextFormatting;
-using OfficeOpenXml.ConditionalFormatting;
-using System.ComponentModel;
 using ModBusTPU.Services.Settings.MotorSettings;
+using System;
+using System.Collections.Generic;
+using System.IO.Ports;
+using System.Linq;
+using System.Net;
+using System.Threading;
 
 namespace ModBusTPU.Models.Modbus
 {
@@ -293,179 +288,101 @@ namespace ModBusTPU.Models.Modbus
     {
         private DataStorage dataStorage;
         private bool working = false;
+        private bool contact = false;
+        private bool boundariesSet = false;
 
-        static string PORT = "COM13";
-        static int BAUDRATE = 9600;
-        static byte ADDRESS = 1;
-
+        private string PORT = "COM16";
+        private int BAUDRATE = 115200;
         static SerialPort serialPort;
-        static ModbusSerialMaster master;
 
-        const double highCurrentThresholdBound = 15;
-        const double lowCurrentThresholdBound = 5;
+        private double voltage = 80;
 
-        const double highVoltageThresholdBound = 5;
-        const double lowVoltageThresholdBound = 5;
+        private const int SYNTHTIME = 120000;
+        private const int KZDELAY = 3000;
 
-        const int KZDELAY = 5000;
-
-        const int WRITEDELAY = 20;
-        const int ITERATIONDELAY = 30;
-        const int REVERSDELAY = 3000;
-        const int REVERSESPEED = 500;
-        const int SPEED = 100;
+        public MotorSettingsContainer MotorSettings { get; }
 
         public Motor(DataStorage dataStorage)
         {
-            this.dataStorage = dataStorage;
-            this.settings = settings;
-            serialPort = new SerialPort(settings.PORT, settings.BAUDRATE, Parity.None, 8, StopBits.One);
+            serialPort = new SerialPort(PORT, BAUDRATE, Parity.None, 8, StopBits.One);
             serialPort.ReadTimeout = 500;
             serialPort.WriteTimeout = 500;
+
+            this.dataStorage = dataStorage;
         }
 
-        public void WriteRegister(ushort register, ushort value)
+        public Motor(DataStorage dataStorage, MotorSettingsContainer motorSettings) : this(dataStorage)
         {
-            master.WriteSingleRegister(settings.ADDRESS, register, value);
-            Thread.Sleep(settings.WRITEDELAY);
+            MotorSettings = motorSettings;
         }
 
-        public ushort? ReadRegister(ushort register)
+        private double GetVoltage()
         {
-            try
-            {
-                return master.ReadHoldingRegisters(settings.ADDRESS, register, 1)[0];
-            }
-            catch
-            {
-                return null;
-            }
-        }
+            double sum = 0;
 
-        private double GetCurrent3()
-        {
-            if(dataStorage.GetChannelLength() < 5)
-            {
-                return 125;
-            }
-
-            double current3 = 0;
             lock (this)
             {
-                for(int i = 0; i < 5; i++)
+                var channelData = dataStorage.GetChannelData(1);
+                int length = channelData.Count;
+
+                if (length < 2)
+                    return 80;
+
+                for (int i = 0; i < 2; i++)
                 {
-                    double raw = dataStorage.GetChannelData(0)[dataStorage.GetChannelLength() - 1 - i].Y;
-                    current3 += ModBusValueConverter.ConvertToAmperValue(raw);
+                    double raw = channelData[length - 1 - i].Y;
+                    sum += ModBusValueConverter.ConvertToVoltValue(raw);
                 }
             }
 
-            current3 = current3 / 5;
-
-            return current3;
-        }
-
-        public void ControlMotor()
-        {
-            WriteRegister(0x000F, 1);
-
-            double current = 0;
-            double voltage = 0;
-
-            WriteRegister(0x0103, 50);
-            Console.WriteLine("Вниз до кз");
-            while (current < 145 && working)
-            {
-                WriteRegister(0x0105, settings.SPEED);
-                WriteRegister(0x0100, 1);
-
-                lock (this)
-                {
-                    current = dataStorage.GetChannelData(0).Last().Y;
-                    voltage = dataStorage.GetChannelData(1).Last().Y;
-                }
-
-                current = ModBusValueConverter.ConvertToAmperValue(current);
-                voltage = ModBusValueConverter.ConvertToVoltValue(voltage);
-                Console.WriteLine($"{current} {voltage}");
-            }
-            Console.WriteLine("КЗ!!!!");
-            WriteRegister(0x0100, 3);
-            Thread.Sleep(settings.KZDELAY);
-            Console.WriteLine("KZDELAY прошел");
-            while (working)
-            {
-                current = GetCurrent3();
-                voltage = ModBusValueConverter.ConvertToVoltValue(voltage);
-
-                if (current < settings.currentThreshold - settings.lowCurrentThresholdBound)
-                {
-                    WriteRegister(0x0105,settings.SPEED);
-                    WriteRegister(0x0100, 1);
-                }
-                else if (current > settings.currentThreshold + settings.highCurrentThresholdBound)
-                {
-                    WriteRegister(0x0105, settings.SPEED);
-                    WriteRegister(0x0100, 0);
-                }
-                else
-                {
-                    WriteRegister(0x0105, settings.SPEED);
-                    WriteRegister(0x0100, 3);
-                }
-
-                /*if (voltage < voltageThreshold-2)
-                {
-                    WriteRegister(0x0105, SPEED);
-                    WriteRegister(0x0100, 0);
-                }
-                else if (voltage > voltageThreshold+2)
-                {
-                    WriteRegister(0x0105, SPEED);
-                    WriteRegister(0x0100, 1);
-                }
-                else
-                {
-                    WriteRegister(0x0105, SPEED);
-                    WriteRegister(0x0100, 3);
-                }
-                Thread.Sleep(ITERATIONDELAY);
-            }
-
-            WriteRegister(0x0103, 10000);
-            WriteRegister(0x0105, settings.REVERSESPEED);
-            WriteRegister(0x0100, 0);
-            Thread.Sleep(settings.REVERSDELAY);
-            WriteRegister(0x0100, 3);
-            
-
-            WriteRegister(0x000F, 0);
-            serialPort.Close();
+            return sum / 2;
         }
 
         public void RunMotor()
         {
-            try
-            {
-                serialPort.Open();
-                master = ModbusSerialMaster.CreateRtu(serialPort);
-                //Console.WriteLine("Соединение установлено! Начинаем контроль параметров...");
-                var listenningThread = new Thread(() => ControlMotor());
-                working = true;
-                listenningThread.Start();
-            }
-            catch (Exception ex)
-            {
-                //Console.WriteLine($"Ошибка подключения: {ex.Message}");
-            }
-            finally
-            { 
-                //Console.WriteLine("Соединение закрыто.");
-            }
+            string command = "SET " + SYNTHTIME.ToString() + " " + KZDELAY.ToString();
+            serialPort.Open();
+            Thread.Sleep(2000);
+            Console.WriteLine(command);
+            serialPort.WriteLine(command);
+
+            Thread.Sleep(500);
+            serialPort.WriteLine("RUN");
+            Console.WriteLine("RUN");
+
+            Thread.Sleep(500);
+            working = true;
+
+            var listenningThread = new Thread(() => ControlMotor());
+            listenningThread.Start();
         }
 
         public void StopMotor()
         {
             working = false;
+            serialPort.WriteLine("STOP");
+            Thread.Sleep(500);
+            serialPort.Close();
+            contact = false;
+            boundariesSet = false;
         }
+
+        public void ControlMotor()
+        {
+            while (working)
+            {
+                voltage = GetVoltage();
+
+                //voltage = ModBusValueConverter.ConvertToVoltValue(voltage);
+                string command = "CUR " + voltage.ToString();
+                Console.WriteLine(command);
+                serialPort.WriteLine(command);
+                Thread.Sleep(50);
+
+
+            }
+            Thread.Sleep(200);
+        }
+
     }
-}*/
+}
