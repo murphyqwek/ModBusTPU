@@ -291,8 +291,6 @@ namespace ModBusTPU.Models.Modbus
         private bool contact = false;
         private bool boundariesSet = false;
 
-        private string PORT = "COM16";
-        private int BAUDRATE = 115200;
         static SerialPort serialPort;
 
         private double voltage = 80;
@@ -302,18 +300,29 @@ namespace ModBusTPU.Models.Modbus
 
         public MotorSettingsContainer MotorSettings { get; }
 
-        public Motor(DataStorage dataStorage)
+        public Motor(DataStorage dataStorage, MotorSettingsContainer motorSettings)
         {
-            serialPort = new SerialPort(PORT, BAUDRATE, Parity.None, 8, StopBits.One);
+            MotorSettings = motorSettings;
+            this.dataStorage = dataStorage;
+
+            serialPort = new SerialPort(motorSettings.PORT, motorSettings.BAUDRATE, Parity.None, 8, StopBits.One);
             serialPort.ReadTimeout = 500;
             serialPort.WriteTimeout = 500;
 
-            this.dataStorage = dataStorage;
+            MotorSettings.PropertyChanged += MotorPortUpdatesHander;
+
         }
 
-        public Motor(DataStorage dataStorage, MotorSettingsContainer motorSettings) : this(dataStorage)
+        private void MotorPortUpdatesHander(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            MotorSettings = motorSettings;
+            try
+            {
+                serialPort.PortName = MotorSettings.PORT;
+                serialPort.BaudRate = MotorSettings.BAUDRATE;
+            } catch(Exception _)
+            {
+
+            }
         }
 
         private double GetVoltage()

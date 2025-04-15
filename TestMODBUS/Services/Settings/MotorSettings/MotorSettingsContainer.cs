@@ -14,30 +14,48 @@ namespace ModBusTPU.Services.Settings.MotorSettings
     {
         private string _port = "COM9";
         private int _baudrate = 9600;
-        private byte _address = 1;
+        /*
+   private byte _address = 1;
 
-        private double _currentThreshold = 125; // Уставка по току
-        private double _voltageThreshold = 40; // Уставка по напряжению
 
-        private double _highCurrentThresholdBound = 15;
-        private double _lowCurrentThresholdBound = 5;
+   private double _currentThreshold = 125; // Уставка по току
+   private double _voltageThreshold = 40; // Уставка по напряжению
 
-        private double _highVoltageThresholdBound = 5;
-        private double _lowVoltageThresholdBound = 5;
+   private double _highCurrentThresholdBound = 15;
+   private double _lowCurrentThresholdBound = 5;
 
-        private int _kzdelay = 5000;
+   private double _highVoltageThresholdBound = 5;
+   private double _lowVoltageThresholdBound = 5;
 
-        private int _writedelay = 20;
-        private int _iterationalDelay = 30;
-        private int _reverseDelay = 3000;
-        private ushort _reverseSpeed = 500;
-        private ushort _speed = 100;
+   private int _kzdelay = 5000;
+
+   private int _writedelay = 20;
+   private int _iterationalDelay = 30;
+   private int _reverseDelay = 3000;
+   private ushort _reverseSpeed = 500;
+   private ushort _speed = 100;
+   */
+
+        private int _synthTime = 120000;
+        private int _kzDealy = 3000;
+
+
+        private int _voltageMin = 37;       // Нижняя граница 
+        private int _voltageMax = 41;       // Верхняя граница
 
 
 
         public string PORT { get => _port; set { _port = value; OnPropertyChanged(nameof(PORT)); } }
 
         public int BAUDRATE { get => _baudrate; set { _baudrate = value; OnPropertyChanged(nameof(BAUDRATE)); } }
+
+        public int SynthTime { get => _synthTime; set { _synthTime = value; OnPropertyChanged(nameof(SynthTime)); } }
+        public int KzDelay { get => _kzDealy; set { _kzDealy = value; OnPropertyChanged(nameof(KzDelay)); } }
+
+        public int VoltageMin { get => _voltageMin; set { _voltageMin = value; OnPropertyChanged(nameof(VoltageMin)); } }
+
+        public int VoltageMax { get => _voltageMax; set { _voltageMax = value; OnPropertyChanged(nameof(VoltageMax)); } }
+        /*
         public byte ADDRESS { get => _address; set { _address = value; OnPropertyChanged(nameof(ADDRESS)); } }
 
         public double currentThreshold { get => _currentThreshold; set { _currentThreshold = value; OnPropertyChanged(nameof(currentThreshold)); } } // Уставка по току
@@ -56,6 +74,7 @@ namespace ModBusTPU.Services.Settings.MotorSettings
         public int REVERSDELAY { get => _reverseDelay; set { _reverseDelay = value; OnPropertyChanged(nameof(REVERSDELAY)); } }
         public ushort REVERSESPEED { get => _reverseSpeed; set { _reverseSpeed = value; OnPropertyChanged(nameof(REVERSESPEED)); } }
         public ushort SPEED { get => _speed; set { _speed = value; OnPropertyChanged(nameof(SPEED)); } }
+        */
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -76,7 +95,7 @@ namespace ModBusTPU.Services.Settings.MotorSettings
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

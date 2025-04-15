@@ -24,7 +24,7 @@ namespace ModBusTPU.ViewModels.Settings
         #region Public Fields
         public ObservableCollection<Field.Field> Fields { get; } = new ObservableCollection<Field.Field>();
 
-        public string PORT { get; set; }
+        public string PORT { get => motorSettings?.PORT; set { motorSettings.PORT = value; } }
 
         public ObservableCollection<string> Ports => ListAvailablePorts.AvailablePorts;
         #endregion
@@ -104,8 +104,7 @@ namespace ModBusTPU.ViewModels.Settings
 
             Fields = new ObservableCollection<Field.Field>()
             {
-                new Field.Field("BaudRate", () => motorSettings.BAUDRATE, value => motorSettings.BAUDRATE = Convert.ToInt32(value)),
-                new Field.Field("Адрес", () => motorSettings.ADDRESS, value => motorSettings.ADDRESS = Convert.ToByte(value)),
+                /*
                 new Field.Field("Порог тока",() => motorSettings.currentThreshold, value => motorSettings.currentThreshold = Convert.ToDouble(value.ToString().Replace(',', '.').ToString().Replace(',', '.'), CultureInfo.InvariantCulture)),
                 new Field.Field("Порог напр.",() => motorSettings.voltageThreshold, value => motorSettings.voltageThreshold = Convert.ToDouble(value.ToString().Replace(',', '.'), CultureInfo.InvariantCulture)),
                 new Field.Field("Верхнее порог. знач. тока",() => motorSettings.highCurrentThresholdBound, value => motorSettings.highCurrentThresholdBound =Convert.ToDouble(value.ToString().Replace(',', '.'), CultureInfo.InvariantCulture)),
@@ -117,6 +116,12 @@ namespace ModBusTPU.ViewModels.Settings
                 new Field.Field("Задержка итерации",() => motorSettings.ITERATIONDELAY, value => motorSettings.ITERATIONDELAY =Convert.ToInt32(value)),
                 new Field.Field("Задержка обратного хода",() => motorSettings.REVERSDELAY, value => motorSettings.REVERSDELAY =Convert.ToInt32(value)),
                 new Field.Field("Скорость",() => motorSettings.SPEED, value => motorSettings.SPEED =Convert.ToUInt16(value)),
+            */
+                new Field.Field("BaudRate", () => motorSettings.BAUDRATE, value => motorSettings.BAUDRATE = Convert.ToInt32(value)),
+                new Field.Field("Вермя КЗ", () => motorSettings.KzDelay, value => motorSettings.KzDelay = Convert.ToInt32(value)),
+                new Field.Field("Время синтеза", () => motorSettings.SynthTime, value => motorSettings.SynthTime = Convert.ToInt32(value)),
+                new Field.Field("Мин. напр.", () => motorSettings.VoltageMin, value => motorSettings.VoltageMin = Convert.ToInt32(value)),
+                new Field.Field("Макс. напр.", () => motorSettings.VoltageMax, value => motorSettings.VoltageMax = Convert.ToInt32(value))
             };
 
             UploadCommand = new RemoteCommand(UploadCommandCommandHandler);
