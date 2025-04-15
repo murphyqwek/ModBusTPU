@@ -97,12 +97,20 @@ namespace ModBusTPU.Models.Modbus
 
         public Motor(DataStorage dataStorage, MotorSettingsContainer container)
         {
-            serialPort = new SerialPort(container.PORT, BAUDRATE, Parity.None, 8, StopBits.One);
+            serialPort = new SerialPort(container.PORT, container.BAUDRATE, Parity.None, 8, StopBits.One);
             serialPort.ReadTimeout = 500;
             serialPort.WriteTimeout = 500;
 
             this.settingsContainer = container;
             this.dataStorage = dataStorage;
+
+            container.PropertyChanged += UpdateDate;
+        }
+
+        private void UpdateDate(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            serialPort.PortName = this.settingsContainer.PORT;
+            serialPort.BaudRate = this.settingsContainer.BAUDRATE;
         }
 
         public double FindStableMaximum(double newCurrent)
