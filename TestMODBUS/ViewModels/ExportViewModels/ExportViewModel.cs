@@ -371,8 +371,10 @@ namespace ModBusTPU.ViewModels.ExportViewModels
                 throw new ArgumentNullException();
 
             ChannelsData.Clear();
+
             foreach(var Channel in Settings.ChannelsData)
             {
+
                 ChannelsData.Add(new ChannelViewModel(new ChannelModel(Channel.Channel, Channel.IsChosen, Channel.Label), FieldChanged));
             }
 

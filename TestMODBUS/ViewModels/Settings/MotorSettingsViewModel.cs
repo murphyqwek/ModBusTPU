@@ -26,7 +26,9 @@ namespace ModBusTPU.ViewModels.Settings
 
         public string PORT { get => motorSettings?.PORT; set { motorSettings.PORT = value; } }
 
-        public ObservableCollection<string> Ports => ListAvailablePorts.AvailablePorts;
+        public ObservableCollection<string> Ports => AvailablePorts.AvailablePorts;
+
+        public ListAvailablePorts AvailablePorts { get; } = new ListAvailablePorts();
         #endregion
 
         #region Private fields

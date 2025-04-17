@@ -12,17 +12,17 @@ using ModBusTPU.Models.INotifyPropertyBased;
 namespace ModBusTPU.Models.Services
 {
     //Дата-класс для хранения и обновления списка доступных портов
-    static class ListAvailablePorts
+    public class ListAvailablePorts
     {
         #region Public Attributes
-        public static ObservableCollection<string> AvailablePorts { get; private set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> AvailablePorts { get; private set; } = new ObservableCollection<string>();
 
         public const string NoAvaiblePortsString = "Нет доступных";
 
-        public static bool IsAnyPortAvailable => AvailablePorts[0] != NoAvaiblePortsString;
+        public bool IsAnyPortAvailable => AvailablePorts[0] != NoAvaiblePortsString;
         #endregion
 
-        public static void UpdateAvailablePortList()
+        public void UpdateAvailablePortList()
         {
             AvailablePorts.Clear();
             
@@ -42,16 +42,18 @@ namespace ModBusTPU.Models.Services
         
         public static string GetFirstAvailablePort()
         {
-            if (AvailablePorts == null)
+            var serialPorts = SerialPort.GetPortNames();
+
+            if (serialPorts == null)
                 return null;
 
-            if(AvailablePorts.Count == 0)
+            if(serialPorts.Length == 0)
                 return null;
 
-            if (AvailablePorts[0] ==  NoAvaiblePortsString) 
+            if (serialPorts[0] ==  NoAvaiblePortsString) 
                 return null;
 
-            return AvailablePorts[0];
+            return serialPorts[0];
         }
     }
 }

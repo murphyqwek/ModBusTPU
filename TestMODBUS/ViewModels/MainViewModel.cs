@@ -29,7 +29,8 @@ namespace ModBusTPU.ViewModels
     public class MainViewModel : BaseViewModel
     {
         #region Public Attributes
-        public ObservableCollection<string> Ports => ListAvailablePorts.AvailablePorts;
+        public ObservableCollection<string> Ports => ListPorts.AvailablePorts;
+
         public List<int> Speeds => ListAvailableSpeeds.ListPortSpeeds;
 
         public IEnumerable<CommentaryExportElementViewModel> Commentaries => (from c in _exportViewModel.Commentaries where c.IsShownOnMainWindow select c);
@@ -44,6 +45,8 @@ namespace ModBusTPU.ViewModels
         public bool IsDrawing => sensor1.Chart.IsDrawing;
 
         public FileNameViewModel FileNameViewModel { get; }
+
+        public ListAvailablePorts ListPorts { get; }
 
         public string TokMode
         {
@@ -171,7 +174,7 @@ namespace ModBusTPU.ViewModels
             }
             catch (ChosenPortUnavailableException ex)
             {
-                ListAvailablePorts.UpdateAvailablePortList();
+                this.ListPorts.UpdateAvailablePortList();
                 ErrorMessageBox.Show(ex.Message);
             }
         }
@@ -380,8 +383,10 @@ namespace ModBusTPU.ViewModels
             ChangeChannelsTypeCommand = new RemoteCommand(ChangeChannelsTypeCommandHandler);
             BackUpCommand = new RemoteCommand(BackUpCommandHandler);
 
+            ListPorts = new ListAvailablePorts();
+
             //Подписиваем объекты на OnPropertyChanged других объектов
-            ListAvailablePorts.AvailablePorts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Ports));
+            ListPorts.AvailablePorts.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Ports));
             port.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
 
             //Инциалзириуем окно экспорта данных

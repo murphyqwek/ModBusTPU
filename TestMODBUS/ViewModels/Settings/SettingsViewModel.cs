@@ -21,11 +21,14 @@ namespace ModBusTPU.ViewModels.Settings
         public CoefficientProfileSettingsViewModel CoefficientProfileSettingsViewModel { get; }
         public MotorSettingsViewModel MotorSettingsViewModel { get; }
 
+        public ListAvailablePorts availablePorts { get; }
+
         public SettingsViewModel(MotorSettingsContainer motorSettings) 
         { 
             ChannelsTypeChoosingViewModel = new ChannelsTypeChoosingViewModel();
             CoefficientProfileSettingsViewModel = new CoefficientProfileSettingsViewModel();
             MotorSettingsViewModel = new MotorSettingsViewModel(motorSettings);
+            availablePorts = MotorSettingsViewModel.AvailablePorts;
         }
 
         public void OnWindowClosing(object sender, CancelEventArgs e)

@@ -24,20 +24,23 @@ namespace ModBusTPU
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainViewModel mainViewModel = new MainViewModel();
+
         public MainWindow()
         {
             ChannelsSettingFileManager.UploadDefaultSettings();
             ExcelExport.SetUp();
-            ListAvailablePorts.UpdateAvailablePortList();
             InitializeComponent();
             MainViewModel viewModel = new MainViewModel();
+            mainViewModel = viewModel;
+            mainViewModel.ListPorts.UpdateAvailablePortList();
             this.DataContext = viewModel;
             this.Closing += viewModel.OnWindowClosing;
         }
 
         private void PortComboBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ListAvailablePorts.UpdateAvailablePortList();
+            mainViewModel.ListPorts.UpdateAvailablePortList();
         }
     }
 }

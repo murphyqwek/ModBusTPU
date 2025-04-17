@@ -76,9 +76,6 @@ namespace ModBusTPU.Models.Services
 
         public bool Open()
         {
-            if (!ListAvailablePorts.IsAnyPortAvailable)
-                throw new NoPortAvailableException();
-
             try
             {
                 _port.Open();

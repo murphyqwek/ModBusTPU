@@ -24,17 +24,21 @@ namespace ModBusTPU.Views
     /// </summary>
     public partial class ChannelsTypeWindow : Window
     {
+        private SettingsViewModel viewModel;
+
         public ChannelsTypeWindow(MotorSettingsContainer motorSettingsContainer)
         {
             InitializeComponent();
-            var DataContext = new SettingsViewModel(motorSettingsContainer);
+            viewModel = new SettingsViewModel(motorSettingsContainer);
+            var DataContext = viewModel;
+            viewModel.availablePorts.UpdateAvailablePortList();
             this.DataContext = DataContext;
             this.Closing += DataContext.OnWindowClosing;
         }
 
         private void PortComboBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ListAvailablePorts.UpdateAvailablePortList();
+            viewModel.availablePorts.UpdateAvailablePortList();
         }
     }
 }

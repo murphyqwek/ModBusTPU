@@ -92,7 +92,7 @@ namespace ModBusTPU.Services.Settings.Export
         {
             List<ChannelData> channels = new List<ChannelData>();
 
-            for(int i = 0; i < DataStorage.MaxChannelCount; i++)
+            for(int i = 1; i < DataStorage.MaxChannelCount; i++)
             {
                 channels.Add(new ChannelData() { Channel = i, IsChosen = false, Label = $"CH_{i}" });
             }

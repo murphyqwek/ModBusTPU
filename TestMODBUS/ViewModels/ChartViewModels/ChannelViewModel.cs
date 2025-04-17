@@ -58,7 +58,7 @@ namespace ModBusTPU.ViewModels
             _model = Channel;
             _model.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
             this.ChannelStateChanged = ChannelStateChanged;
-            UpdateColor();
+            //UpdateColor();
         }
 
         public void UpdateColor()
