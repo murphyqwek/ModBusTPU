@@ -143,8 +143,19 @@
     <Compile Include="Extensions\ExtraDataFieldStatusExtension.cs" />
     <Compile Include="Extensions\ExtraDataFieldTooltipText.cs" />
     <Compile Include="Extensions\IsChannelSelectedExtension.cs" />
+    <Compile Include="MercuryWindow.xaml.cs">
+      <DependentUpon>MercuryWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Coefficients\CoefficientProfile.cs" />
     <Compile Include="Models\Coefficients\CoefficientProfileFileManager.cs" />
+    <Compile Include="Models\Mercucry\MercuryChartController.cs" />
+    <Compile Include="Models\Mercucry\MercuryCommands.cs" />
+    <Compile Include="Models\Mercucry\MercuryDataChartPreparation.cs" />
+    <Compile Include="Models\Mercucry\MercuryDataCollector.cs" />
+    <Compile Include="Models\Mercucry\MercurySettings.cs" />
+    <Compile Include="Models\Mercucry\MercurySettingsManager.cs" />
+    <Compile Include="Models\Mercucry\MerucryDataStorage.cs" />
+    <Compile Include="Models\Mercucry\MerucryPort.cs" />
     <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\IFilter.cs" />
     <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\OnlyOneVoltAndSeveralTokFilter.cs" />
     <Compile Include="Models\ModbusSensor\ModBusInputs\ChannelsFilters\StandratFilter.cs" />
@@ -233,6 +244,7 @@
     <Compile Include="ViewModels\Field\ValidationRules\DoubleValidationRule.cs" />
     <Compile Include="ViewModels\Field\ValidationRules\IntValidateRule.cs" />
     <Compile Include="ViewModels\Field\ValidationRules\UshortValidationRule.cs" />
+    <Compile Include="ViewModels\Mercury\MercucryViewModel.cs" />
     <Compile Include="ViewModels\Settings\ChannelsTypeChoosingViewModel.cs" />
     <Compile Include="ViewModels\ChannelTypeViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModels\ChannelViewModel.cs" />
@@ -270,6 +282,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MercuryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MotorResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
